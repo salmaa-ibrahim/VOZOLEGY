@@ -1,0 +1,5 @@
+.promo-banner { background: linear-gradient(135deg, var(--color-purple), var(--color-dark-purple)); color: white; padding: 40px 16px; display: flex; flex-direction: column; gap: 24px; overflow: hidden; }
+.promo-banner__content h2 { font-size: 2.5rem; line-height: 1.1; margin-bottom: 12px; }
+.promo-banner__content p { font-size: 0.9rem; opacity: 0.8; line-height: 1.5; }
+.promo-banner__image img { width: 100%; border-radius: var(--radius-md); }
+@media (min-width: 768px) { .promo-banner { flex-direction: row; align-items: center; } }

@@ -1,0 +1,21 @@
+.page-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 16px;
+  text-align: center;
+}
+.page-container h1 { font-size: 2rem; margin-bottom: 8px; }
+.page-subtitle { color: #666; margin-bottom: 40px; }
+.guide-steps { text-align: left; margin-bottom: 40px; display: flex; flex-direction: column; gap: 24px; }
+.guide-step h3 { font-size: 1.2rem; margin-bottom: 8px; color: var(--color-purple); }
+.guide-step p { line-height: 1.6; color: #444; }
+.btn-primary {
+  display: inline-block;
+  padding: 14px 40px;
+  background: var(--color-black);
+  color: white;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.btn-primary:hover { background: #333; }

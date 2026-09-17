@@ -1,0 +1,4 @@
+.hero-slider { padding: 16px; }
+.hero-slide { border-radius: var(--radius-lg); overflow: hidden; }
+.hero-slide__img { width: 100%; height: auto; object-fit: cover; }
+.swiper-pagination-bullet-active { background: var(--color-purple); }

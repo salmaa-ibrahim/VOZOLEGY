@@ -1,0 +1,9 @@
+.category-showcase { padding: 40px 16px; }
+.section-title { font-size: 1.5rem; margin-bottom: 24px; text-align: center; }
+.category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.category-card { display: flex; gap: 16px; background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px; align-items: center; transition: transform 0.2s; }
+.category-card:hover { transform: scale(1.02); }
+.category-card__img { width: 80px; height: 80px; object-fit: contain; }
+.category-card__info h3 { font-size: 1.1rem; margin-bottom: 4px; }
+.category-card__info p { font-size: 0.85rem; color: #666; }
+.category-card__link { font-size: 0.8rem; font-weight: 600; color: var(--color-purple); margin-top: 8px; display: inline-block; }

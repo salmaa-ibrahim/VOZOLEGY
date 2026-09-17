@@ -1,0 +1,9 @@
+.announcement-bar {
+  background: var(--color-black);
+  color: var(--color-white);
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family:"Lucidity Condensed", sans-serif;
+}
