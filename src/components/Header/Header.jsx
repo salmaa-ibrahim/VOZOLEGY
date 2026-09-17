@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../contexts/CartContext";
 import { useAuth } from "../../contexts/AuthContext";
+import { siteConfig } from '../../config/siteConfig';
 import CartDrawer from "./CartDrawer";
 import MobileMenu from "./MobileMenu";
 import "./Header.css";
