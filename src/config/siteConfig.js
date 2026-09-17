@@ -15,13 +15,13 @@ export const siteConfig = {
     phone: {
       number: '+201234567890',
       display: '+20 123 456 7890',
-      icon: '/icons/call_icon.svg',
+      icon: '/icons/call.jpg',
     },
 
     whatsapp: {
       number: '201234567890',
       display: '+20 123 456 7890',
-      icon: '/icons/Whatsapp_icon.png',
+      icon: '/icons/whatsapp.jpg',
     },
 
     email: {
@@ -42,12 +42,12 @@ export const siteConfig = {
   social: {
     instagram: {
       url: 'https://instagram.com/vozolegy',
-      icon: '/icons/instagram.png',
+      icon: '/icons/instagram.jpg',
     },
 
     facebook: {
       url: 'https://facebook.com/vozolegy',
-      icon: '/icons/facebook_icon.png',
+      icon: '/icons/facebook.jpg',
     },
 
     // tiktok: {

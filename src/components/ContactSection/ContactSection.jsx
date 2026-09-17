@@ -28,11 +28,9 @@
 
 // export default ContactSection;
 
-
-
-import React from 'react';
-import { siteConfig } from '../../config/siteConfig';
-import './ContactSection.css';
+import React from "react";
+import { siteConfig } from "../../config/siteConfig";
+import "./ContactSection.css";
 
 const ContactSection = () => {
   // جلب قائمة وسائل الاتصال من الملف المركزي
@@ -41,13 +39,21 @@ const ContactSection = () => {
   return (
     <section className="contact-section">
       <h2>GET IN TOUCH</h2>
-      <p className="section-subtitle">Have a question? Need help? We're here for you.</p>
+      <p className="section-subtitle">
+        Have a question? Need help? We're here for you.
+      </p>
       <div className="contact-grid">
-        {contacts.map(c => (
+        {contacts.map((c) => (
           <div key={c.id} className="contact-card">
+            <img src={c.icon} alt={c.title} className="c-icon" />
             <h3>{c.title}</h3>
             <p>{c.description}</p>
-            <a href={c.url} target="_blank" rel="noreferrer" className="contact-link">
+            <a
+              href={c.url}
+              target="_blank"
+              rel="noreferrer"
+              className="contact-link"
+            >
               {c.action} →
             </a>
           </div>
