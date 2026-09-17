@@ -1,5 +1,82 @@
-.promo-banner { background: linear-gradient(135deg, var(--color-purple), var(--color-dark-purple)); color: white; padding: 40px 16px; display: flex; flex-direction: column; gap: 24px; overflow: hidden; }
-.promo-banner__content h2 { font-size: 2.5rem; line-height: 1.1; margin-bottom: 12px; }
-.promo-banner__content p { font-size: 0.9rem; opacity: 0.8; line-height: 1.5; }
-.promo-banner__image img { width: 100%; border-radius: var(--radius-md); }
-@media (min-width: 768px) { .promo-banner { flex-direction: row; align-items: center; } }
+.promo-banner {
+  /* background: linear-gradient(
+    135deg,
+    var(--color-purple),
+    var(--color-dark-purple)
+  ); */
+  background-image: url(/images/banners/PromotionalBanner.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  border-radius: 100px;
+  color: white;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 700px;     
+    
+}
+.wave-text {
+  display: inline-block;
+  animation: waveMove 3.5s ease-in-out infinite;
+}
+
+@keyframes waveMove {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+
+  20% {
+    transform: translateX(-4px) rotate(-1deg);
+  }
+
+  40% {
+    transform: translateX(-7px) rotate(0.5deg);
+  }
+
+  60% {
+    transform: translateX(-3px) rotate(1deg);
+  }
+
+  80% {
+    transform: translateX(3px) rotate(-0.5deg);
+  }
+}
+.promo-banner__content h2 {
+  font-size: 8.5rem;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  width: 40%;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+.promo-banner__content p {
+  font-size: 1.8rem;
+  opacity: 0.8;
+  line-height: 1.5;
+  width: 70%;
+}
+.promo-banner__image img {
+  width: 100%;
+  border-radius: var(--radius-md);
+}
+
+
+
+@media (max-width: 425px) {
+  .promo-banner {
+    height: 320px;
+    border-radius: 35px;
+    padding: 60px 25px;
+  }
+  .promo-banner__content h2 {
+  font-size: 3.5rem;
+ }
+.promo-banner__content p {
+  font-size: 0.7rem;
+  width: 69%;
+}
+}
