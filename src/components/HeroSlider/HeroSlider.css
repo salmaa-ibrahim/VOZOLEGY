@@ -1,4 +1,210 @@
-.hero-slider { padding: 16px; }
-.hero-slide { border-radius: var(--radius-lg); overflow: hidden; }
-.hero-slide__img { width: 100%; height: auto; object-fit: cover; }
-.swiper-pagination-bullet-active { background: var(--color-purple); }
+/* =================================
+   HERO SLIDER
+================================= */
+
+.hero-slider {
+  margin: 20px 0px 0px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* =================================
+   SWIPER
+================================= */
+
+.hero-slider .swiper {
+  width: 100%;
+  overflow: visible !important;
+}
+
+/* =================================
+   SWIPER WRAPPER
+================================= */
+
+.hero-slider .swiper-wrapper {
+  align-items: center;
+}
+
+/* =================================
+   SLIDE
+================================= */
+
+.hero-slider .swiper-slide {
+  width: calc(100% - 54px) !important;
+
+  flex-shrink: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transform: scale(0.92);
+  opacity: 0.65;
+
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.7s ease;
+}
+
+/* =================================
+   ACTIVE / CENTER SLIDE
+================================= */
+
+.hero-slider .swiper-slide-active {
+  transform: scale(1);
+  opacity: 1;
+  z-index: 2;
+}
+
+/* =================================
+   BANNER
+================================= */
+
+.hero-slide {
+  width: 100%;
+
+  aspect-ratio: 16 / 9;
+
+  overflow: hidden;
+
+  border-radius: 25px;
+
+  position: relative;
+
+  background: #f5f5f5;
+}
+
+/* =================================
+   IMAGE
+================================= */
+
+.hero-slide__img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  user-select: none;
+  -webkit-user-drag: none;
+
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* =================================
+   ACTIVE IMAGE
+================================= */
+
+.hero-slider .swiper-slide-active .hero-slide__img {
+  transform: scale(1);
+}
+
+/* =================================
+   SIDE SLIDES
+================================= */
+
+.hero-slider .swiper-slide-prev,
+.hero-slider .swiper-slide-next {
+  opacity: 0.75;
+}
+
+/* =================================
+   PAGINATION
+================================= */
+
+.hero-slider .swiper-pagination {
+  position: relative;
+
+  left: auto;
+  bottom: auto;
+
+  width: 100%;
+
+  margin-top: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 8px;
+}
+
+/* =================================
+   DOTS
+================================= */
+
+.hero-slider .swiper-pagination-bullet {
+  width: 11px;
+  height: 11px;
+
+  margin: 0 !important;
+
+  background: #555;
+
+  opacity: 1;
+
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.hero-slider .swiper-pagination-bullet-active {
+  transform: scale(1.1);
+  background: var(--color-purple);
+}
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 768px) {
+  .hero-slider {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .hero-slider .swiper {
+    width: 100%;
+    overflow: visible !important;
+  }
+
+  .hero-slider .swiper-slide {
+    width: calc(100% - 85px) !important;
+
+    transform: scale(0.93);
+    opacity: 0.7;
+  }
+
+  .hero-slider .swiper-slide-active {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  .hero-slide {
+    width: 100%;
+
+    aspect-ratio: 16 / 9;
+
+    border-radius: 25px;
+  }
+
+  .hero-slider .swiper-pagination {
+    margin-top: 20px;
+  }
+}
+
+/* =================================
+   SMALL PHONES
+================================= */
+
+@media (max-width: 390px) {
+  .hero-slider .swiper-slide {
+    width: calc(100% - 45px) !important;
+  }
+
+  .hero-slide {
+    border-radius: 22px;
+  }
+}
