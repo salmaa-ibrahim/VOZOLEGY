@@ -22,7 +22,7 @@ export const getFeaturedCategories = async () => {
       name: 'VOZOL STAR',
       puffs: '40000 puffs',
       slug: 'vozol-star-40k',
-      image_url: '/images/categories/vozol-star-40k-category-img.png',
+      image_url: '/images/categories/vozol-star-40k-category-imgg.png',
       featured_on_home: true,
       active: true,
       display_order: 2
