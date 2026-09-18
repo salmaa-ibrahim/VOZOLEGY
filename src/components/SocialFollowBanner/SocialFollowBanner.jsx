@@ -10,7 +10,7 @@ const SocialFollowBanner = () => {
         <a href="https://instagram.com/vozolegy" target="_blank" rel="noreferrer" className="social-banner__btn">FOLLOW US ON INSTAGRAM →</a>
       </div>
       <div className="social-banner__image">
-        <img src="/images/social/phone-mockup.webp" alt="Follow us on Instagram" />
+        <img src="/images/banners/mobile.png" alt="Follow us on Instagram" />
       </div>
     </section>
   );
