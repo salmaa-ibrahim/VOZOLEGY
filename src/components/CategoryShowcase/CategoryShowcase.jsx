@@ -20,7 +20,7 @@ const CategoryShowcase = () => {
 
   return (
     <section className="category-showcase">
-      <h2 className="section-title">SHOP BY CATEGORY</h2>
+      {/* <h2 className="section-title">SHOP BY CATEGORY</h2> */}
       <div className="category-grid">
         {categories.map(cat => (
           <Link to={`/categories/${cat.slug}`} key={cat.id} className="category-card">

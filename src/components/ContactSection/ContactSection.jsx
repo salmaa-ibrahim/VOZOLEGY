@@ -40,7 +40,7 @@ const ContactSection = () => {
     <section className="contact-section">
       <h2>GET IN TOUCH</h2>
       <p className="section-subtitle">
-        Have a question? Need help? We're here for you.
+        Have a question? Need help? We're here for you ツ
       </p>
       <div className="contact-grid">
         {contacts.map((c) => (

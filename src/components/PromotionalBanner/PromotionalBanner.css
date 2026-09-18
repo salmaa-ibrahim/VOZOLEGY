@@ -1,10 +1,30 @@
 .make-joy {
   position: relative;
   width: 100%;
-  max-width: 1200px;
+  /* max-width: 1200px; */
   margin: 0 auto;
   overflow: hidden;
-  border-radius: 35px;
+  border-top-left-radius: 35px;
+  border-top-right-radius: 35px;
+  animation: float 5s ease-in-out infinite;
+  box-shadow:
+    0 -10px 15px -5px rgba(0, 0, 0, 0.1),
+    /* فوق */ 0 10px 15px -5px rgba(0, 0, 0, 0.1); /* تحت */
+  /* تجهيز الحركة */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* تعريف الحركة */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 .make-joy-bg {
@@ -34,7 +54,7 @@
 .make-joy-title span {
   display: block;
   opacity: 0;
-  animation: textReveal 0.8s ease forwards;
+  animation: textReveal 0.2s ease forwards;
 }
 
 .make-joy-title span:nth-child(1) {
@@ -69,8 +89,9 @@
 
 @media (max-width: 768px) {
   .make-joy {
-    width: 100%;
-    border-radius: 25px;
+    /* width: 100%; */
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
   }
   .make-joy-content {
     left: 6%;
@@ -89,7 +110,8 @@
 
 @media (max-width: 480px) {
   .make-joy {
-    border-radius: 30px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
   }
 
   .make-joy-content {
@@ -100,7 +122,7 @@
 
   .make-joy-title {
     font-size: 11vw;
-    line-height: 1.0;
+    line-height: 1;
   }
 
   .make-joy-content p {
