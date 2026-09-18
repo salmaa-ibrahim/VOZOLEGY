@@ -12,7 +12,7 @@ export const getFeaturedCategories = async () => {
       name: 'VOZOL GEAR',
       puffs: '50000 puffs',
       slug: 'vozol-gear-50k',
-      image_url: '/images/categories/vozol-gear.webp',
+      image_url: '/images/categories/vozol-gear-50k-category-img.png',
       featured_on_home: true,
       active: true,
       display_order: 1
@@ -22,10 +22,20 @@ export const getFeaturedCategories = async () => {
       name: 'VOZOL STAR',
       puffs: '40000 puffs',
       slug: 'vozol-star-40k',
-      image_url: '/images/categories/vozol-star.webp',
+      image_url: '/images/categories/vozol-star-40k-category-img.png',
       featured_on_home: true,
       active: true,
       display_order: 2
+    },
+    {
+      id: 3,
+      name: 'VOZOL HOOKAH',
+      puffs: '40000 puffs',
+      slug: 'vozol-hookah-40k',
+      image_url: '/images/categories/vozol-shisha-40k-category-img.png',
+      featured_on_home: true,
+      active: true,
+      display_order: 3
     }
   ];
 };
