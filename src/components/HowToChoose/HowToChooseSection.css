@@ -1,46 +1,95 @@
+/* الحاوية الرئيسية */
 .how-to-choose-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px 0 20px;
+  background-color: #ffffff;
+  max-width: 1000px; /* تحديد عرض أقصى عشان الصورة متكبرش أوي */
+  margin: 0 auto;
+}
+
+/* حاوية الصورة (عشان نحدد مكان النص بالنسبة لها) */
+.how-to-choose-section__image-wrapper {
+  position: relative; /* مهم جداً عشان النص يترتب بالنسبة للصورة */
+  width: 100%;
+  max-width: 800px; /* عرض مناسب للصورة */
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 16px;
-  gap: 24px;
-  background: #fff;
 }
-.how-to-choose-section__image {
-  position: relative;
+
+/* تنسيق الصورة نفسها */
+.how-to-choose-section__img {
   width: 100%;
-  max-width: 350px;
+  height: auto;
+  display: block;
+  object-fit: contain;
 }
-.how-to-choose-section__image > img {
-  width: 100%;
-  border-radius: var(--radius-md);
-}
-.how-to-choose-section__bubble {
+
+/* حاوية النص والزر (اللي هنطلعها فوق السحابة) */
+.how-to-choose-section__content-overlay {
   position: absolute;
-  top: -20px;
-  right: -40px;
-  width: 200px;
-}
-.how-to-choose-section__content {
+  /* هنا بنحدد مكان النص بالنسبة للصورة */
+  top: 70%; /* نزلنا النص عشان يبقى تحت السحابة */
+  left: 70%;
+  transform: translateX(-50%); /* لتوسيط النص أفقياً */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  width: 100%;
   text-align: center;
 }
-.how-to-choose-section__content h2 {
-  font-size: 1.5rem;
-  margin-bottom: 16px;
+
+/* تنسيق العنوان */
+.how-to-choose-section__content-overlay h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #000000;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
 }
+
+/* تنسيق الزر */
 .btn-outline-dark {
   display: inline-block;
-  padding: 12px 32px;
-  border: 2px solid var(--color-black);
-  border-radius: var(--radius-pill);
+  padding: 12px 35px;
+  border: 1px solid rgba(14, 12, 12, 0.2);;
+  border-radius: 50px;
+  background-color: transparent;
+  color: #000000;
+  font-size: 1rem;
   font-weight: 600;
-  transition: all 0.2s;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background-color: #ffffff; /* خلفية بيضاء للزر عشان ميتلخبطش مع الصورة */
+  box-shadow: 0px 4px 10px rgba(39, 33, 38, 0.1);;
 }
+
 .btn-outline-dark:hover {
-  background: var(--color-black);
-  color: white;
+  background-color: #000000;
+  color: #ffffff;
 }
-@media (min-width: 768px) {
-  .how-to-choose-section { flex-direction: row; justify-content: center; }
-  .how-to-choose-section__content { text-align: left; }
+
+/* التجاوب مع شاشات الجوال */
+@media (max-width: 768px) {
+  .how-to-choose-section {
+    padding: 20px 10px 0px 10px;
+  }
+
+  .how-to-choose-section__content-overlay {
+    top: 70%; /* تعديل المكان في الشاشات الصغيرة */
+    gap: 10px;
+  }
+
+  .how-to-choose-section__content-overlay h2 {
+    font-size: 1rem;
+  }
+
+  .btn-outline-dark {
+    padding: 10px 25px;
+    font-size: 0.9rem;
+  }
 }

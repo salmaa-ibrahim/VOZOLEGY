@@ -5,9 +5,14 @@ import './ScrollingGallery.css';
 const ScrollingGallery = () => {
   // Since 'react-fast-marquee' is not installed, we use CSS animation for the example.
   // In production, use a robust library or custom hook.
-  const images = [
-    '/images/gallery/img1.webp', '/images/gallery/img2.webp', '/images/gallery/img3.webp',
-    '/images/gallery/img4.webp', '/images/gallery/img5.webp', '/images/gallery/img6.webp'
+  const imagesRight = [
+    '/images/gallery/gallery-1.webp', '/images/gallery/gallery-2.webp', '/images/gallery/gallery-3.webp',
+    '/images/gallery/gallery-4.webp', '/images/gallery/gallery-5.webp', '/images/gallery/gallery-6.webp'
+  ];
+
+  const imagesLeft = [
+    '/images/gallery/gallery-7.webp', '/images/gallery/gallery-8.webp', '/images/gallery/gallery-9.webp',
+    '/images/gallery/gallery-1.png', '/images/gallery/2.png', '/images/gallery/3.png'
   ];
 
   return (
@@ -15,7 +20,7 @@ const ScrollingGallery = () => {
       {/* Row 1 - Moves Right */}
       <div className="marquee marquee--right">
         <div className="marquee__track">
-          {[...images, ...images].map((src, i) => (
+          {[...imagesRight, ...imagesRight].map((src, i) => (
             <img key={i} src={src} alt="gallery" className="marquee__img" />
           ))}
         </div>
@@ -23,7 +28,7 @@ const ScrollingGallery = () => {
       {/* Row 2 - Moves Left */}
       <div className="marquee marquee--left">
         <div className="marquee__track">
-          {[...images.reverse(), ...images].map((src, i) => (
+          {[...imagesLeft, ...imagesLeft].map((src, i) => (
             <img key={i} src={src} alt="gallery" className="marquee__img" />
           ))}
         </div>

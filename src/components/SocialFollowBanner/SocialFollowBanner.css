@@ -4,16 +4,17 @@
   padding: 40px 16px;
   background: #ffffff;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 40px ;
   border-bottom: solid 1px gainsboro;
+  
 }
 .social-banner__text h2 {
-  font-size: 1.8rem;
+  font-size: 4.8rem;
   font-weight: 400;
 }
 .social-banner__text h3 {
-  font-size: 2.5rem;
+  font-size: 4.5rem;
   font-weight: 800;
   margin-bottom: 16px;
 }
@@ -23,7 +24,7 @@
   color: white;
   padding: 12px 24px;
   border-radius: var(--radius-pill);
-  font-size: 0.8rem;
+  font-size: 1.8rem;
   font-weight: 600;
 }
 .social-banner__image img {
@@ -33,11 +34,24 @@
 @media (min-width: 768px) {
   .social-banner {
     flex-direction: row;
-    justify-content: space-between;
     text-align: left;
   }
 }
 
+@media (max-width: 968px) {
+  .social-banner h3{
+    font-size: 3rem;
+  }
+
+  .social-banner h2{
+    font-size: 3rem;
+  }
+
+  .social-banner__btn {
+    font-size: 1rem;
+  }
+
+} 
 @media (max-width: 480px) {
 
     .social-banner{
@@ -56,5 +70,18 @@
   padding: 12px 12px;
   font-size: 0.6rem;
   width: 180px;
+} 
+  }
+
+  @medias (max-width: 400px) {
+  
+.social-banner__text h2 {
+  font-size: 1rem;
+}
+.social-banner__text h3 {
+  font-size: 1rem;
+}
+.social-banner__btn {
+  font-size: 0.6rem;
 } 
   }

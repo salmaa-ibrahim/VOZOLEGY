@@ -6,6 +6,8 @@ import CategoryShowcase from '../../components/CategoryShowcase/CategoryShowcase
 import SocialFollowBanner from '../../components/SocialFollowBanner/SocialFollowBanner';
 import ScrollingGallery from '../../components/ScrollingGallery/ScrollingGallery';
 import HowToChooseSection from '../../components/HowToChoose/HowToChooseSection';
+import MakeJoyBanner from '../../components/makeJoyBanner/makJoyBanner'
+import VozolVideo from '../../components/VozolVideo/VozolVideo'
 // import './Home.css';
 
 const Home = () => {
@@ -17,6 +19,8 @@ const Home = () => {
       <CategoryShowcase />
       <SocialFollowBanner />
       <HowToChooseSection />
+      <VozolVideo/>
+      <MakeJoyBanner/>
       <ScrollingGallery />
     </div>
   );
