@@ -1,234 +1,702 @@
-/* =========================================
-   الحاوية الرئيسية
-   ========================================= */
+/* =========================================================
+   CATEGORY SHOWCASE
+   ========================================================= */
+
 .category-showcase {
-  padding: 0;
-  position: relative;
-  z-index: 10;
-  margin-top: -27px; /* عشان يطلع فوق الخلفية الموف */
   width: 100%;
+  padding: 160px 52px 56px;
+  background: #f5f5f7;
+  box-sizing: border-box;
 }
 
-.section-title {
-  font-size: 1.5rem;
-  margin-bottom: 24px;
+
+/* =========================================================
+   CATEGORY GRID
+   ========================================================= */
+
+.category-grid {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  display: grid;
+
+  /*
+    الشاشات الكبيرة:
+    عدد الكروت يتحدد تلقائيًا حسب مساحة الشاشة
+  */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(240px, 1fr)
+  );
+
+  column-gap: 28px;
+  row-gap: 126px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   CATEGORY CARD
+   ========================================================= */
+
+.category-card {
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+
+  min-height: 520px;
+
+  padding: 0 20px 30px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+
+  background: #ffffff;
+
+  border-radius: 22px;
+
+  text-decoration: none;
+  color: inherit;
+
+  box-sizing: border-box;
+
+  /*
+    مهم:
+    يسمح للصورة أن تخرج من أعلى الكارت
+  */
+  overflow: visible;
+
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.015);
+
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+
+/* =========================================================
+   CARD HOVER
+   ========================================================= */
+
+.category-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   PRODUCT IMAGE WRAPPER
+   ========================================================= */
+
+.category-card__image-wrap {
+  position: absolute;
+
+  z-index: 2;
+
+  top: -94px;
+  left: 50%;
+
+  width: 82%;
+  height: 355px;
+
+  transform: translateX(-50%);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   PRODUCT IMAGE
+   كل الصور بنفس زاوية الميل ناحية اليسار
+   ========================================================= */
+
+.category-card__img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  /*
+    كل الصور نفس الاتجاه
+    ناحية اليسار
+  */
+  transform: rotate(-8deg);
+
+  transform-origin: center center;
+
+  filter:
+    drop-shadow(
+      0 15px 13px rgba(0, 0, 0, 0.12)
+    );
+
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.35s ease;
+}
+
+
+/* =========================================================
+   IMAGE HOVER
+   تظل بنفس زاوية الميل
+   ========================================================= */
+
+.category-card:hover .category-card__img {
+  transform: rotate(-8deg) scale(1.05);
+
+  filter:
+    drop-shadow(
+      0 19px 18px rgba(0, 0, 0, 0.17)
+    );
+}
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.category-card__info {
+  position: relative;
+
+  z-index: 3;
+
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
   text-align: center;
 }
 
-/* =========================================
-   شبكة الكروت
-   ========================================= */
-.category-grid {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 1400px; /* أقصى عرض على الديسكتوب */
-  margin: 0 auto;   /* يتوسط الصفحة */
+
+/* =========================================================
+   CATEGORY TYPE
+   مثال:
+   50000 puffs
+   40000 puffs
+   Pod System
+   ========================================================= */
+
+.category-card__type {
+  margin: 0 0 20px;
+
+  color: #c2c2c2;
+
+  font-size: clamp(
+    18px,
+    2.05vw,
+    28px
+  );
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  letter-spacing: 0;
 }
 
-/* =========================================
-   الكارت الواحد
-   ========================================= */
-.category-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  column-gap: 20%;
-  background: var(--color-white, #ffffff);
-  
-  /* الحدود: بس خط رفيع من فوق */
-  border-top: 1px solid rgb(200, 200, 200);
-  
-  /* الأركان: مدورة من فوق بس */
-  border-radius: 30px 30px 0 0;
-  
-  padding: 25px 2px 25px 30px;
-  
-  /* السر: مسافة سالبة عشان يتراكبوا */
-  margin-top: -2px;
-  
-  position: relative;
-  z-index: 1;
-  
-  /* نعومة الحركة */
-  transition: all 0.3s ease;
-  
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-   box-shadow: 0 -10px 20px -10px rgba(44, 42, 43, 0.1);
-}
 
-/* أول كارت ميكونش فيه مسافة سالبة */
-.category-card:first-child {
-  margin-top: 0;
-}
+/* =========================================================
+   CATEGORY NAME
+   ========================================================= */
 
-/* الكارت الأخير: مدور من تحت + خط من تحت */
-.category-card:last-child {
-  border-bottom: 1px solid rgb(200, 200, 200);
-  border-radius: 30px 30px 30px 30px;
-}
-
-/* =========================================
-   صورة المنتج
-   ========================================= */
-.category-card__img {
-  width: 30%; /* حجم ثابت مناسب */
-  height: auto;
-  object-fit: contain;
-  flex-shrink: 0; /* عشان الصورة ماتصغرش أوي */
-  transition: transform 0.3s ease;
-}
-
-/* =========================================
-   معلومات الكارت
-   ========================================= */
-.category-card__info {
-    width: 40%;
-    align-items: start;
-  flex: 1; /* ياخد باقي المساحة */
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  justify-content: center;
-  direction: ltr; /* عشان الكلام الإنجليزي */
-  padding-right: 120px;
-}
-
-.category-card__info h3,
-.category-card__info p {
-  font-size: clamp(3rem, 2.2vw, 1.5rem);
+.category-card__title {
   margin: 0;
-  line-height: 1.2;
-  font-weight: 600;
-  color: #1a1a1a;
-  text-transform: uppercase;
+
+  color: #050505;
+
+  font-size: clamp(
+    28px,
+    3.05vw,
+    39px
+  );
+
+  font-weight: 700;
+
+  line-height: 1.05;
+
+  letter-spacing: -0.8px;
+
+  text-align: center;
 }
 
-.category-card__info p {
-  font-weight: 500;
-  color: #888;
-  font-size: clamp(2.5rem, 1.8vw, 1.2rem);
-}
+
+/* =========================================================
+   GREEN ARROW BUTTON
+   ========================================================= */
 
 .category-card__link {
-  font-size: clamp(2.2rem, 1.6vw, 1.1rem);
-  font-weight: 600;
-  color: #7a3377;
-  margin-top: 4px;
-  display: inline-block;
-  transition: color 0.3s ease;
+  width: 80px;
+  height: 80px;
+
+  margin-top: 31px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  border-radius: 12px;
+
+  background: #7dff3f;
+
+  color: #050505;
+
+  box-shadow:
+    0 7px 18px rgba(125, 255, 63, 0.34);
+
+  transition:
+    transform 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
-/* =========================================
-   الحركات (Hover & Active)
-   ========================================= */
-.category-card:hover {
-  transform: translateY(-8px);
-  z-index: 10;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+
+/* =========================================================
+   ARROW
+   ========================================================= */
+
+.category-card__link span {
+  display: block;
+
+  margin-top: -5px;
+  margin-left: 2px;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 58px;
+
+  font-weight: 400;
+
+  line-height: 0.75;
 }
 
-.category-card:active {
-  transform: translateY(-4px) scale(0.98);
-  z-index: 10;
-}
 
-.category-card:hover .category-card__img {
-  transform: scale(1.05);
-}
+/* =========================================================
+   BUTTON HOVER
+   ========================================================= */
 
 .category-card:hover .category-card__link {
-  color: #1a1a1a;
+  background: #70f532;
+
+  transform: translateX(4px);
+
+  box-shadow:
+    0 9px 22px rgba(125, 255, 63, 0.42);
 }
 
-/* =========================================
-   Media Queries (التجاوب)
-   ========================================= */
 
-/* للأجهزة اللوحية (Tablets) */
-@media (max-width: 768px) {
-  .category-grid {
-    max-width: 100%;
-  }
-  
-  .category-card {
-    padding: 14px 25px;
-  }
-  
-  .category-card__img {
-    width: 30%;
-  }
-  
-  .category-card__info h3,
-  .category-card__info p {
-    font-size: clamp(1.6rem, 2.5vw, 1.3rem);
-  }
-  
-  .category-card__info p {
-    font-size: clamp(1.5rem, 2vw, 1rem);
-  }
-  
-  .category-card__link {
-    font-size: clamp(1.2rem, 1.8vw, 1rem);
-  }
-}
+/* =========================================================
+   LARGE DESKTOP
+   1400px+
+   ========================================================= */
 
-/* للموبايل (Mobile) */
-@media (max-width: 480px) {
+@media (min-width: 1400px) {
+
   .category-showcase {
-    margin-top: -15px; /* قللنا الطلوع شوية */
+    padding-left: 60px;
+    padding-right: 60px;
   }
-  
+
+  .category-grid {
+    max-width: 1700px;
+
+    /*
+      يسمح بـ 4 أو 5 أو 6 حسب مساحة الشاشة
+    */
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(250px, 1fr)
+    );
+
+    column-gap: 30px;
+
+    row-gap: 126px;
+  }
+
   .category-card {
-    padding: 12px 14px;
-    border-radius: 24px 24px 0 0;
+    min-height: 520px;
   }
-  
-  .category-card:last-child {
-    border-radius: 24px 24px 24px 24px;
-  }
-  
-  .category-card__img {
-    width: 40%; /* صورة أصغر على الموبايل */
-  }
-  
-  .category-card__info {
-    gap: 15px;
-    padding-right: 8px;
-  }
-  
-  .category-card__info h3,
-  .category-card__info p {
-    font-size: 1.4rem;
-  }
-  
-  .category-card__info p {
-    font-size: 1.2rem;
-  }
-  
-  .category-card__link {
-    font-size: 1rem;
-    margin-top: 2px;
+
+  .category-card__image-wrap {
+    width: 82%;
   }
 }
 
-/* للموبايلات الصغيرة جداً (Small Mobile) */
-@media (max-width: 360px) {
+
+/* =========================================================
+   LAPTOP
+   1024px - 1399px
+   4 CATEGORIES PER ROW
+   ========================================================= */
+
+@media (min-width: 1024px) and (max-width: 1399px) {
+
+  .category-showcase {
+    padding: 100px 32px 52px;
+  }
+
+  .category-grid {
+
+    grid-template-columns: repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+    column-gap: 24px;
+
+    row-gap: 110px;
+  }
+
   .category-card {
-    padding: 10px 12px;
+    min-height: 450px;
+
+    padding-left: 14px;
+    padding-right: 14px;
+
+    border-radius: 20px;
   }
-  
-  .category-card__img {
-    width: 60px;
+
+  .category-card__image-wrap {
+    top: -75px;
+
+    width: 88%;
+    height: 290px;
   }
-  
-  .category-card__info h3 {
-    font-size: 0.85rem;
+
+  .category-card__type {
+    margin-bottom: 15px;
+
+    font-size: 19px;
   }
-  
-  .category-card__info p {
-    font-size: 0.7rem;
+
+  .category-card__title {
+    font-size: 27px;
+  }
+
+  .category-card__link {
+    width: 62px;
+    height: 62px;
+
+    margin-top: 22px;
+  }
+
+  .category-card__link span {
+    font-size: 47px;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   601px - 1023px
+   3 CATEGORIES PER ROW
+   ========================================================= */
+
+@media (min-width: 601px) and (max-width: 1023px) {
+
+  .category-showcase {
+    padding: 100px 24px 48px;
+  }
+
+  .category-grid {
+
+    grid-template-columns: repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+    column-gap: 18px;
+
+    row-gap: 90px;
+  }
+
+  .category-card {
+    min-height: 390px;
+
+    padding: 0 12px 24px;
+
+    border-radius: 18px;
+  }
+
+  .category-card__image-wrap {
+    top: -65px;
+
+    width: 88%;
+    height: 250px;
+  }
+
+  .category-card__type {
+    margin-bottom: 12px;
+
+    font-size: 16px;
+  }
+
+  .category-card__title {
+    font-size: 23px;
+
+    letter-spacing: -0.4px;
+  }
+
+  .category-card__link {
+    width: 55px;
+    height: 55px;
+
+    margin-top: 18px;
+
+    border-radius: 10px;
+  }
+
+  .category-card__link span {
+    font-size: 42px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   600px AND BELOW
+   2 CATEGORIES PER ROW
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .category-showcase {
+    padding: 90px 14px 38px;
+  }
+
+  .category-grid {
+
+    /*
+      2 Categories في كل صف
+    */
+
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+    column-gap: 12px;
+
+    row-gap: 72px;
+  }
+
+  .category-card {
+    min-height: 330px;
+
+    padding: 0 8px 18px;
+
+    border-radius: 16px;
+  }
+
+  .category-card__image-wrap {
+    top: -58px;
+
+    width: 88%;
+    height: 215px;
+  }
+
+  .category-card__type {
+    margin-bottom: 11px;
+
+    font-size: clamp(
+      12px,
+      3.5vw,
+      16px
+    );
+  }
+
+  .category-card__title {
+    font-size: clamp(
+      16px,
+      4.7vw,
+      23px
+    );
+
+    letter-spacing: -0.35px;
+  }
+
+  .category-card__link {
+    width: 48px;
+    height: 48px;
+
+    margin-top: 17px;
+
+    border-radius: 10px;
+  }
+
+  .category-card__link span {
+    font-size: 36px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   361px - 480px
+   ========================================================= */
+
+@media (min-width: 361px) and (max-width: 480px) {
+
+  .category-showcase {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .category-grid {
+    column-gap: 12px;
+    row-gap: 68px;
+  }
+
+  .category-card {
+    min-height: 310px;
+  }
+
+  .category-card__image-wrap {
+    top: -54px;
+
+    width: 90%;
+    height: 205px;
+  }
+
+  .category-card__type {
+    font-size: 13px;
+  }
+
+  .category-card__title {
+    font-size: 19px;
+  }
+
+  .category-card__link {
+    width: 46px;
+    height: 46px;
+  }
+
+  .category-card__link span {
+    font-size: 34px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   360px AND BELOW
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+  .category-showcase {
+    padding: 22px 10px 32px;
+  }
+
+  .category-grid {
+
+    /*
+      يظل 2 في الصف
+    */
+
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+    column-gap: 9px;
+
+    row-gap: 60px;
+  }
+
+  .category-card {
+    min-height: 285px;
+
+    padding: 0 7px 15px;
+
+    border-radius: 14px;
+  }
+
+  .category-card__image-wrap {
+    top: -49px;
+
+    width: 92%;
+    height: 188px;
+  }
+
+  .category-card__type {
+    font-size: 11px;
+
+    margin-bottom: 9px;
+  }
+
+  .category-card__title {
+    font-size: 15px;
+
+    letter-spacing: -0.2px;
+  }
+
+  .category-card__link {
+    width: 42px;
+    height: 42px;
+
+    margin-top: 14px;
+
+    border-radius: 9px;
+  }
+
+  .category-card__link span {
+    font-size: 32px;
+  }
+}
+
+
+/* =========================================================
+   KEYBOARD ACCESSIBILITY
+   ========================================================= */
+
+.category-card:focus-visible {
+  outline: 3px solid #7dff3f;
+
+  outline-offset: 5px;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .category-card,
+  .category-card__img,
+  .category-card__link {
+    transition: none;
+  }
+
+  .category-card:hover {
+    transform: none;
+  }
+
+  .category-card:hover .category-card__img {
+    transform: rotate(-8deg);
   }
 }
