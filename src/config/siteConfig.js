@@ -1,9 +1,9 @@
 export const siteConfig = {
   // BRAND
   brand: {
-    name: 'VOZOL EGY',
-    logoText: 'VOZOL EGY',
-    tagline: 'Make Joy Happen',
+    name: "VOZOL EGY",
+    logoText: "VOZOL EGY",
+    tagline: "Make Joy Happen",
     description:
       "Vozol is an international vape brand devoted to accelerating the world's transition to a smoking-free place.",
     establishedYear: 2024,
@@ -13,27 +13,27 @@ export const siteConfig = {
   // CONTACT
   contact: {
     phone: {
-      number: '+201234567890',
-      display: '+20 123 456 7890',
-      icon: '/icons/call.jpg',
+      number: "+201234567890",
+      display: "+20 123 456 7890",
+      icon: "/icons/call.jpg",
     },
 
     whatsapp: {
-      number: '201234567890',
-      display: '+20 123 456 7890',
-      icon: '/icons/whatsapp.jpg',
+      number: "201234567890",
+      display: "+20 123 456 7890",
+      icon: "/icons/whatsapp.jpg",
     },
 
     email: {
-      address: 'info@vozolegy.com',
-      icon: '/icons/email.svg',
+      address: "info@vozolegy.com",
+      icon: "/icons/email.svg",
     },
 
     address: {
-      street: '123 Main Street',
-      city: 'Cairo',
-      country: 'Egypt',
-      full: '123 Main Street, Cairo, Egypt',
+      street: "123 Main Street",
+      city: "Cairo",
+      country: "Egypt",
+      full: "123 Main Street, Cairo, Egypt",
     },
   },
 
@@ -41,14 +41,14 @@ export const siteConfig = {
   // SOCIAL MEDIA
   social: {
     instagram: {
-      url: 'https://instagram.com/vozolegy',
-      icon: '/icons/instagram.jpg',
+      url: "https://instagram.com/vozolegy",
+      icon: "/icons/instagram.jpg",
     },
 
-    facebook: {
-      url: 'https://facebook.com/vozolegy',
-      icon: '/icons/facebook.jpg',
-    },
+    // facebook: {
+    //   url: 'https://facebook.com/vozolegy',
+    //   icon: '/icons/facebook.jpg',
+    // },
 
     // tiktok: {
     //   url: 'https://tiktok.com/@vozolegy',
@@ -64,8 +64,8 @@ export const siteConfig = {
   // ========================================
   // STORE
   store: {
-    currency: 'LE',
-    currencySymbol: 'LE',
+    currency: "LE",
+    currencySymbol: "LE",
 
     defaultShippingCost: 100,
 
@@ -78,17 +78,17 @@ export const siteConfig = {
   // MESSAGES
   messages: {
     announcementBar:
-      'FREE DELIVERY FOR ALL ORDERS - شحن مجاني على جميع الطلبات',
+      "FREE DELIVERY FOR ALL ORDERS - شحن مجاني على جميع الطلبات",
 
-    ageVerificationTitle: 'AGE VERIFICATION',
+    ageVerificationTitle: "AGE VERIFICATION",
 
     ageVerificationText:
-      'To use the VOZOL EGY website you must be aged 21 years old or over. Please verify your age before entering the site.',
+      "To use the VOZOL EGY website you must be aged 21 years old or over. Please verify your age before entering the site.",
 
     underAgeMessage:
-      'Sorry, you must be 21 years old or over to enter this website.',
+      "Sorry, you must be 21 years old or over to enter this website.",
 
-    cookieTitle: 'Our page uses Cookies',
+    cookieTitle: "Our page uses Cookies",
 
     cookieText:
       'We use cookies to personalize and enhance your browsing experience on our website. By clicking "Accept All", you agree to use cookies. You can read our Cookie Policy for more information.',
@@ -99,11 +99,11 @@ export const siteConfig = {
   // ========================================
   // LEGAL
   legal: {
-    cookiePolicy: '/cookie-policy',
-    privacyPolicy: '/privacy-policy',
-    termsOfService: '/terms-of-service',
-    shippingPolicy: '/shipping-policy',
-    refundPolicy: '/refund-policy',
+    cookiePolicy: "/cookie-policy",
+    privacyPolicy: "/privacy-policy",
+    termsOfService: "/terms-of-service",
+    shippingPolicy: "/shipping-policy",
+    refundPolicy: "/refund-policy",
   },
 
   // ========================================
@@ -111,12 +111,12 @@ export const siteConfig = {
   navigation: {
     main: [
       {
-        label: 'HOME',
-        path: '/',
+        label: "HOME",
+        path: "/",
       },
       {
-        label: 'How to choose your vape?',
-        path: '/how-to-choose',
+        label: "How to choose your vape?",
+        path: "/how-to-choose",
       },
       // {
       //   label: 'Shipping & Policy',
@@ -130,64 +130,62 @@ export const siteConfig = {
   getSocialLinks: function () {
     return [
       {
-        id: 'whatsapp',
-        title: 'WhatsApp',
+        id: "whatsapp",
+        title: "WhatsApp",
         description:
-          'Chat with us directly on WhatsApp for quick support and orders.',
+          "Chat with us directly on WhatsApp for quick support and orders.",
         url: `https://wa.me/${this.contact.whatsapp.number}`,
-        action: 'CHAT NOW',
+        action: "CHAT NOW",
         icon: this.contact.whatsapp.icon,
       },
 
       {
-        id: 'phone',
-        title: 'Phone Call',
-        description:
-          "Give us a call and we'll be happy to help you.",
+        id: "phone",
+        title: "Phone Call",
+        description: "Give us a call and we'll be happy to help you.",
         url: `tel:${this.contact.phone.number}`,
-        action: 'CALL NOW',
+        action: "CALL NOW",
         icon: this.contact.phone.icon,
       },
 
       {
-        id: 'instagram',
-        title: 'Instagram',
+        id: "instagram",
+        title: "Instagram",
         description:
-          'Follow us on Instagram for the latest updates, offers and new flavors.',
+          "Follow us on Instagram for the latest updates, offers and new flavors.",
         url: this.social.instagram.url,
-        action: 'VISIT PAGE',
+        action: "VISIT PAGE",
         icon: this.social.instagram.icon,
       },
 
-      {
-        id: 'facebook',
-        title: 'Facebook',
-        description:
-          'Like our page to stay connected and never miss out.',
-        url: this.social.facebook.url,
-        action: 'VISIT PAGE',
-        icon: this.social.facebook.icon,
-      },
+      // {
+      //   id: "facebook",
+      //   title: "Facebook",
+      //   description: "Like our page to stay connected and never miss out.",
+      //   url: this.social.facebook.url,
+      //   action: "VISIT PAGE",
+      //   icon: this.social.facebook.icon,
+      // },
 
-    //   {
-    //     id: 'tiktok',
-    //     title: 'TikTok',
-    //     description:
-    //       'Follow us on TikTok for the latest videos, trends and updates.',
-    //     url: this.social.tiktok.url,
-    //     action: 'VISIT PAGE',
-    //     icon: this.social.tiktok.icon,
-    //   },
+      //   {
+      //     id: 'tiktok',
+      //     title: 'TikTok',
+      //     description:
+      //       'Follow us on TikTok for the latest videos, trends and updates.',
+      //     url: this.social.tiktok.url,
+      //     action: 'VISIT PAGE',
+      //     icon: this.social.tiktok.icon,
+      //   },
 
-    //   {
-    //     id: 'youtube',
-    //     title: 'YouTube',
-    //     description:
-    //       'Subscribe to our YouTube channel for videos, updates and more.',
-    //     url: this.social.youtube.url,
-    //     action: 'WATCH NOW',
-    //     icon: this.social.youtube.icon,
-    //   },
+      //   {
+      //     id: 'youtube',
+      //     title: 'YouTube',
+      //     description:
+      //       'Subscribe to our YouTube channel for videos, updates and more.',
+      //     url: this.social.youtube.url,
+      //     action: 'WATCH NOW',
+      //     icon: this.social.youtube.icon,
+      //   },
     ];
   },
 };
