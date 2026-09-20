@@ -109,10 +109,10 @@
 }
 
 @media (max-width: 480px) {
-  .make-joy {
+  /* .make-joy {
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
-  }
+  } */
 
   .make-joy-content {
     left: 7%;
