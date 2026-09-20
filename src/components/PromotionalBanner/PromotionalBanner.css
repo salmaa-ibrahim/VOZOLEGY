@@ -4,8 +4,8 @@
   /* max-width: 1200px; */
   margin: 0 auto;
   overflow: hidden;
-  border-top-left-radius: 35px;
-  border-top-right-radius: 35px;
+  /* border-top-left-radius: 35px;
+  border-top-right-radius: 35px; */
   animation: float 5s ease-in-out infinite;
   box-shadow:
     0 -10px 15px -5px rgba(0, 0, 0, 0.1),
