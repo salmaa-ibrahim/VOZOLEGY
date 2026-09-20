@@ -88,11 +88,11 @@
 }
 
 @media (max-width: 768px) {
-  .make-joy {
-    /* width: 100%; */
+  /* .make-joy {
+    width: 100%;
     border-top-left-radius: 35px;
     border-top-right-radius: 35px;
-  }
+  } */
   .make-joy-content {
     left: 6%;
     width: 52%;
