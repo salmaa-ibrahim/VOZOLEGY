@@ -70,6 +70,7 @@ const CategoryShowcase = () => {
 
   return (
     <section className="category-showcase">
+      <h2>Discover Our Products</h2>
       <div className="category-grid">
         {categories.map((cat, index) => (
           <Link to={`/categories/${cat.slug}`} key={cat.id} className="category-card">

@@ -6,8 +6,8 @@
   align-items: center;
   justify-content: space-around;
   padding: 40px ;
-  border-bottom: solid 1px gainsboro;
-  
+  border: solid 1px gainsboro;
+  border-radius: 30px;
 }
 .social-banner__text h2 {
   font-size: 4.8rem;
@@ -73,7 +73,7 @@
 } 
   }
 
-  @medias (max-width: 400px) {
+  @media (max-width: 400px) {
   
 .social-banner__text h2 {
   font-size: 1rem;

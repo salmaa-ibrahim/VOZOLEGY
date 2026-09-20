@@ -12,7 +12,7 @@ export const getFeaturedCategories = async () => {
       name: 'VOZOL GEAR',
       puffs: '50000 puffs',
       slug: 'vozol-gear-50k',
-      image_url: '/images/categories/gear-50k.webp',
+      image_url: '/images/categories/gear-50kk.webp',
       featured_on_home: true,
       active: true,
       display_order: 1
@@ -22,7 +22,7 @@ export const getFeaturedCategories = async () => {
       name: 'VOZOL STAR',
       puffs: '40000 puffs',
       slug: 'vozol-star-40k',
-      image_url: '/images/categories/star-40k.webp',
+      image_url: '/images/categories/star-40kk.webp',
       featured_on_home: true,
       active: true,
       display_order: 2
