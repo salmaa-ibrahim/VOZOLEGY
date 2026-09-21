@@ -1,0 +1,111 @@
+const mockProducts = [
+  {
+    id: "star-1",
+    category: "star",
+    name: "VOZOL STAR 40k",
+    flavor: "MANGO ICE",
+    price: 850,
+    image: "/images/products/star.png",
+    mode: "MTL",
+    available: false,
+    description: "VOZOL STAR 40k disposable vape with Mango Ice flavor.",
+  },
+
+  {
+    id: "star-2",
+    category: "star",
+    name: "VOZOL STAR 40k",
+    flavor: "BLUE RAZZ ICE",
+    price: 850,
+    image: "/images/products/star.png",
+    mode: "MTL",
+    available: true,
+    description: "VOZOL STAR 40k disposable vape with Blue Razz Ice flavor.",
+  },
+
+  {
+    id: "gear-1",
+    category: "gear",
+    name: "VOZOL GEAR 50k",
+    flavor: "WATERMELON ICE",
+    price: 950,
+    image: "/images/products/gear.png",
+    mode: "MTL",
+    available: true,
+    description: "VOZOL GEAR 50k disposable vape with Watermelon Ice flavor.",
+  },
+
+  {
+    id: "gear-2",
+    category: "gear",
+    name: "VOZOL GEAR 50k",
+    flavor: "STRAWBERRY ICE",
+    price: 950,
+    image: "/images/products/gear.png",
+    mode: "MTL",
+    available: true,
+    description: "VOZOL GEAR 50k disposable vape with Strawberry Ice flavor.",
+  },
+
+  {
+    id: "aiuono-1",
+    category: "aiuono",
+    name: "AIUONO ZERO 20k",
+    flavor: "MANGO ICE",
+    price: 750,
+    image: "/images/products/aiuono.png",
+    mode: "MTL",
+    available: true,
+    description: "AIUONO Zero Nicotine 20k disposable vape.",
+  },
+
+  {
+    id: "utouch-1",
+    category: "utouch",
+    name: "VTOUCH SMART VAPE",
+    flavor: "MINT ICE",
+    price: 800,
+    image: "/images/products/utouch.png",
+    mode: "MTL",
+    available: true,
+    description: "VTOUCH Smart Vape.",
+  },
+
+  {
+    id: "hookah-1",
+    category: "hookah",
+    name: "VOZOL HOOKAH 40k",
+    flavor: "DOUBLE APPLE",
+    price: 900,
+    image: "/images/products/hookah.png",
+    mode: "DL",
+    available: true,
+    description: "VOZOL HOOKAH 40k disposable vape.",
+  },
+
+  {
+    id: "hookah-2",
+    category: "hookah",
+    name: "VOZOL HOOKAH 40k",
+    flavor: "GRAPE MINT",
+    price: 900,
+    image: "/images/products/hookah.png",
+    mode: "DL",
+    available: true,
+    description: "VOZOL HOOKAH 40k disposable vape.",
+  },
+
+  {
+    id: "bb-1",
+    category: "bb",
+    name: " bb 40k",
+    flavor: "GRAPE MINT",
+    price: 900,
+    image: "/images/products/hookah.png",
+    mode: "DL",
+    available: true,
+    description: "VOZOL HOOKAH 40k disposable vape.",
+  },
+];
+
+export default mockProducts;

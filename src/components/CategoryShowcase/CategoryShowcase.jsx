@@ -42,6 +42,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getFeaturedCategories } from "../../services/categoriesService";
+import { motion } from "framer-motion";
+
 import "./CategoryShowcase.css";
 
 const CategoryShowcase = () => {
@@ -70,7 +72,16 @@ const CategoryShowcase = () => {
 
   return (
     <section className="category-showcase">
-      <h2>Discover Our Products</h2>
+      {/* <h2>Discover Our Products</h2> */}
+      <motion.h2
+                className="all-products-title"
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6 }}
+              >
+                Discover Our Products
+              </motion.h2>
       <div className="category-grid">
         {categories.map((cat, index) => (
           <Link to={`/categories/${cat.slug}`} key={cat.id} className="category-card">
