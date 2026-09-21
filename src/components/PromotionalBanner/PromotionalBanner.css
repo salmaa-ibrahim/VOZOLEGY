@@ -1,15 +1,19 @@
 .make-joy {
+  box-shadow: 0 4px 14px 0 rgba(133, 116, 133, 0.39);
+
   position: relative;
   width: 100%;
   /* max-width: 1200px; */
-  margin: 0 auto;
+  /* margin: 0 auto; */
+  margin: 10px;
+  border-radius: 30px;
   overflow: hidden;
   /* border-top-left-radius: 35px;
   border-top-right-radius: 35px; */
   animation: float 5s ease-in-out infinite;
-  box-shadow:
+  /* box-shadow:
     0 -10px 15px -5px rgba(0, 0, 0, 0.1),
-    /* فوق */ 0 10px 15px -5px rgba(0, 0, 0, 0.1); /* تحت */
+    0 10px 15px -5px rgba(0, 0, 0, 0.1)
   /* تجهيز الحركة */
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }

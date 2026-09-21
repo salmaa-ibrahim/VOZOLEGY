@@ -1,6 +1,14 @@
 .video{
+margin: 10px;
+border-radius: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.video video{
+    box-shadow: 0 4px 14px 0 rgba(133, 116, 133, 0.39);
+    width: 100%;
+    border-radius: 30px;
 }
 

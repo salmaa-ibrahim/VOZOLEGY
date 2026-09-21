@@ -1,6 +1,6 @@
 /* الحاوية الرئيسية */
 .how-to-choose-section {
-    box-shadow: 0 4px 14px 0 rgba(133, 116, 133, 0.39);
+  box-shadow: 0 4px 14px 0 rgba(133, 116, 133, 0.39);
   display: flex;
   justify-content: center;
   align-items: center;
