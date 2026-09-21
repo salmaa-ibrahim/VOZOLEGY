@@ -1,14 +1,15 @@
 /* الحاوية الرئيسية */
 .how-to-choose-section {
+    box-shadow: 0 4px 14px 0 rgba(133, 116, 133, 0.39);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px 0 20px;
+  padding: 20px 20px 0 20px;
   background-color: #ffffff;
   max-width: 1000px; /* تحديد عرض أقصى عشان الصورة متكبرش أوي */
-  margin: 30px 0;
+  margin: 30px 10px;
   border-radius: 30px;
-  border: solid 1px gainsboro;
+  border: solid 1px rgb(240, 238, 238);
 }
 
 /* حاوية الصورة (عشان نحدد مكان النص بالنسبة لها) */
@@ -19,6 +20,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+
 }
 
 /* تنسيق الصورة نفسها */
@@ -78,7 +80,7 @@
 /* التجاوب مع شاشات الجوال */
 @media (max-width: 768px) {
   .how-to-choose-section {
-    padding: 20px 10px 0px 10px;
+    padding: 10px;
   }
 
   .how-to-choose-section__content-overlay {

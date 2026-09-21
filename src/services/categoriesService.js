@@ -36,6 +36,18 @@ export const getFeaturedCategories = async () => {
       featured_on_home: true,
       active: true,
       display_order: 3
+    },
+    {
+      id: 4,
+      name: 'VOZOL RAVE',
+      puffs: '40000 puffs',
+      slug: 'vozol-rave-40k',
+      image_url: '/images/categories/vozol-rave-40k-category-img.webp',
+      featured_on_home: true,
+      active: true,
+      display_order: 4
     }
   ];
 };
+
+
