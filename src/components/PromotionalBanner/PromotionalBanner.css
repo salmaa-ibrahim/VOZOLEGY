@@ -1,75 +1,123 @@
+/* =========================================
+   PROMOTIONAL BANNER
+========================================= */
+
 .make-joy {
+  position: relative;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  margin: 10px 0;
+
+  border-radius: 30px;
+
+  overflow: hidden;
+
   box-shadow: 0 4px 14px 0 rgba(133, 116, 133, 0.39);
 
-  position: relative;
-  width: 100%;
-  /* max-width: 1200px; */
-  /* margin: 0 auto; */
-  margin: 10px;
-  border-radius: 30px;
-  overflow: hidden;
-  /* border-top-left-radius: 35px;
-  border-top-right-radius: 35px; */
   animation: float 5s ease-in-out infinite;
-  /* box-shadow:
-    0 -10px 15px -5px rgba(0, 0, 0, 0.1),
-    0 10px 15px -5px rgba(0, 0, 0, 0.1)
-  /* تجهيز الحركة */
+
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* تعريف الحركة */
+
+/* =========================================
+   FLOAT ANIMATION
+========================================= */
+
 @keyframes float {
   0% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
+
   50% {
     transform: translateY(8px);
   }
+
   100% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 }
 
+
+/* =========================================
+   BACKGROUND IMAGE
+========================================= */
+
 .make-joy-bg {
   display: block;
+
   width: 100%;
+  max-width: 100%;
+
   height: auto;
 }
 
+
+/* =========================================
+   CONTENT
+========================================= */
+
 .make-joy-content {
   position: absolute;
+
   left: 5%;
   top: 50%;
+
   transform: translateY(-50%);
+
   width: 48%;
+  max-width: 48%;
+
   color: white;
 }
 
+
+/* =========================================
+   TITLE
+========================================= */
+
 .make-joy-title {
   margin: 0;
+
   display: flex;
   flex-direction: column;
+
   font-size: clamp(45px, 6vw, 85px);
+
   line-height: 0.9;
+
   font-weight: 700;
 }
 
+
 .make-joy-title span {
   display: block;
+
   opacity: 0;
+
   animation: textReveal 0.2s ease forwards;
 }
+
 
 .make-joy-title span:nth-child(1) {
   animation-delay: 0.1s;
 }
+
 .make-joy-title span:nth-child(2) {
   animation-delay: 0.25s;
 }
+
 .make-joy-title span:nth-child(3) {
   animation-delay: 0.4s;
 }
+
+
+/* =========================================
+   TEXT REVEAL
+========================================= */
 
 @keyframes textReveal {
   from {
@@ -83,23 +131,44 @@
   }
 }
 
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
 .make-joy-content p {
   margin-top: 22px;
+
   max-width: 550px;
+
   font-size: clamp(12px, 1.4vw, 18px);
+
   line-height: 1.4;
+
   color: white;
 }
 
+
+/* =========================================
+   TABLET
+========================================= */
+
 @media (max-width: 768px) {
-  /* .make-joy {
+
+  .make-joy {
     width: 100%;
-    border-top-left-radius: 35px;
-    border-top-right-radius: 35px;
-  } */
+    max-width: 100%;
+
+    margin: 10px 0;
+
+    border-radius: 25px;
+  }
+
   .make-joy-content {
     left: 6%;
+
     width: 52%;
+    max-width: 52%;
   }
 
   .make-joy-title {
@@ -108,30 +177,46 @@
 
   .make-joy-content p {
     margin-top: 14px;
+
     font-size: 12px;
   }
 }
 
+
+/* =========================================
+   MOBILE
+========================================= */
+
 @media (max-width: 480px) {
-  /* .make-joy {
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-  } */
+
+  .make-joy {
+    width: 100%;
+    max-width: 100%;
+
+    margin: 10px 0;
+
+    border-radius: 22px;
+  }
 
   .make-joy-content {
     left: 7%;
     top: 50%;
+
     width: 55%;
+    max-width: 55%;
   }
 
   .make-joy-title {
     font-size: 11vw;
+
     line-height: 1;
   }
 
   .make-joy-content p {
     margin-top: 12px;
+
     font-size: 10px;
+
     line-height: 1.35;
   }
 }
