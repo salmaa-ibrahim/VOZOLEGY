@@ -508,17 +508,18 @@
   .category-grid {
     column-gap: 25px;
     row-gap: 110px;
+    padding: 0 10px;
   }
 
   .category-card {
-    min-height: 200px;
+    min-height: 230px;
   }
 
   .category-card__image-wrap {
-    top: -80px;
+    top: -45px;
 
-    width: 50%;
-    height: 200px;
+    width: 70%;
+    height: 150px;
   }
 
   .category-card__type {
