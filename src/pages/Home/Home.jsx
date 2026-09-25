@@ -1,7 +1,7 @@
 import React from "react";
 import HeroSlider from "../../components/HeroSlider/HeroSlider";
 import ContactSection from "../../components/ContactSection/ContactSection";
-import PromotionalBanner from "../../components/PromotionalBanner/PromotionalBanner";
+// import PromotionalBanner from "../../components/PromotionalBanner/PromotionalBanner";
 import CategoryShowcase from "../../components/CategoryShowcase/CategoryShowcase";
 import SocialFollowBanner from "../../components/SocialFollowBanner/SocialFollowBanner";
 import ScrollingGallery from "../../components/ScrollingGallery/ScrollingGallery";
@@ -17,7 +17,7 @@ const Home = () => {
     <div className="home-page">
       <HeroSlider />
       <ContactSection />
-      <PromotionalBanner />
+      {/* <PromotionalBanner /> */}
       <CategoryShowcase />
       <SocialFollowBanner />
       <AllProducts

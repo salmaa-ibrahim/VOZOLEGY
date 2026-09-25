@@ -431,7 +431,7 @@
 
 @media (max-width: 600px) {
   .category-showcase {
-    padding: 60px 14px 38px;
+    padding: 30px 14px 38px;
     row-gap: 100px;
   }
 
@@ -511,13 +511,13 @@
   }
 
   .category-card {
-    min-height: 270px;
+    min-height: 200px;
   }
 
   .category-card__image-wrap {
-    top: -54px;
+    top: -80px;
 
-    width: 90%;
+    width: 50%;
     height: 200px;
   }
 
@@ -530,12 +530,12 @@
   }
 
   .category-card__link {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
   }
 
   .category-card__link span {
-    font-size: 34px;
+    font-size: 24px;
   }
 }
 
