@@ -1,14 +1,23 @@
 /* =================================
    HERO SLIDER
 ================================= */
+/* =================================
+   HERO SLIDER
+================================= */
 
 .hero-slider {
-  margin: 20px 0px 0px;
   width: 100%;
-  overflow: hidden;
+  max-width: 100%;
+  min-width: 0;
+
+  margin: 20px 0 0;
+
   position: relative;
-  
+
+  /* يمنع أي جزء من السلايدر من توسيع الصفحة */
+  overflow: hidden;
 }
+
 
 /* =================================
    SWIPER
@@ -16,16 +25,25 @@
 
 .hero-slider .swiper {
   width: 100%;
-  overflow: visible !important;
+  max-width: 100%;
+  min-width: 0;
+
+  /* مهم جدًا */
+  overflow: hidden !important;
 }
+
 
 /* =================================
    SWIPER WRAPPER
 ================================= */
 
 .hero-slider .swiper-wrapper {
+  width: 100%;
+  max-width: 100%;
+
   align-items: center;
 }
+
 
 /* =================================
    SLIDE
@@ -33,6 +51,7 @@
 
 .hero-slider .swiper-slide {
   width: calc(100% - 54px) !important;
+  max-width: calc(100% - 54px);
 
   flex-shrink: 0;
 
@@ -48,6 +67,7 @@
     opacity 0.7s ease;
 }
 
+
 /* =================================
    ACTIVE / CENTER SLIDE
 ================================= */
@@ -58,35 +78,33 @@
   z-index: 2;
 }
 
+
 /* =================================
-   BANNER
+   HERO BANNER
 ================================= */
 
 .hero-slide {
-   overflow: hidden;
-  border-radius: 25px;
-
-}
-
-.hero-slide {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 
-  /* aspect-ratio: 16 / 9; */
+  position: relative;
 
   overflow: hidden;
 
   border-radius: 25px;
 
-  position: relative;
-
   background: #f5f5f5;
 }
+
+
 /* =================================
-   IMAGE
+   HERO IMAGE
 ================================= */
 
 .hero-slide__img {
   width: 100%;
+  max-width: 100%;
   height: 100%;
 
   display: block;
@@ -96,16 +114,21 @@
   user-select: none;
   -webkit-user-drag: none;
 
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
 
 /* =================================
    ACTIVE IMAGE
 ================================= */
 
-.hero-slider .swiper-slide-active .hero-slide__img {
+.hero-slider
+.swiper-slide-active
+.hero-slide__img {
   transform: scale(1);
 }
+
 
 /* =================================
    SIDE SLIDES
@@ -116,6 +139,7 @@
   opacity: 0.75;
 }
 
+
 /* =================================
    PAGINATION
 ================================= */
@@ -124,9 +148,11 @@
   position: relative;
 
   left: auto;
+  right: auto;
   bottom: auto;
 
   width: 100%;
+  max-width: 100%;
 
   margin-top: 20px;
 
@@ -137,8 +163,9 @@
   gap: 8px;
 }
 
+
 /* =================================
-   DOTS
+   PAGINATION DOTS
 ================================= */
 
 .hero-slider .swiper-pagination-bullet {
@@ -156,61 +183,104 @@
     opacity 0.3s ease;
 }
 
+
 .hero-slider .swiper-pagination-bullet-active {
   transform: scale(1.1);
+
   background: var(--color-purple);
 }
 
+
 /* =================================
-   MOBILE
+   TABLET / MOBILE
 ================================= */
 
 @media (max-width: 768px) {
+
   .hero-slider {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    margin-top: 20px;
+
     overflow: hidden;
   }
 
+
   .hero-slider .swiper {
     width: 100%;
-    overflow: visible !important;
+    max-width: 100%;
+    min-width: 0;
+
+    overflow: hidden !important;
   }
+
+
+  .hero-slider .swiper-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
 
   .hero-slider .swiper-slide {
     width: calc(100% - 85px) !important;
+    max-width: calc(100% - 85px);
 
     transform: scale(0.93);
     opacity: 0.7;
   }
+
 
   .hero-slider .swiper-slide-active {
     transform: scale(1);
     opacity: 1;
   }
 
+
   .hero-slide {
     width: 100%;
-
-    /* aspect-ratio: 16 / 9; */
+    max-width: 100%;
 
     border-radius: 25px;
   }
 
+
   .hero-slider .swiper-pagination {
+    width: 100%;
+    max-width: 100%;
+
     margin-top: 20px;
   }
 }
+
 
 /* =================================
    SMALL PHONES
 ================================= */
 
 @media (max-width: 390px) {
+
   .hero-slider .swiper-slide {
     width: calc(100% - 45px) !important;
+    max-width: calc(100% - 45px);
   }
+
 
   .hero-slide {
     border-radius: 22px;
+  }
+}
+
+
+/* =================================
+   VERY SMALL PHONES
+================================= */
+
+@media (max-width: 360px) {
+
+  .hero-slider .swiper-slide {
+    width: calc(100% - 32px) !important;
+    max-width: calc(100% - 32px);
   }
 }

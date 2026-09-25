@@ -1,75 +1,138 @@
-/* الحاوية الرئيسية */
+/* =========================================
+   HOW TO CHOOSE SECTION
+========================================= */
+
 .how-to-choose-section {
-  box-shadow: 0 4px 14px 0 rgba(133, 116, 133, 0.39);
+  width: calc(100% - 20px);
+  max-width: 1000px;
+  min-width: 0;
+
+  margin: 30px auto;
+
+  padding: 20px 20px 0;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 20px 0 20px;
+
   background-color: #ffffff;
-  max-width: 1000px; /* تحديد عرض أقصى عشان الصورة متكبرش أوي */
-  margin: 30px 10px;
+
+  border: 1px solid rgb(240, 238, 238);
   border-radius: 30px;
-  border: solid 1px rgb(240, 238, 238);
+
+  box-shadow: 0 4px 14px 0 rgba(133, 116, 133, 0.39);
+
+  overflow: hidden;
 }
 
-/* حاوية الصورة (عشان نحدد مكان النص بالنسبة لها) */
+
+/* =========================================
+   IMAGE WRAPPER
+========================================= */
+
 .how-to-choose-section__image-wrapper {
-  position: relative; /* مهم جداً عشان النص يترتب بالنسبة للصورة */
+  position: relative;
+
   width: 100%;
-  max-width: 800px; /* عرض مناسب للصورة */
+  max-width: 800px;
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
-/* تنسيق الصورة نفسها */
+
+/* =========================================
+   IMAGE
+========================================= */
+
 .how-to-choose-section__img {
-  width: 100%;
-  height: auto;
   display: block;
+
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+
   object-fit: contain;
 }
 
-/* حاوية النص والزر (اللي هنطلعها فوق السحابة) */
+
+/* =========================================
+   CONTENT OVERLAY
+========================================= */
+
 .how-to-choose-section__content-overlay {
   position: absolute;
-  /* هنا بنحدد مكان النص بالنسبة للصورة */
-  top: 70%; /* نزلنا النص عشان يبقى تحت السحابة */
-  left: 70%;
-  transform: translateX(-50%); /* لتوسيط النص أفقياً */
+
+  top: 70%;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 100%;
+  max-width: 100%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   gap: 25px;
-  width: 100%;
+
   text-align: center;
+
+  padding: 0 10px;
 }
 
-/* تنسيق العنوان */
+
+/* =========================================
+   TITLE
+========================================= */
+
 .how-to-choose-section__content-overlay h2 {
+  margin: 0;
+
+  font-family: Arial, sans-serif;
+
   font-size: 2rem;
   font-weight: 800;
+
+  line-height: 1.2;
+
   color: #000000;
-  margin: 0;
-  font-family: 'Arial', sans-serif;
 }
 
-/* تنسيق الزر */
+
+/* =========================================
+   BUTTON
+========================================= */
+
 .btn-outline-dark {
   display: inline-block;
+
   padding: 12px 35px;
-  border: 1px solid rgba(14, 12, 12, 0.2);;
+
+  border: 1px solid rgba(14, 12, 12, 0.2);
+
   border-radius: 50px;
-  background-color: transparent;
+
+  background-color: #ffffff;
   color: #000000;
+
   font-size: 1rem;
   font-weight: 600;
+
   text-decoration: none;
-  transition: all 0.3s ease;
+
+  box-shadow: 0 4px 10px rgba(39, 33, 38, 0.1);
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+
   cursor: pointer;
-  background-color: #ffffff; /* خلفية بيضاء للزر عشان ميتلخبطش مع الصورة */
-  box-shadow: 0px 4px 10px rgba(39, 33, 38, 0.1);;
+
+  white-space: nowrap;
 }
 
 .btn-outline-dark:hover {
@@ -77,15 +140,71 @@
   color: #ffffff;
 }
 
-/* التجاوب مع شاشات الجوال */
+
+/* =========================================
+   TABLET
+========================================= */
+
 @media (max-width: 768px) {
+
   .how-to-choose-section {
-    padding: 10px;
+    width: calc(100% - 20px);
+    max-width: none;
+
+    margin: 25px auto;
+
+    padding: 10px 10px 0;
+
+    border-radius: 25px;
+  }
+
+  .how-to-choose-section__image-wrapper {
+    width: 100%;
+    max-width: 100%;
   }
 
   .how-to-choose-section__content-overlay {
-    top: 70%; /* تعديل المكان في الشاشات الصغيرة */
+    top: 70%;
+    left: 50%;
+
+    width: 100%;
+    max-width: 100%;
+
     gap: 10px;
+
+    padding: 0 5px;
+  }
+
+  .how-to-choose-section__content-overlay h2 {
+    font-size: 1.2rem;
+  }
+
+  .btn-outline-dark {
+    padding: 10px 25px;
+
+    font-size: 0.9rem;
+  }
+}
+
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 480px) {
+
+  .how-to-choose-section {
+    width: calc(100% - 16px);
+
+    margin: 20px auto;
+
+    padding: 8px 8px 0;
+
+    border-radius: 22px;
+  }
+
+  .how-to-choose-section__content-overlay {
+    top: 70%;
   }
 
   .how-to-choose-section__content-overlay h2 {
@@ -93,7 +212,24 @@
   }
 
   .btn-outline-dark {
-    padding: 10px 25px;
+    padding: 9px 22px;
+    font-size: 0.85rem;
+  }
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+========================================= */
+
+@media (max-width: 380px) {
+
+  .how-to-choose-section__content-overlay h2 {
     font-size: 0.9rem;
+  }
+
+  .btn-outline-dark {
+    padding: 8px 20px;
+    font-size: 0.8rem;
   }
 }
