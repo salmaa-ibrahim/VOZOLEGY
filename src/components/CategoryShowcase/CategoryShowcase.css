@@ -502,12 +502,12 @@
   .category-showcase {
     padding-left: 12px;
     padding-right: 12px;
-    row-gap: 80px;
+    row-gap: 50px;
   }
 
   .category-grid {
     column-gap: 25px;
-    row-gap: 110px;
+    row-gap: 90px;
     padding: 0 10px;
   }
 
