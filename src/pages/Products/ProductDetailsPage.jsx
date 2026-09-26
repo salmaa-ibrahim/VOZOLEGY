@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getMockProduct } from '../../services/productsService';
 import { useCart } from '../../contexts/CartContext';
 import './ProductDetailsPage.css';
 
@@ -10,10 +9,7 @@ const ProductDetailsPage = () => {
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
 
-  useEffect(() => {
-    // Simulate API fetch
-    setProduct(getMockProduct(slug));
-  }, [slug]);
+
 
   const handleAdd = () => {
     addToCart(product);
