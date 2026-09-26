@@ -1,17 +1,347 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../contexts/CartContext";
 import "./CheckoutPage.css";
 
+/* =========================================================
+   EGYPT GOVERNORATES / CITIES / DELIVERY AREAS
+   ========================================================= */
+
+const egyptLocations = {
+  Cairo: [
+    "Cairo",
+    "New Cairo",
+    "Fifth Settlement",
+    "First Settlement",
+    "Third Settlement",
+    "Fourth Settlement",
+    "South Teseen",
+    "North Teseen",
+    "Katameya",
+    "Madinaty",
+    "El Rehab",
+    "El Shorouk",
+    "Badr City",
+    "New Administrative Capital",
+    "Nasr City",
+    "Heliopolis",
+    "New Heliopolis",
+    "Maadi",
+    "New Maadi",
+    "Degla Maadi",
+    "Mokattam",
+    "Zamalek",
+    "Downtown Cairo",
+    "Garden City",
+    "Abbassia",
+    "Ain Shams",
+    "El Mataria",
+    "El Marg",
+    "El Salam",
+    "Shubra",
+    "Hadayeq El Kobba",
+    "Rod El Farag",
+    "El Zawya El Hamra",
+    "El Zeitoun",
+    "Dar El Salam",
+    "Old Cairo",
+    "El Basatin",
+    "Helwan",
+    "Tora",
+    "15th of May",
+  ],
+
+  Giza: [
+    "Giza",
+    "Haram",
+    "Faisal",
+    "Dokki",
+    "Agouza",
+    "Mohandessin",
+    "Imbaba",
+    "Warraq",
+    "Kerdasa",
+    "Bulaq El Dakrour",
+    "6th of October",
+    "New 6th of October",
+    "Sheikh Zayed",
+    "New Sheikh Zayed",
+    "Hadayek October",
+    "October Gardens",
+    "Smart Village",
+    "October Plaza",
+    "El Hosseiniya",
+    "Abu El Nomros",
+    "Hawamdeya",
+    "Al Ayat",
+    "El Badrasheen",
+    "Saf",
+  ],
+
+  Alexandria: [
+    "Alexandria",
+    "Smouha",
+    "Sidi Gaber",
+    "Stanley",
+    "Miami",
+    "Mandara",
+    "Montaza",
+    "Gleem",
+    "San Stefano",
+    "Roushdy",
+    "Kafr Abdo",
+    "Sporting",
+    "Camp Caesar",
+    "Azarita",
+    "Moharam Bek",
+    "Agami",
+    "Borg El Arab",
+    "New Borg El Arab",
+    "King Mariout",
+  ],
+
+  Qalyubia: [
+    "Banha",
+    "Shubra El Kheima",
+    "Qalyub",
+    "Obour City",
+    "El Khanka",
+    "Kafr Shukr",
+    "Toukh",
+    "Shibin El Qanater",
+    "Qaha",
+    "Khosous",
+    "Kaloub",
+  ],
+
+  Dakahlia: [
+    "Mansoura",
+    "Talkha",
+    "Mit Ghamr",
+    "Aga",
+    "Sherbin",
+    "Belqas",
+    "Dikirnis",
+    "Manzala",
+    "Mataria",
+    "Meet Salsil",
+    "Gamalia",
+    "Nabroh",
+  ],
+
+  Sharqia: [
+    "Zagazig",
+    "10th of Ramadan",
+    "Belbeis",
+    "Minya El Qamh",
+    "Abu Kabir",
+    "Hehia",
+    "Faqous",
+    "Kafr Saqr",
+    "El Husseiniya",
+    "Awlad Saqr",
+    "Deyerb Negm",
+    "Mashtoul El Souk",
+  ],
+
+  Gharbia: [
+    "Tanta",
+    "Mahalla El Kubra",
+    "Kafr El Zayat",
+    "Zefta",
+    "Santa",
+    "Qutour",
+    "Basyoun",
+    "Samanoud",
+  ],
+
+  Beheira: [
+    "Damanhur",
+    "Kafr El Dawwar",
+    "Rashid",
+    "Edku",
+    "Abu Hummus",
+    "Itay El Baroud",
+    "Kom Hamada",
+    "Wadi El Natrun",
+    "Hosh Essa",
+    "Delengat",
+    "Mahmoudiyah",
+    "Shabrakhit",
+  ],
+
+  Ismailia: [
+    "Ismailia",
+    "Fayed",
+    "Qantara Sharq",
+    "Qantara Gharb",
+    "Abu Suwir",
+    "Tal El Kebir",
+    "Kasaseen",
+  ],
+
+  "Port Said": [
+    "Port Said",
+    "Port Fouad",
+    "El Arab",
+    "El Manakh",
+    "El Dawahy",
+    "El Zohour",
+  ],
+
+  Suez: ["Suez", "Ain Sokhna", "Ataka", "Arbaeen", "Faisal", "Ganayen"],
+
+  Damietta: [
+    "Damietta",
+    "New Damietta",
+    "Ras El Bar",
+    "Faraskour",
+    "Kafr Saad",
+    "Zarqa",
+    "Kafr El Batikh",
+  ],
+
+  "Kafr El Sheikh": [
+    "Kafr El Sheikh",
+    "Desouk",
+    "Metoubes",
+    "Fouh",
+    "Baltim",
+    "Beyala",
+    "Sidi Salem",
+    "Qallin",
+    "El Hamoul",
+  ],
+
+  Fayoum: [
+    "Fayoum",
+    "New Fayoum",
+    "Sinnuris",
+    "Tamiya",
+    "Ibshaway",
+    "Itsa",
+    "Youssef El Seddik",
+  ],
+
+  Minya: [
+    "Minya",
+    "New Minya",
+    "Mallawi",
+    "Samalut",
+    "Beni Mazar",
+    "Maghagha",
+    "Abu Qurqas",
+    "Deir Mawas",
+    "Matai",
+  ],
+
+  Assiut: [
+    "Assiut",
+    "New Assiut",
+    "Dairut",
+    "Manfalut",
+    "Qusiya",
+    "Abnub",
+    "Sahel Selim",
+    "El Ghanayem",
+    "Sodfa",
+    "El Badari",
+  ],
+
+  Sohag: [
+    "Sohag",
+    "New Sohag",
+    "Akhmim",
+    "Girga",
+    "Tahta",
+    "Juhayna",
+    "El Maragha",
+    "El Balyana",
+    "Tama",
+    "Dar El Salam",
+  ],
+
+  Qena: [
+    "Qena",
+    "New Qena",
+    "Nag Hammadi",
+    "Qus",
+    "Dishna",
+    "Farshout",
+    "Naqada",
+    "Abu Tesht",
+  ],
+
+  Luxor: ["Luxor", "New Luxor", "Esna", "Armant", "Qurna", "Tod", "Bayadeya"],
+
+  Aswan: [
+    "Aswan",
+    "New Aswan",
+    "Kom Ombo",
+    "Edfu",
+    "Daraw",
+    "Nasr El Nuba",
+    "Kalabsha",
+  ],
+
+  "Red Sea": [
+    "Hurghada",
+    "New Hurghada",
+    "El Gouna",
+    "Sahl Hasheesh",
+    "Makadi Bay",
+    "Soma Bay",
+    "Safaga",
+    "El Quseir",
+    "Marsa Alam",
+    "Ras Gharib",
+    "Shalateen",
+  ],
+
+  "New Valley": ["Kharga", "New Valley", "Dakhla", "Farafra", "Baris", "Mut"],
+
+  Matrouh: [
+    "Marsa Matrouh",
+    "New Alamein",
+    "El Alamein",
+    "North Coast",
+    "Dabaa",
+    "Siwa",
+    "Salloum",
+    "Sidi Barrani",
+    "Hammam",
+  ],
+
+  "North Sinai": [
+    "Arish",
+    "New Rafah",
+    "Sheikh Zuweid",
+    "Rafah",
+    "Bir El Abd",
+    "Nakhl",
+  ],
+
+  "South Sinai": [
+    "Sharm El Sheikh",
+    "Dahab",
+    "Nuweiba",
+    "Taba",
+    "Saint Catherine",
+    "Ras Sedr",
+    "El Tor",
+    "Abu Zenima",
+    "Abu Rudeis",
+  ],
+};
+
+/* =========================================================
+   CHECKOUT PAGE
+   ========================================================= */
+
 const CheckoutPage = () => {
   const navigate = useNavigate();
 
-  const {
-    cartItems,
-    clearCart,
-    subtotal,
-  } = useCart();
+  const { cartItems, clearCart, subtotal } = useCart();
 
   const [orderCompleted, setOrderCompleted] = useState(false);
 
@@ -29,7 +359,10 @@ const CheckoutPage = () => {
 
   const [deliveryMethod, setDeliveryMethod] = useState("standard");
 
-  // Always start Checkout from the top
+  /* =========================================================
+     ALWAYS START CHECKOUT FROM TOP
+     ========================================================= */
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -38,26 +371,54 @@ const CheckoutPage = () => {
     });
   }, []);
 
-  // If there is no cart AND no completed order, go back to cart
+  /* =========================================================
+     IF CART IS EMPTY → RETURN TO CART
+     ========================================================= */
+
   useEffect(() => {
     if (cartItems.length === 0 && !orderCompleted) {
       navigate("/cart", { replace: true });
     }
   }, [cartItems.length, orderCompleted, navigate]);
 
+  /* =========================================================
+     FORM CHANGE
+     ========================================================= */
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => {
+      /*
+        When governorate changes:
+        reset city because the previous city
+        may not belong to the new governorate.
+      */
+
+      if (name === "governorate") {
+        return {
+          ...prev,
+          governorate: value,
+          city: "",
+        };
+      }
+
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
   };
+
+  /* =========================================================
+     PLACE ORDER
+     ========================================================= */
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
 
-    // Make sure required fields are filled
+    /* Required fields */
+
     if (
       !formData.fullName ||
       !formData.phone ||
@@ -73,21 +434,24 @@ const CheckoutPage = () => {
     }
 
     /*
-      IMPORTANT:
-      Set orderCompleted BEFORE clearing the cart.
-      Otherwise the cart becomes empty and the page
-      immediately shows "Your Cart is Empty".
+      Show completed screen BEFORE clearing cart.
+      Otherwise cart becomes empty and Checkout
+      immediately redirects to Cart.
     */
+
     setOrderCompleted(true);
 
-    // SAME DAY EXPRESS → WhatsApp
+    /* =====================================================
+       SAME DAY EXPRESS → WHATSAPP
+       ===================================================== */
+
     if (deliveryMethod === "express") {
       const orderProducts = cartItems
         .map(
           (item) =>
             `• ${item.name} - ${item.flavor || "N/A"} x${item.quantity} - ${
               item.price * item.quantity
-            } LE`
+            } LE`,
         )
         .join("\n");
 
@@ -97,9 +461,7 @@ const CheckoutPage = () => {
         formData.street,
         `Building ${formData.building}`,
         `Apartment ${formData.apartment}`,
-        formData.addressDetails
-          ? `Details: ${formData.addressDetails}`
-          : "",
+        formData.addressDetails ? `Details: ${formData.addressDetails}` : "",
       ]
         .filter(Boolean)
         .join(", ");
@@ -139,43 +501,46 @@ To be confirmed
 Thank you ❤️
       `.trim();
 
+      /*
+        Replace this with your real WhatsApp business number.
+        Example:
+        201070022988
+      */
+
       const whatsappNumber = "201000000000";
 
       const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-        whatsappMessage
+        whatsappMessage,
       )}`;
 
-      // Clear cart after preparing order
       clearCart();
 
-      // Open WhatsApp
       window.open(whatsappURL, "_blank");
 
       return;
     }
 
-    // STANDARD DELIVERY
-    // No WhatsApp redirect
+    /* =====================================================
+       STANDARD DELIVERY
+       NO WHATSAPP REDIRECT
+       ===================================================== */
+
     clearCart();
   };
 
-  // --------------------------------------------------
-  // ORDER COMPLETED SCREEN
-  // --------------------------------------------------
+  /* =========================================================
+     ORDER COMPLETED SCREEN
+     ========================================================= */
 
   if (orderCompleted) {
     return (
       <main className="checkout-page checkout-page--success">
         <section className="order-success">
-          <div className="order-success__icon">
-            ✓
-          </div>
+          <div className="order-success__icon">✓</div>
 
           <h1>Order Completed!</h1>
 
-          <p className="order-success__message">
-            Thank you for your order ❤️
-          </p>
+          <p className="order-success__message">Thank you for your order ❤️</p>
 
           {deliveryMethod === "standard" ? (
             <p className="order-success__details">
@@ -202,30 +567,29 @@ Thank you ❤️
     );
   }
 
-  // --------------------------------------------------
-  // CHECKOUT PAGE
-  // --------------------------------------------------
+  /* =========================================================
+     CHECKOUT PAGE
+     ========================================================= */
 
   return (
     <main className="checkout-page">
       <div className="checkout-container">
+        {/* ===================================================
+            HEADER
+        =================================================== */}
 
         <div className="checkout-header">
           <span className="checkout-header__line"></span>
 
-          <h1>CHECKOUTtt</h1>
+          <h1>CHECKOUT</h1>
 
           <span className="checkout-header__line"></span>
         </div>
 
-        <form
-          className="checkout-layout"
-          onSubmit={handlePlaceOrder}
-        >
-
-          {/* =========================
-              CUSTOMER INFORMATION
-          ========================== */}
+        <form className="checkout-layout" onSubmit={handlePlaceOrder}>
+          {/* =================================================
+              01 — CUSTOMER INFORMATION
+          ================================================= */}
 
           <section className="checkout-card">
             <div className="checkout-card__heading">
@@ -238,6 +602,7 @@ Thank you ❤️
             </div>
 
             <div className="checkout-grid">
+              {/* Full Name */}
 
               <div className="checkout-field checkout-field--full">
                 <label>
@@ -254,6 +619,8 @@ Thank you ❤️
                 />
               </div>
 
+              {/* Phone */}
+
               <div className="checkout-field">
                 <label>
                   Phone Number <span>*</span>
@@ -269,6 +636,8 @@ Thank you ❤️
                 />
               </div>
 
+              {/* WhatsApp */}
+
               <div className="checkout-field">
                 <label>
                   WhatsApp Number <span>*</span>
@@ -283,13 +652,12 @@ Thank you ❤️
                   required
                 />
               </div>
-
             </div>
           </section>
 
-          {/* =========================
-              DELIVERY ADDRESS
-          ========================== */}
+          {/* =================================================
+              02 — DELIVERY ADDRESS
+          ================================================= */}
 
           <section className="checkout-card">
             <div className="checkout-card__heading">
@@ -302,6 +670,9 @@ Thank you ❤️
             </div>
 
             <div className="checkout-grid">
+              {/* =============================================
+                  GOVERNORATE
+              ============================================= */}
 
               <div className="checkout-field">
                 <label>
@@ -315,39 +686,52 @@ Thank you ❤️
                   required
                 >
                   <option value="">Select Governorate</option>
-                  <option value="Cairo">Cairo</option>
-                  <option value="Giza">Giza</option>
-                  <option value="Alexandria">Alexandria</option>
-                  <option value="Qalyubia">Qalyubia</option>
-                  <option value="Dakahlia">Dakahlia</option>
-                  <option value="Sharqia">Sharqia</option>
-                  <option value="Gharbia">Gharbia</option>
-                  <option value="Beheira">Beheira</option>
-                  <option value="Ismailia">Ismailia</option>
-                  <option value="Port Said">Port Said</option>
-                  <option value="Suez">Suez</option>
+
+                  {Object.keys(egyptLocations).map((governorate) => (
+                    <option key={governorate} value={governorate}>
+                      {governorate}
+                    </option>
+                  ))}
                 </select>
               </div>
 
+              {/* =============================================
+                  CITY / AREA
+              ============================================= */}
+
               <div className="checkout-field">
                 <label>
-                  City <span>*</span>
+                  City / Area <span>*</span>
                 </label>
 
-                <input
-                  type="text"
+                <select
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  placeholder="Enter city"
+                  disabled={!formData.governorate}
                   required
-                />
+                >
+                  <option value="">
+                    {formData.governorate
+                      ? "Select City / Area"
+                      : "Select Governorate First"}
+                  </option>
+
+                  {formData.governorate &&
+                    egyptLocations[formData.governorate]?.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
+                </select>
               </div>
 
+              {/* =============================================
+                  STREET
+              ============================================= */}
+
               <div className="checkout-field checkout-field--full">
-                <label>
-                  Street <span>*</span>
-                </label>
+                <label>Street</label>
 
                 <input
                   type="text"
@@ -355,14 +739,15 @@ Thank you ❤️
                   value={formData.street}
                   onChange={handleChange}
                   placeholder="Street name"
-                  required
                 />
               </div>
 
+              {/* =============================================
+                  BUILDING
+              ============================================= */}
+
               <div className="checkout-field">
-                <label>
-                  Building Number <span>*</span>
-                </label>
+                <label>Building Number</label>
 
                 <input
                   type="text"
@@ -370,14 +755,15 @@ Thank you ❤️
                   value={formData.building}
                   onChange={handleChange}
                   placeholder="Building number"
-                  required
                 />
               </div>
 
+              {/* =============================================
+                  APARTMENT
+              ============================================= */}
+
               <div className="checkout-field">
-                <label>
-                  Apartment Number <span>*</span>
-                </label>
+                <label>Apartment Number</label>
 
                 <input
                   type="text"
@@ -385,9 +771,12 @@ Thank you ❤️
                   value={formData.apartment}
                   onChange={handleChange}
                   placeholder="Apartment number"
-                  required
                 />
               </div>
+
+              {/* =============================================
+                  ADDRESS DETAILS
+              ============================================= */}
 
               <div className="checkout-field checkout-field--full">
                 <label>Address Details</label>
@@ -400,16 +789,14 @@ Thank you ❤️
                   rows="4"
                 />
               </div>
-
             </div>
           </section>
 
-          {/* =========================
-              DELIVERY METHOD
-          ========================== */}
+          {/* =================================================
+              03 — DELIVERY METHOD
+          ================================================= */}
 
           <section className="checkout-card">
-
             <div className="checkout-card__heading">
               <span>03</span>
 
@@ -420,12 +807,11 @@ Thank you ❤️
             </div>
 
             <div className="delivery-options">
+              {/* STANDARD DELIVERY */}
 
               <label
                 className={`delivery-option ${
-                  deliveryMethod === "standard"
-                    ? "delivery-option--active"
-                    : ""
+                  deliveryMethod === "standard" ? "delivery-option--active" : ""
                 }`}
               >
                 <input
@@ -433,9 +819,7 @@ Thank you ❤️
                   name="delivery"
                   value="standard"
                   checked={deliveryMethod === "standard"}
-                  onChange={(e) =>
-                    setDeliveryMethod(e.target.value)
-                  }
+                  onChange={(e) => setDeliveryMethod(e.target.value)}
                 />
 
                 <div className="delivery-option__radio"></div>
@@ -447,17 +831,15 @@ Thank you ❤️
                     <strong>100 LE</strong>
                   </div>
 
-                  <p>
-                    Delivery within 2–3 business days.
-                  </p>
+                  <p>Delivery within 2–3 business days.</p>
                 </div>
               </label>
 
+              {/* SAME DAY EXPRESS */}
+
               <label
                 className={`delivery-option ${
-                  deliveryMethod === "express"
-                    ? "delivery-option--active"
-                    : ""
+                  deliveryMethod === "express" ? "delivery-option--active" : ""
                 }`}
               >
                 <input
@@ -465,9 +847,7 @@ Thank you ❤️
                   name="delivery"
                   value="express"
                   checked={deliveryMethod === "express"}
-                  onChange={(e) =>
-                    setDeliveryMethod(e.target.value)
-                  }
+                  onChange={(e) => setDeliveryMethod(e.target.value)}
                 />
 
                 <div className="delivery-option__radio"></div>
@@ -480,76 +860,55 @@ Thank you ❤️
                   </div>
 
                   <p>
-                    Same-day delivery. Shipping cost will
-                    be confirmed with you through WhatsApp.
+                    Same-day delivery. Shipping cost will be confirmed with you
+                    through WhatsApp.
                   </p>
                 </div>
               </label>
-
             </div>
-
           </section>
 
-          {/* =========================
+          {/* =================================================
               ORDER SUMMARY
-          ========================== */}
+          ================================================= */}
 
           <aside className="checkout-summary">
-
             <div className="checkout-summary__header">
               <h2>ORDER SUMMARY</h2>
 
               <span>
-                {cartItems.length}{" "}
-                {cartItems.length === 1 ? "Item" : "Items"}
+                {cartItems.length} {cartItems.length === 1 ? "Item" : "Items"}
               </span>
             </div>
 
             <div className="checkout-summary__items">
-
               {cartItems.map((item) => (
-                <div
-                  className="checkout-summary__item"
-                  key={item.id}
-                >
-
+                <div className="checkout-summary__item" key={item.id}>
                   <div className="checkout-summary__image">
-                    <img
-                      src={item.image_url || item.image}
-                      alt={item.name}
-                    />
+                    <img src={item.image_url || item.image} alt={item.name} />
                   </div>
 
                   <div className="checkout-summary__info">
-
                     <h3>{item.name}</h3>
 
                     {item.flavor && (
                       <p>
-                        Flavor:{" "}
-                        <span>{item.flavor}</span>
+                        Flavor: <span>{item.flavor}</span>
                       </p>
                     )}
 
-                    <p>
-                      Qty: {item.quantity}
-                    </p>
-
+                    <p>Qty: {item.quantity}</p>
                   </div>
 
-                  <strong>
-                    {item.price * item.quantity} LE
-                  </strong>
-
+                  <strong>{item.price * item.quantity} LE</strong>
                 </div>
               ))}
-
             </div>
 
             <div className="checkout-summary__totals">
-
               <div>
                 <span>Subtotal</span>
+
                 <strong>{subtotal} LE</strong>
               </div>
 
@@ -557,9 +916,7 @@ Thank you ❤️
                 <span>Shipping</span>
 
                 <strong>
-                  {deliveryMethod === "standard"
-                    ? "100 LE"
-                    : "By Agreement"}
+                  {deliveryMethod === "standard" ? "100 LE" : "By Agreement"}
                 </strong>
               </div>
 
@@ -567,39 +924,23 @@ Thank you ❤️
                 <span>Total</span>
 
                 <strong>
-                  {deliveryMethod === "standard"
-                    ? subtotal + 100
-                    : subtotal}{" "}
-                  LE
+                  {deliveryMethod === "standard" ? subtotal + 100 : subtotal} LE
                 </strong>
               </div>
-
             </div>
 
-            <button
-              type="submit"
-              className="place-order-button"
-            >
+            <button type="submit" className="place-order-button">
               PLACE ORDER
             </button>
 
             <p className="checkout-summary__note">
-              By placing your order, you agree to our
-              delivery terms.
+              By placing your order, you agree to our delivery terms.
             </p>
-
           </aside>
-
         </form>
-
       </div>
     </main>
   );
 };
 
 export default CheckoutPage;
-
-
-
-
-
