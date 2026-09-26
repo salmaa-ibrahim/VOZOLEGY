@@ -49,7 +49,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCart } from "../../hooks/useCart";
+// import { useCart } from "../../hooks/useCart";
+import { useCart } from "../../contexts/CartContext";
 import { siteConfig } from "../../config/siteConfig";
 import "./CategoryDetailsPage.css";
 
