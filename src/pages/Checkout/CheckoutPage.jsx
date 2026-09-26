@@ -424,10 +424,10 @@ const CheckoutPage = () => {
       !formData.phone ||
       !formData.whatsapp ||
       !formData.governorate ||
-      !formData.city ||
-      !formData.street ||
-      !formData.building ||
-      !formData.apartment
+      !formData.city 
+      // !formData.street ||
+      // !formData.building ||
+      // !formData.apartment
     ) {
       alert("Please fill in all required fields.");
       return;
