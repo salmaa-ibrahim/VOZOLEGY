@@ -1,66 +1,116 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getFeaturedCategories } from "../../services/categoriesService";
 import { motion } from "framer-motion";
+
+import { getFeaturedCategories } from "../../services/categoriesService";
 
 import "./CategoryShowcase.css";
 
 const CategoryShowcase = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchCats = async () => {
+    const fetchCategories = async () => {
       try {
+        setLoading(true);
+        setError("");
+
         const data = await getFeaturedCategories();
+
+        console.log("CategoryShowcase data:", data);
+
         setCategories(data || []);
-      } catch (error) {
-        console.error("Failed to load categories:", error);
+      } catch (err) {
+        console.error("Failed to load categories:", err);
+        setError("Failed to load categories.");
         setCategories([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCats();
+    fetchCategories();
   }, []);
 
   if (loading) {
-    return <div className="loading">Loading categories...</div>;
+    return (
+      <section className="category-showcase">
+        <div className="loading">Loading categories...</div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="category-showcase">
+        <div className="loading">{error}</div>
+      </section>
+    );
+  }
+
+  if (categories.length === 0) {
+    return (
+      <section className="category-showcase">
+        <motion.h2
+          className="all-products-title"
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+        >
+          Discover Our Category
+        </motion.h2>
+
+        <p className="loading">No categories available.</p>
+      </section>
+    );
   }
 
   return (
     <section className="category-showcase">
-      {/* <h2>Discover Our Products</h2> */}
       <motion.h2
-                className="all-products-title"
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.6 }}
-              >
-                Discover Our Category
-              </motion.h2>
+        className="all-products-title"
+        initial={{ opacity: 0, y: 25 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+      >
+        Discover Our Category
+      </motion.h2>
+
       <div className="category-grid">
-        {categories.map((cat, index) => (
-          <Link to={`/categories/${cat.slug}`} key={cat.id} className="category-card">
+        {categories.map((cat) => (
+          <Link
+            to={`/categories/${cat.slug}`}
+            key={cat.id}
+            className="category-card"
+          >
             <div className="category-card__image-wrap">
               <img
                 src={cat.image_url}
-                alt={cat.name}
+                alt={cat.alt_text || cat.name}
                 className="category-card__img"
                 loading="lazy"
               />
             </div>
 
             <div className="category-card__info">
-              <p className="category-card__type">{cat.puffs}</p>
+              {cat.promo_label && (
+                <p className="category-card__type">
+                  {cat.promo_label}
+                </p>
+              )}
 
-              <h3 className="category-card__title">{cat.name}</h3>
+              <h3 className="category-card__title">
+                {cat.name}
+              </h3>
 
-              <span className="category-card__link">
+              {/* <span className="category-card__link">
                 <span>›</span>
-              </span>
+              </span> */}
+              <span className="category-card__click">Explore →</span>
             </div>
           </Link>
         ))}

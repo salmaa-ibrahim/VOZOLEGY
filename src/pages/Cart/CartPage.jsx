@@ -10,7 +10,7 @@ const CartPage = () => {
     return (
       <div className="cart-page empty">
         <h2>Your Cart is Empty</h2>
-        <Link to="/products" className="btn-primary">Continue Shopping</Link>
+        <Link to="/" className="btn-primary">Continue Shopping</Link>
       </div>
     );
   }

@@ -1,53 +1,44 @@
-import { supabase } from '../lib/supabase';
+import { supabase } from "../lib/supabase";
 
-// NOTE: In a real environment, this fetches from Supabase.
-// For the current build, we return mock data to match the UI.
+/**
+ * Get categories that are active and featured on homepage
+ * Used by: CategoryShowcase
+ */
 export const getFeaturedCategories = async () => {
-  // return await supabase.from('categories').select('*').eq('active', true).eq('featured_on_home', true).order('display_order');
-  
-  // MOCK DATA FOR DEVELOPMENT
-  return [
-    {
-      id: 1,
-      name: 'VOZOL GEAR',
-      puffs: '50000 puffs',
-      slug: 'vozol-gear-50k',
-      image_url: '/images/categories/gear-50kk.webp',
-      featured_on_home: true,
-      active: true,
-      display_order: 1
-    },
-    {
-      id: 2,
-      name: 'VOZOL STAR',
-      puffs: '40000 puffs',
-      slug: 'vozol-star-40k',
-      image_url: '/images/categories/star-40kk.webp',
-      featured_on_home: true,
-      active: true,
-      display_order: 2
-    },
-    {
-      id: 3,
-      name: 'VOZOL HOOKAH',
-      puffs: '40000 puffs',
-      slug: 'vozol-hookah-40k',
-      image_url: '/images/categories/hookah-40k.webp',
-      featured_on_home: true,
-      active: true,
-      display_order: 3
-    },
-    {
-      id: 4,
-      name: 'VOZOL RAVE',
-      puffs: '40000 puffs',
-      slug: 'vozol-rave-40k',
-      image_url: '/images/categories/vozol-rave-40k-category-img.webp',
-      featured_on_home: true,
-      active: true,
-      display_order: 4
-    }
-  ];
+  const { data, error } = await supabase
+    .from("categories")
+    .select("*")
+    .eq("active", true)
+    .eq("featured_on_home", true)
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching featured categories:", error);
+    throw error;
+  }
+
+  console.log("Featured Categories from Supabase:", data);
+
+  return data || [];
 };
 
+/**
+ * Get all active categories
+ * Used by: MobileMenu, Footer, Categories page, etc.
+ */
+export const getAllCategories = async () => {
+  const { data, error } = await supabase
+    .from("categories")
+    .select("*")
+    .eq("active", true)
+    .order("display_order", { ascending: true });
 
+  if (error) {
+    console.error("Error fetching all categories:", error);
+    throw error;
+  }
+
+  console.log("All Categories from Supabase:", data);
+
+  return data || [];
+};

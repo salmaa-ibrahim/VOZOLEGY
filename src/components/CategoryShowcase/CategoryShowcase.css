@@ -241,6 +241,25 @@
     box-shadow 0.22s ease;
 }
 
+.category-card__click{
+
+
+ padding-top: 15px;
+
+font-size: 20px;
+font-weight: 700;
+
+
+  color: #80f848;
+
+
+
+  transition:
+    transform 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease; 
+}
+
 /* =========================================================
    ARROW
    ========================================================= */
@@ -397,14 +416,18 @@
     height: 250px;
   }
 
+  
+  .category-card__info{
+    background-color: aqua;
+    height: 90px;
+  }
   .category-card__type {
-    margin-bottom: 12px;
 
     font-size: 16px;
   }
 
   .category-card__title {
-    font-size: 23px;
+    font-size: 2.5vw;
 
     letter-spacing: -0.4px;
   }
@@ -421,6 +444,11 @@
   .category-card__link span {
     font-size: 42px;
   }
+
+  .category-card__click{
+    font-size: 15px;
+  }
+
 }
 
 /* =========================================================
@@ -465,6 +493,10 @@
 
     width: 88%;
     height: 215px;
+  }
+
+   .category-card__info{
+    height: 70px;
   }
 
   .category-card__type {
@@ -512,22 +544,32 @@
   }
 
   .category-card {
-    min-height: 230px;
+    min-height: 180px;
   }
 
   .category-card__image-wrap {
-    top: -45px;
+    top: -50px;
 
-    width: 70%;
+    width: 66%;
     height: 150px;
   }
 
+   .category-card__info{
+
+    height: 55px;
+  }
   .category-card__type {
-    font-size: 13px;
+    font-size: 10px;
+    font-weight: 700;
   }
 
   .category-card__title {
-    font-size: 19px;
+    font-size: 15px;
+  }
+
+  .category-card__click{
+    font-size: 12px;
+    padding-top: 8px;
   }
 
   .category-card__link {

@@ -105,6 +105,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { siteConfig } from "../../config/siteConfig";
 import { searchProducts } from "../../services/searchService";
+import { getAllCategories } from "../../services/categoriesService";
 
 import "./MobileMenu.css";
 
@@ -119,6 +120,13 @@ const MobileMenu = ({ isOpen, onClose }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchError, setSearchError] = useState(false);
+
+  // ============================================================
+  // Categories State
+  // ============================================================
+
+  const [categories, setCategories] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
 
   // ============================================================
   // Lock body scroll when menu is open
@@ -155,6 +163,35 @@ const MobileMenu = ({ isOpen, onClose }) => {
       window.removeEventListener("keydown", handleEsc);
     };
   }, [isOpen, onClose]);
+
+  // ============================================================
+  // Fetch Categories from Supabase
+  // ============================================================
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setCategoriesLoading(true);
+
+        const data = await getAllCategories();
+
+        setCategories(data || []);
+
+        console.log("Mobile Menu Categories:", data);
+      } catch (error) {
+        console.error(
+          "Failed to load mobile menu categories:",
+          error
+        );
+
+        setCategories([]);
+      } finally {
+        setCategoriesLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   // ============================================================
   // Live Product Search
@@ -224,34 +261,6 @@ const MobileMenu = ({ isOpen, onClose }) => {
   const socialLinks = siteConfig.getSocialLinks();
 
   // ============================================================
-  // Categories
-  // ============================================================
-  // سيتم ربطها بـ Supabase لاحقًا
-
-  const categories = [
-    {
-      name: "VOZOL GEAR 50K",
-      slug: "vozol-gear-50k",
-    },
-    {
-      name: "VOZOL STAR 40K",
-      slug: "vozol-star-40k",
-    },
-    {
-      name: "VOZOL HOOKAH 40K",
-      slug: "vozol-hookah-40k",
-    },
-    {
-      name: "AIVONO ZERO NICOTINE",
-      slug: "aivono-zero",
-    },
-    {
-      name: "VTOUCH SMART VAPE",
-      slug: "vtouch-smart",
-    },
-  ];
-
-  // ============================================================
   // Render
   // ============================================================
 
@@ -312,16 +321,22 @@ const MobileMenu = ({ isOpen, onClose }) => {
             {/* ================================================== */}
 
             <div className="drawer__body">
+
               {/* ================================================== */}
               {/* Search */}
               {/* ================================================== */}
 
               <div className="menu-search-wrapper">
-                <form className="menu-search" onSubmit={handleSearch}>
+                <form
+                  className="menu-search"
+                  onSubmit={handleSearch}
+                >
                   <input
                     type="search"
                     value={searchQuery}
-                    onChange={(event) => setSearchQuery(event.target.value)}
+                    onChange={(event) =>
+                      setSearchQuery(event.target.value)
+                    }
                     placeholder="Search products..."
                     aria-label="Search products"
                     autoComplete="off"
@@ -334,12 +349,17 @@ const MobileMenu = ({ isOpen, onClose }) => {
 
                 {searchQuery.trim() && (
                   <div className="search-suggestions">
+
                     {/* Loading */}
+
                     {isSearching && (
-                      <div className="search-status">Searching...</div>
+                      <div className="search-status">
+                        Searching...
+                      </div>
                     )}
 
                     {/* Results */}
+
                     {!isSearching &&
                       !searchError &&
                       searchResults.length > 0 && (
@@ -374,13 +394,17 @@ const MobileMenu = ({ isOpen, onClose }) => {
                       )}
 
                     {/* No Results */}
+
                     {!isSearching &&
                       !searchError &&
                       searchResults.length === 0 && (
-                        <div className="search-status">No products found</div>
+                        <div className="search-status">
+                          No products found
+                        </div>
                       )}
 
                     {/* Error */}
+
                     {searchError && (
                       <div className="search-status search-status--error">
                         Something went wrong. Please try again.
@@ -395,6 +419,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
               {/* ================================================== */}
 
               <nav className="menu-nav">
+
                 {/* Home */}
 
                 <Link
@@ -405,24 +430,38 @@ const MobileMenu = ({ isOpen, onClose }) => {
                   HOME
                 </Link>
 
+                {/* ================================================== */}
                 {/* Categories */}
+                {/* ================================================== */}
 
                 <div className="menu-categories">
-                  {categories.map((category) => (
-                    <Link
-                      key={category.slug}
-                      to={`/categories/${category.slug}`}
-                      onClick={onClose}
-                      className="menu-link"
-                    >
-                      {category.name}
-                    </Link>
-                  ))}
+                  {categoriesLoading ? (
+                    <div className="menu-category-loading">
+                      Loading categories...
+                    </div>
+                  ) : categories.length > 0 ? (
+                    categories.map((category) => (
+                      <Link
+                        key={category.id}
+                        to={`/categories/${category.slug}`}
+                        onClick={onClose}
+                        className="menu-link"
+                      >
+                        {category.name}
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="menu-category-empty">
+                      No categories available
+                    </div>
+                  )}
                 </div>
 
                 <div className="menu-divider" />
 
+                {/* ================================================== */}
                 {/* Main Navigation */}
+                {/* ================================================== */}
 
                 {siteConfig.navigation.main
                   .filter((item) => item.path !== "/")
@@ -432,7 +471,9 @@ const MobileMenu = ({ isOpen, onClose }) => {
                       to={item.path}
                       onClick={onClose}
                       className={`menu-link ${
-                        item.path === "/how-to-choose" ? "menu-link--bold" : ""
+                        item.path === "/how-to-choose"
+                          ? "menu-link--bold"
+                          : ""
                       }`}
                     >
                       {item.label}
@@ -441,18 +482,28 @@ const MobileMenu = ({ isOpen, onClose }) => {
 
                 <div className="menu-divider" />
 
+                {/* ================================================== */}
                 {/* Social Heading */}
+                {/* ================================================== */}
 
-                <p className="menu-heading">Come closer to us</p>
+                <p className="menu-heading">
+                  Come closer to us
+                </p>
 
+                {/* ================================================== */}
                 {/* Social Links */}
+                {/* ================================================== */}
 
                 <div className="menu-socials">
                   {socialLinks.map((social) => (
                     <a
                       key={social.id}
                       href={social.url}
-                      target={social.id === "phone" ? undefined : "_blank"}
+                      target={
+                        social.id === "phone"
+                          ? undefined
+                          : "_blank"
+                      }
                       rel={
                         social.id === "phone"
                           ? undefined
@@ -465,6 +516,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                         alt={social.title}
                         className="social-icon"
                       />
+
                       {social.title}
                     </a>
                   ))}
@@ -477,7 +529,9 @@ const MobileMenu = ({ isOpen, onClose }) => {
             {/* ================================================== */}
 
             <div className="drawer__footer">
-              <p className="copyright">{siteConfig.messages.copyright}</p>
+              <p className="copyright">
+                {siteConfig.messages.copyright}
+              </p>
             </div>
           </motion.div>
         </>

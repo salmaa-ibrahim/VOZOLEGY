@@ -1,36 +1,63 @@
-import { supabase } from '../lib/supabase';
+import { supabase } from "../lib/supabase";
 
+/**
+ * Get all available products.
+ */
+export const getProducts = async () => {
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("available", true)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+
+  return data ?? [];
+};
+
+/**
+ * Get available products belonging to a specific category.
+ */
 export const getProductsByCategory = async (categoryId) => {
   const { data, error } = await supabase
-    .from('products')
-    .select('*')
-    .eq('category_id', categoryId)
-    .eq('available', true)
-    .order('created_at', { ascending: false });
-  if (error) throw error;
-  return data;
+    .from("products")
+    .select("*")
+    .eq("category_id", categoryId)
+    .eq("available", true)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching products by category:", error);
+    throw error;
+  }
+
+  return data ?? [];
 };
 
-export const getProductBySlug = async (slug) => {
+/**
+ * Get one product by its ID.
+ */
+export const getProductById = async (productId) => {
   const { data, error } = await supabase
-    .from('products')
-    .select('*, categories(name, slug)')
-    .eq('slug', slug)
+    .from("products")
+    .select(`
+      *,
+      categories (
+        id,
+        name,
+        slug
+      )
+    `)
+    .eq("id", productId)
     .single();
-  if (error) throw error;
+
+  if (error) {
+    console.error("Error fetching product:", error);
+    throw error;
+  }
+
   return data;
 };
-
-// Mock data for initial dev without Supabase
-export const getMockProduct = (slug) => ({
-  id: 1,
-  name: 'VOZOL GEAR 50K PUFFS',
-  slug: slug,
-  flavor: 'Watermelon Ice',
-  price: 999,
-  compare_at_price: 1200,
-  image_url: '/images/products/vozol-gear-watermelon.webp',
-  description: 'Premium VOZOL GEAR 50K flavor with a refreshing watermelon ice taste.',
-  available: true,
-  category: { name: 'VOZOL GEAR', slug: 'vozol-gear' }
-});
