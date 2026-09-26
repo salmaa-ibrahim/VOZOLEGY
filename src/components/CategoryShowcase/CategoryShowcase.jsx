@@ -39,7 +39,7 @@ const CategoryShowcase = () => {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6 }}
               >
-                Discover Our 
+                Discover Our Category
               </motion.h2>
       <div className="category-grid">
         {categories.map((cat, index) => (
