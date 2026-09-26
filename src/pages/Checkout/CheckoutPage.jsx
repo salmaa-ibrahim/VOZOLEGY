@@ -213,7 +213,7 @@ Thank you ❤️
         <div className="checkout-header">
           <span className="checkout-header__line"></span>
 
-          <h1>CHECKOUT</h1>
+          <h1>CHECKOUTtt</h1>
 
           <span className="checkout-header__line"></span>
         </div>
