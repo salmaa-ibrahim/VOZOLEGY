@@ -194,9 +194,9 @@
 @media (max-width: 480px) {
 
   .how-to-choose-section {
-    width: calc(100% - 16px);
+    width: 100%;
 
-    margin: 20px auto;
+    margin: 20px 0;
 
     padding: 8px 8px 0;
 

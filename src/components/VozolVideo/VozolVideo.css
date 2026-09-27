@@ -2,8 +2,10 @@
 margin: 10px;
 border-radius: 30px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-top: 20px;
 }
 
 .video video{
