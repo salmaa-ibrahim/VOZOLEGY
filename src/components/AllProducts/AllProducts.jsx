@@ -1,7 +1,13 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
 
 import { useCart } from "../../contexts/CartContext";
 import { supabase } from "../../lib/supabase";
@@ -45,7 +51,6 @@ const AllProductsSection = () => {
 
         // ======================================================
         // GET PRODUCTS
-        // Also get the related category
         // ======================================================
 
         const {
@@ -63,11 +68,7 @@ const AllProductsSection = () => {
           `);
 
         if (productsError) {
-          console.error(
-            "PRODUCTS ERROR:",
-            productsError
-          );
-
+          console.error("PRODUCTS ERROR:", productsError);
           throw productsError;
         }
 
@@ -137,9 +138,6 @@ const AllProductsSection = () => {
 
   // ============================================================
   // AVAILABLE CATEGORIES FOR CURRENT MODE
-  //
-  // Only categories that actually have products
-  // in the selected MTL / DL mode.
   // ============================================================
 
   const availableCategories = useMemo(() => {
@@ -170,7 +168,6 @@ const AllProductsSection = () => {
 
   const filteredProducts = useMemo(() => {
     return modeProducts.filter((product) => {
-      // ALL categories
       if (activeCategory === "all") {
         return true;
       }
@@ -220,9 +217,6 @@ const AllProductsSection = () => {
 
   // ============================================================
   // PRODUCT CARD CLICK
-  //
-  // Clicking the product card opens the CATEGORY PAGE
-  // of that product.
   // ============================================================
 
   const handleProductClick = (product) => {
@@ -241,6 +235,24 @@ const AllProductsSection = () => {
     navigate(
       `/categories/${categorySlug}`
     );
+  };
+
+  // ============================================================
+  // KEYBOARD ACCESS FOR CARD
+  // ============================================================
+
+  const handleProductKeyDown = (
+    event,
+    product
+  ) => {
+    if (
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
+      event.preventDefault();
+
+      handleProductClick(product);
+    }
   };
 
   // ============================================================
@@ -327,7 +339,9 @@ const AllProductsSection = () => {
                   key={mode}
                   type="button"
                   className={`mode-button ${
-                    isActive ? "active" : ""
+                    isActive
+                      ? "active"
+                      : ""
                   }`}
                   onClick={() =>
                     setActiveMode(mode)
@@ -352,9 +366,6 @@ const AllProductsSection = () => {
             role="tablist"
             aria-label={`${activeMode} categories`}
           >
-
-            {/* ALL */}
-
             <button
               type="button"
               className={`category-button ${
@@ -373,8 +384,6 @@ const AllProductsSection = () => {
               ALL
             </button>
 
-            {/* DATABASE CATEGORIES */}
-
             {availableCategories.map(
               (category) => {
                 const isActive =
@@ -386,7 +395,9 @@ const AllProductsSection = () => {
                     key={category.id}
                     type="button"
                     className={`category-button ${
-                      isActive ? "active" : ""
+                      isActive
+                        ? "active"
+                        : ""
                     }`}
                     onClick={() =>
                       setActiveCategory(
@@ -401,163 +412,249 @@ const AllProductsSection = () => {
                 );
               }
             )}
-
           </div>
         </div>
 
         {/* =====================================================
-            PRODUCTS GRID
+            PRODUCTS SLIDER
         ====================================================== */}
 
-        <div className="all-products-grid">
-          <AnimatePresence mode="popLayout">
+        {filteredProducts.length > 0 && (
+          <div className="products-slider-wrapper">
 
-            {filteredProducts.map(
-              (product) => {
-                const isAdded =
-                  Boolean(
-                    addedProducts[
-                      product.id
-                    ]
-                  );
+           
 
-                return (
-                  <motion.article
-                    key={product.id}
-                    className="all-product-card"
-                    layout
-                    initial={{
-                      opacity: 0,
-                      y: 25,
-                    }}
-                    animate={{
-                      opacity: 1,
-                      y: 0,
-                    }}
-                    exit={{
-                      opacity: 0,
-                      scale: 0.96,
-                    }}
-                    transition={{
-                      duration: 0.35,
-                    }}
-                    onClick={() =>
-                      handleProductClick(
-                        product
-                      )
-                    }
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(event) => {
-                      if (
-                        event.key ===
-                          "Enter" ||
-                        event.key === " "
-                      ) {
-                        event.preventDefault();
+            {/* SWIPER */}
 
-                        handleProductClick(
-                          product
-                        );
-                      }
-                    }}
-                  >
+            <Swiper
+              modules={[
+                Autoplay,
+                Navigation,
+              ]}
+              className="all-products-swiper"
 
-                    {/* =================================================
-                        PRODUCT IMAGE
-                    ================================================== */}
+              slidesPerView={1.35}
+              spaceBetween={12}
 
-                    <div className="all-product-image-wrapper">
+              loop={
+                filteredProducts.length > 1
+              }
 
-                      <img
-                        src={
-                          product.image_url ||
-                          product.image
+              speed={800}
+
+              grabCursor={true}
+              allowTouchMove={true}
+
+              watchOverflow={false}
+
+              navigation={{
+                prevEl:
+                  ".products-slider-arrow--left",
+                nextEl:
+                  ".products-slider-arrow--right",
+              }}
+
+              autoplay={{
+                delay: 2600,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+
+              breakpoints={{
+                381: {
+                  slidesPerView: 2,
+                  spaceBetween: 12,
+                },
+
+                601: {
+                  slidesPerView: 3,
+                  spaceBetween: 15,
+                },
+
+                901: {
+                  slidesPerView: 4,
+                  spaceBetween: 18,
+                },
+
+                1201: {
+                  slidesPerView: 5,
+                  spaceBetween: 20,
+                },
+              }}
+            >
+              {filteredProducts.map(
+                (product) => {
+                  const isAdded =
+                    Boolean(
+                      addedProducts[
+                        product.id
+                      ]
+                    );
+
+                  return (
+                    <SwiperSlide
+                      key={product.id}
+                      className="all-product-slide"
+                    >
+                      <motion.article
+                        className="all-product-card"
+
+                        initial={{
+                          opacity: 0,
+                          y: 25,
+                        }}
+
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                        }}
+
+                        transition={{
+                          duration: 0.35,
+                        }}
+
+                        onClick={() =>
+                          handleProductClick(
+                            product
+                          )
                         }
-                        alt={`${product.name}${
-                          product.flavor
-                            ? ` - ${product.flavor}`
-                            : ""
-                        }`}
-                        className="all-product-image"
-                        loading="lazy"
-                      />
 
-                      {!product.available && (
-                        <div className="product-unavailable-overlay">
-                          <span>
-                            OUT OF STOCK
-                          </span>
-                        </div>
-                      )}
+                        role="button"
+                        tabIndex={0}
 
-                    </div>
-
-                    {/* =================================================
-                        PRODUCT INFO
-                    ================================================== */}
-
-                    <div className="all-product-info">
-
-                      <h3 className="all-product-name">
-                        {product.name}
-                      </h3>
-
-                      {product.flavor && (
-                        <p className="all-product-flavor">
-                          {product.flavor}
-                        </p>
-                      )}
-
-                      <p className="all-product-price">
-                        LE{" "}
-                        {Number(
-                          product.price || 0
-                        ).toFixed(2)}
-                      </p>
-
-                      {/* =================================================
-                          ADD TO CART
-                      ================================================== */}
-
-                      <button
-                        type="button"
-                        className={`add-to-cart-button ${
-                          isAdded
-                            ? "added"
-                            : ""
-                        } ${
-                          !product.available
-                            ? "disabled"
-                            : ""
-                        }`}
-                        disabled={
-                          !product.available ||
-                          isAdded
-                        }
-                        onClick={(event) =>
-                          handleAddToCart(
+                        onKeyDown={(event) =>
+                          handleProductKeyDown(
                             event,
                             product
                           )
                         }
                       >
-                        {isAdded
-                          ? "Added !"
-                          : product.available
-                          ? "Add to cart"
-                          : "Out of stock"}
-                      </button>
 
-                    </div>
+                        {/* =====================================
+                            PRODUCT IMAGE
+                        ====================================== */}
 
-                  </motion.article>
-                );
-              }
-            )}
+                        <div className="all-product-image-wrapper">
 
-          </AnimatePresence>
-        </div>
+                          <img
+                            src={
+                              product.image_url ||
+                              product.image
+                            }
+                            alt={`${product.name}${
+                              product.flavor
+                                ? ` - ${product.flavor}`
+                                : ""
+                            }`}
+                            className="all-product-image"
+                            loading="lazy"
+                            draggable="false"
+                          />
+
+                          {!product.available && (
+                            <div className="product-unavailable-overlay">
+                              <span>
+                                OUT OF STOCK
+                              </span>
+                            </div>
+                          )}
+
+                        </div>
+
+                        {/* =====================================
+                            PRODUCT INFO
+                        ====================================== */}
+
+                        <div className="all-product-info">
+
+                          <h3 className="all-product-name">
+                            {product.name}
+                          </h3>
+
+                          {product.flavor && (
+                            <p className="all-product-flavor">
+                              {product.flavor}
+                            </p>
+                          )}
+
+                          <p className="all-product-price">
+                            LE{" "}
+                            {Number(
+                              product.price || 0
+                            ).toFixed(2)}
+                          </p>
+
+                          {/* ===================================
+                              ADD TO CART
+                          ==================================== */}
+
+                          <button
+                            type="button"
+                            className={`add-to-cart-button ${
+                              isAdded
+                                ? "added"
+                                : ""
+                            } ${
+                              !product.available
+                                ? "disabled"
+                                : ""
+                            }`}
+                            disabled={
+                              !product.available ||
+                              isAdded
+                            }
+                            onClick={(event) =>
+                              handleAddToCart(
+                                event,
+                                product
+                              )
+                            }
+                          >
+                            {isAdded
+                              ? "Added !"
+                              : product.available
+                              ? "Add to cart"
+                              : "Out of stock"}
+                          </button>
+
+                        </div>
+
+                      </motion.article>
+                    </SwiperSlide>
+                  );
+                }
+              )}
+            </Swiper>
+
+             {/* LEFT ARROW */}
+
+            <div className="arrow-btns">
+              <button
+              type="button"
+              className="products-slider-arrow products-slider-arrow--left"
+              aria-label="Previous products"
+            >
+              <span aria-hidden="true">
+                &#10094;
+              </span>
+            </button>
+
+            {/* RIGHT ARROW */}
+
+
+            <button
+              type="button"
+              className="products-slider-arrow products-slider-arrow--right"
+              aria-label="Next products"
+            >
+              <span aria-hidden="true">
+                &#10095;
+              </span>
+            </button>
+            </div>
+
+          </div>
+        )}
 
         {/* =====================================================
             NO PRODUCTS

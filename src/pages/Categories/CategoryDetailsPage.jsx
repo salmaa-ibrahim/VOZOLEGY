@@ -989,7 +989,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 import { supabase } from "../../lib/supabase";
 import { useCart } from "../../contexts/CartContext";
@@ -997,9 +997,10 @@ import { useCart } from "../../contexts/CartContext";
 import "./CategoryDetailsPage.css";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 
 import "swiper/css";
+import "swiper/css/navigation";
 
 const CategoryDetailsPage = () => {
   const { slug } = useParams();
@@ -1023,9 +1024,13 @@ const CategoryDetailsPage = () => {
    */
 
   const handleProductClick = (product) => {
-    if (!product?.slug) return;
+    if (!product) return;
 
-    navigate(`/products/${product.slug}`);
+    const productIdentifier = product.slug || product.id;
+
+    if (!productIdentifier) return;
+
+    navigate(`/products/${productIdentifier}`);
   };
 
   /*
@@ -1035,9 +1040,14 @@ const CategoryDetailsPage = () => {
    */
 
   const handleAddToCart = (event, product) => {
+    event.preventDefault();
     event.stopPropagation();
 
-    if (!product?.available) return;
+    const isAvailable =
+      product?.available === true ||
+      product?.status === "active";
+
+    if (!isAvailable) return;
 
     addToCart(product);
 
@@ -1047,10 +1057,13 @@ const CategoryDetailsPage = () => {
     }));
 
     window.setTimeout(() => {
-      setAddedProducts((previous) => ({
-        ...previous,
-        [product.id]: false,
-      }));
+      setAddedProducts((previous) => {
+        const updated = { ...previous };
+
+        delete updated[product.id];
+
+        return updated;
+      });
     }, 2000);
   };
 
@@ -1074,7 +1087,10 @@ const CategoryDetailsPage = () => {
          * --------------------------------------------------------
          */
 
-        const { data: categoryData, error: categoryError } = await supabase
+        const {
+          data: categoryData,
+          error: categoryError,
+        } = await supabase
           .from("categories")
           .select("*")
           .eq("slug", slug)
@@ -1101,7 +1117,10 @@ const CategoryDetailsPage = () => {
          * --------------------------------------------------------
          */
 
-        const { data: productsData, error: productsError } = await supabase
+        const {
+          data: productsData,
+          error: productsError,
+        } = await supabase
           .from("products")
           .select("*")
           .eq("category_id", categoryData.id)
@@ -1116,14 +1135,13 @@ const CategoryDetailsPage = () => {
         /*
          * --------------------------------------------------------
          * 3. GET RECOMMENDED CATEGORIES
-         *
-         * Current category excluded.
-         * Only active categories.
-         * Ordered by display_order.
          * --------------------------------------------------------
          */
 
-        const { data: categoriesData, error: categoriesError } = await supabase
+        const {
+          data: categoriesData,
+          error: categoriesError,
+        } = await supabase
           .from("categories")
           .select("*")
           .neq("id", categoryData.id)
@@ -1134,7 +1152,10 @@ const CategoryDetailsPage = () => {
           .limit(4);
 
         if (categoriesError) {
-          console.error("Recommended categories error:", categoriesError);
+          console.error(
+            "Recommended categories error:",
+            categoriesError
+          );
         }
 
         /*
@@ -1149,7 +1170,10 @@ const CategoryDetailsPage = () => {
           setRecommendedCategories(categoriesData || []);
         }
       } catch (err) {
-        console.error("Category Details Error:", err);
+        console.error(
+          "Category Details Error:",
+          err
+        );
 
         if (isMounted) {
           setCategory(null);
@@ -1157,7 +1181,8 @@ const CategoryDetailsPage = () => {
           setRecommendedCategories([]);
 
           setError(
-            err?.message || "Something went wrong while loading this category.",
+            err?.message ||
+              "Something went wrong while loading this category."
           );
         }
       } finally {
@@ -1182,15 +1207,6 @@ const CategoryDetailsPage = () => {
   /*
    * ============================================================
    * AVAILABLE FLAVORS
-   *
-   * Every flavor keeps its original product.
-   * Therefore each card gets:
-   *
-   * - correct image
-   * - correct flavor
-   * - correct price
-   * - correct product ID
-   * - correct Add To Cart
    * ============================================================
    */
 
@@ -1200,7 +1216,7 @@ const CategoryDetailsPage = () => {
     products.forEach((product) => {
       if (!product?.flavor) return;
 
-      const flavorName = product.flavor.trim();
+      const flavorName = String(product.flavor).trim();
 
       if (!flavorName) return;
 
@@ -1221,7 +1237,9 @@ const CategoryDetailsPage = () => {
 
           slug: product.slug,
 
-          available: product.available === true || product.status === "active",
+          available:
+            product.available === true ||
+            product.status === "active",
 
           product,
         });
@@ -1245,15 +1263,25 @@ const CategoryDetailsPage = () => {
 
       [
         "Flavor",
-        flavors.length > 0 ? flavors.map((item) => item.name).join(", ") : null,
+        flavors.length > 0
+          ? flavors
+              .map((item) => item.name)
+              .join(", ")
+          : null,
       ],
 
       ["Battery", category.battery],
       ["Capacity", category.capacity],
-      ["Nicotine Strength", category.nicotine_strength],
+      [
+        "Nicotine Strength",
+        category.nicotine_strength,
+      ],
       ["Puff Counts", category.puff_counts],
       ["Charging", category.charging],
-      ["Special Feature", category.special_feature],
+      [
+        "Special Feature",
+        category.special_feature,
+      ],
     ];
   }, [category, flavors]);
 
@@ -1264,7 +1292,11 @@ const CategoryDetailsPage = () => {
    */
 
   if (loading) {
-    return <div className="category-page-loading">Loading...</div>;
+    return (
+      <div className="category-page-loading">
+        Loading...
+      </div>
+    );
   }
 
   /*
@@ -1278,9 +1310,14 @@ const CategoryDetailsPage = () => {
       <div className="category-page-error">
         <h2>Category Not Found</h2>
 
-        <p>{error || "This category does not exist."}</p>
+        <p>
+          {error ||
+            "This category does not exist."}
+        </p>
 
-        <Link to="/categories">Back to Categories</Link>
+        <Link to="/categories">
+          Back to Categories
+        </Link>
       </div>
     );
   }
@@ -1293,12 +1330,16 @@ const CategoryDetailsPage = () => {
 
   return (
     <main className="category-page">
+
       {/* ======================================================
           BREADCRUMB
       ====================================================== */}
 
       <div className="category-container">
-        <nav className="category-breadcrumb" aria-label="Breadcrumb">
+        <nav
+          className="category-breadcrumb"
+          aria-label="Breadcrumb"
+        >
           <Link to="/">Home</Link>
 
           <span>/</span>
@@ -1307,7 +1348,9 @@ const CategoryDetailsPage = () => {
 
           <span>/</span>
 
-          <strong>{category.name}</strong>
+          <strong>
+            {category.name}
+          </strong>
         </nav>
       </div>
 
@@ -1317,6 +1360,7 @@ const CategoryDetailsPage = () => {
 
       <section className="category-hero">
         <div className="category-container category-hero-inner">
+
           <motion.div
             className="category-hero-content"
             initial={{
@@ -1331,7 +1375,9 @@ const CategoryDetailsPage = () => {
               duration: 0.5,
             }}
           >
-            <h1>{category.name}</h1>
+            <h1>
+              {category.name}
+            </h1>
           </motion.div>
 
           <motion.div
@@ -1357,179 +1403,349 @@ const CategoryDetailsPage = () => {
               alt={category.name}
             />
           </motion.div>
+
         </div>
       </section>
 
-      
-{/* ================= CATEGORY BANNER SLIDER ================= */}
-{/* ================= CATEGORY BANNER SLIDER ================= */}
-
-{(category.banner_1_image ||
-  category.banner_2_image ||
-  category.banner_3_image) && (
-  <section className="category-banners">
-    <div className="category-container">
-
-      <motion.div
-        className="category-banner-slider-wrapper"
-        initial={{
-          opacity: 0,
-          y: 20,
-        }}
-        whileInView={{
-          opacity: 1,
-          y: 0,
-        }}
-        viewport={{
-          once: true,
-          amount: 0.2,
-        }}
-        transition={{
-          duration: 0.5,
-        }}
-      >
-        <Swiper
-          modules={[Autoplay]}
-          dir="rtl"
-          slidesPerView={1}
-          spaceBetween={16}
-          loop={true}
-          speed={700}
-          autoplay={{
-            delay: 3500,
-            disableOnInteraction: false,
-          }}
-          className="category-banner-slider"
-        >
-          {[
-            category.banner_1_image,
-            category.banner_2_image,
-            category.banner_3_image,
-          ]
-            .filter(Boolean)
-            .map((banner, index) => (
-              <SwiperSlide key={`${banner}-${index}`}>
-                <div className="category-banner-slide">
-                  <img
-                    src={banner}
-                    alt={`${category.name} banner ${index + 1}`}
-                    loading={index === 0 ? "eager" : "lazy"}
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
-        </Swiper>
-      </motion.div>
-
-    </div>
-  </section>
-)}
-
       {/* ======================================================
-          AVAILABLE FLAVORS
+          CATEGORY BANNER SLIDER
       ====================================================== */}
 
-      {flavors.length > 0 && (
-        <section className="category-section">
+      {(category.banner_1_image ||
+        category.banner_2_image ||
+        category.banner_3_image) && (
+        <section className="category-banners">
           <div className="category-container">
-            <div className="category-section-heading">
-              <h2>CHOOSE YOUR FLAVOR</h2>
-            </div>
 
-            <div className="all-products-grid">
-              <AnimatePresence mode="popLayout">
-                {products.map((product) => {
-                  const isAdded = Boolean(addedProducts[product.id]);
+            <motion.div
+              className="category-banner-slider-wrapper"
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                amount: 0.2,
+              }}
+              transition={{
+                duration: 0.5,
+              }}
+            >
 
-                  const isAvailable =
-                    product.available === true || product.status === "active";
-
-                  return (
-                    <motion.article
-                      key={product.id}
-                      className="all-product-card"
-                      layout
-                      initial={{
-                        opacity: 0,
-                        y: 25,
-                      }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                      }}
-                      exit={{
-                        opacity: 0,
-                        scale: 0.96,
-                      }}
-                      transition={{
-                        duration: 0.35,
-                      }}
-                      onClick={() => handleProductClick(product)}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter" || event.key === " ") {
-                          event.preventDefault();
-
-                          handleProductClick(product);
-                        }
-                      }}
+              <Swiper
+                modules={[Autoplay]}
+                dir="rtl"
+                slidesPerView={1}
+                spaceBetween={16}
+                loop={true}
+                speed={700}
+                autoplay={{
+                  delay: 3500,
+                  disableOnInteraction: false,
+                }}
+                className="category-banner-slider"
+              >
+                {[
+                  category.banner_1_image,
+                  category.banner_2_image,
+                  category.banner_3_image,
+                ]
+                  .filter(Boolean)
+                  .map((banner, index) => (
+                    <SwiperSlide
+                      key={`${banner}-${index}`}
                     >
-                      {/* IMAGE */}
+                      <div className="category-banner-slide">
 
-                      <div className="all-product-image-wrapper">
                         <img
-                          src={
-                            product.image_url ||
-                            product.image ||
-                            "/images/products/placeholder.png"
-                          }
-                          alt={`${product.name}${
-                            product.flavor ? ` - ${product.flavor}` : ""
+                          src={banner}
+                          alt={`${category.name} banner ${
+                            index + 1
                           }`}
-                          className="all-product-image"
-                          loading="lazy"
+                          loading={
+                            index === 0
+                              ? "eager"
+                              : "lazy"
+                          }
                         />
 
-                        {!isAvailable && (
-                          <div className="product-unavailable-overlay">
-                            <span>OUT OF STOCK</span>
-                          </div>
-                        )}
                       </div>
+                    </SwiperSlide>
+                  ))}
+              </Swiper>
 
-                      {/* INFO */}
+            </motion.div>
 
-                      <div className="all-product-info">
-                        <h3 className="all-product-name">{product.flavor}</h3>
+          </div>
+        </section>
+      )}
 
-                        <p className="all-product-price">
-                          LE {Number(product.price || 0).toFixed(2)}
-                        </p>
+      {/* ======================================================
+          AVAILABLE FLAVORS / PRODUCTS SLIDER
+      ====================================================== */}
 
-                        {/* ADD TO CART */}
+      {products.length > 0 && (
+        <section className="category-section">
 
-                        <button
-                          type="button"
-                          className={`add-to-cart-button ${
-                            isAdded ? "added" : ""
-                          } ${!isAvailable ? "disabled" : ""}`}
-                          disabled={!isAvailable || isAdded}
-                          onClick={(event) => handleAddToCart(event, product)}
-                        >
-                          {isAdded
-                            ? "Added!"
-                            : isAvailable
-                              ? "Add to Cart"
-                              : "Out of Stock"}
-                        </button>
-                      </div>
-                    </motion.article>
+          <div className="category-container">
+
+            <div className="category-section-heading">
+              <h2>
+                CHOOSE YOUR FLAVOR
+              </h2>
+            </div>
+
+            <div className="category-flavor-slider">
+
+              <Swiper
+                modules={[Autoplay, Navigation]}
+                slidesPerView={1.35}
+                spaceBetween={12}
+
+                /*
+                 * Continuous looping
+                 */
+                loop={products.length > 1}
+
+                /*
+                 * Smooth movement
+                 */
+                speed={800}
+
+                /*
+                 * Mouse + Touch dragging
+                 */
+                grabCursor={true}
+                allowTouchMove={true}
+
+                /*
+                 * Prevent the slider from being
+                 * disabled when there are fewer slides.
+                 */
+                watchOverflow={false}
+
+                /*
+                 * Navigation arrows
+                 */
+                navigation={{
+                  prevEl: ".category-flavor-prev",
+                  nextEl: ".category-flavor-next",
+                }}
+
+                /*
+                 * Automatic movement
+                 */
+                autoplay={{
+                  delay: 2600,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: true,
+                }}
+
+                /*
+                 * Responsive number of cards
+                 */
+                breakpoints={{
+                  381: {
+                    slidesPerView: 2,
+                    spaceBetween: 12,
+                  },
+
+                  601: {
+                    slidesPerView: 3,
+                    spaceBetween: 15,
+                  },
+
+                  901: {
+                    slidesPerView: 4,
+                    spaceBetween: 18,
+                  },
+
+                  1201: {
+                    slidesPerView: 5,
+                    spaceBetween: 20,
+                  },
+                }}
+
+                className="category-flavor-swiper"
+              >
+
+                {products.map((product) => {
+                  const isAdded =
+                    Boolean(
+                      addedProducts[product.id]
+                    );
+
+                  const isAvailable =
+                    product.available === true ||
+                    product.status === "active";
+
+                  return (
+                    <SwiperSlide
+                      key={product.id}
+                      className="category-flavor-slide"
+                    >
+
+                      <motion.article
+                        className="category-flavor-card"
+
+                        initial={{
+                          opacity: 0,
+                          y: 20,
+                        }}
+
+                        whileInView={{
+                          opacity: 1,
+                          y: 0,
+                        }}
+
+                        viewport={{
+                          once: true,
+                          amount: 0.1,
+                        }}
+
+                        transition={{
+                          duration: 0.35,
+                        }}
+
+                        onClick={() =>
+                          handleProductClick(product)
+                        }
+
+                        role="button"
+                        tabIndex={0}
+
+                        onKeyDown={(event) => {
+                          if (
+                            event.key === "Enter" ||
+                            event.key === " "
+                          ) {
+                            event.preventDefault();
+
+                            handleProductClick(
+                              product
+                            );
+                          }
+                        }}
+                      >
+
+                        {/* PRODUCT IMAGE */}
+
+                        <div className="category-flavor-image-wrapper">
+
+                          <img
+                            src={
+                              product.image_url ||
+                              product.image ||
+                              "/images/products/placeholder.png"
+                            }
+                            alt={`${product.name}${
+                              product.flavor
+                                ? ` - ${product.flavor}`
+                                : ""
+                            }`}
+                            className="category-flavor-image"
+                            loading="lazy"
+                          />
+
+                          {!isAvailable && (
+                            <div className="category-flavor-unavailable">
+                              <span>
+                                OUT OF STOCK
+                              </span>
+                            </div>
+                          )}
+
+                        </div>
+
+                        {/* PRODUCT INFO */}
+
+                        <div className="category-flavor-info">
+
+                          <h3 className="category-flavor-name">
+                            {product.flavor ||
+                              product.name}
+                          </h3>
+
+                          <p className="category-flavor-price">
+                            LE{" "}
+                            {Number(
+                              product.price || 0
+                            ).toFixed(2)}
+                          </p>
+
+                          {/* ADD TO CART */}
+
+                          <button
+                            type="button"
+                            className={`category-flavor-cart-button ${
+                              isAdded
+                                ? "is-added"
+                                : ""
+                            } ${
+                              !isAvailable
+                                ? "is-disabled"
+                                : ""
+                            }`}
+                            disabled={
+                              !isAvailable ||
+                              isAdded
+                            }
+                            onClick={(event) =>
+                              handleAddToCart(
+                                event,
+                                product
+                              )
+                            }
+                          >
+                            {isAdded
+                              ? "Added!"
+                              : isAvailable
+                                ? "Add to Cart"
+                                : "Out of Stock"}
+                          </button>
+
+                        </div>
+
+                      </motion.article>
+
+                    </SwiperSlide>
                   );
                 })}
-              </AnimatePresence>
+
+              </Swiper>
+
+              {/* ==================================================
+                  PREVIOUS ARROW
+              ================================================== */}
+
+              <button
+                type="button"
+                className="category-flavor-prev"
+                aria-label="Previous product"
+              >
+                ←
+              </button>
+
+              {/* ==================================================
+                  NEXT ARROW
+              ================================================== */}
+
+              <button
+                type="button"
+                className="category-flavor-next"
+                aria-label="Next product"
+              >
+                →
+              </button>
+
             </div>
+
           </div>
+
         </section>
       )}
 
@@ -1538,29 +1754,46 @@ const CategoryDetailsPage = () => {
       ====================================================== */}
 
       <section className="category-section category-info-section">
+
         <div className="category-container">
-          {/* ======================================================
-    PRODUCT INFORMATION
-====================================================== */}
 
           <section className="category-information-section">
+
             <div className="category-container">
-              <h2 className="category-section-title">PRODUCT INFORMATION</h2>
+
+              <h2 className="category-section-title">
+                PRODUCT INFORMATION
+              </h2>
 
               <div className="category-information-table">
-                {information.map(([label, value]) => (
-                  <div className="category-information-row" key={label}>
-                    <div className="category-information-label">{label}</div>
 
-                    <div className="category-information-value">
-                      {value || "—"}
+                {information.map(
+                  ([label, value]) => (
+                    <div
+                      className="category-information-row"
+                      key={label}
+                    >
+
+                      <div className="category-information-label">
+                        {label}
+                      </div>
+
+                      <div className="category-information-value">
+                        {value || "—"}
+                      </div>
+
                     </div>
-                  </div>
-                ))}
+                  )
+                )}
+
               </div>
+
             </div>
+
           </section>
+
         </div>
+
       </section>
 
       {/* ======================================================
@@ -1569,45 +1802,66 @@ const CategoryDetailsPage = () => {
 
       {recommendedCategories.length > 0 && (
         <section className="category-section category-recommended-section">
+
           <div className="category-container">
+
             <div className="category-section-heading">
+
               <div>
-                <h2>YOU MAY ALSO LIKE</h2>
+                <h2>
+                  YOU MAY ALSO LIKE
+                </h2>
               </div>
+
             </div>
 
             <div className="category-recommended-grid">
-              {recommendedCategories.map((item) => (
-                <Link
-                  to={`/categories/${item.slug}`}
-                  className="category-recommended-card"
-                  key={item.id}
-                >
-                  <div className="category-recommended-image">
-                    <img
-                      src={
-                        item.image_url ||
-                        item.mobile_image_url ||
-                        "/images/products/placeholder.png"
-                      }
-                      alt={item.name}
-                      loading="lazy"
-                    />
-                  </div>
 
-                  <div className="category-recommended-content">
-                    <h4>{item.name}</h4>
+              {recommendedCategories.map(
+                (item) => (
+                  <Link
+                    to={`/categories/${item.slug}`}
+                    className="category-recommended-card"
+                    key={item.id}
+                  >
 
-                    <span className="category-recommended-arrow">
-                      Explore →
-                    </span>
-                  </div>
-                </Link>
-              ))}
+                    <div className="category-recommended-image">
+
+                      <img
+                        src={
+                          item.image_url ||
+                          item.mobile_image_url ||
+                          "/images/products/placeholder.png"
+                        }
+                        alt={item.name}
+                        loading="lazy"
+                      />
+
+                    </div>
+
+                    <div className="category-recommended-content">
+
+                      <h4>
+                        {item.name}
+                      </h4>
+
+                      <span className="category-recommended-arrow">
+                        Explore →
+                      </span>
+
+                    </div>
+
+                  </Link>
+                )
+              )}
+
             </div>
+
           </div>
+
         </section>
       )}
+
     </main>
   );
 };
