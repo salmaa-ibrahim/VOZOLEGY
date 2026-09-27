@@ -1,21 +1,1281 @@
-.page-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 40px 16px;
-  text-align: center;
+
+/* =========================================================
+   HOW TO CHOOSE PAGE
+   MODERN PREMIUM DESIGN
+========================================================= */
+
+.how-to-choose-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+  color: #111111;
+  overflow-x: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
 }
-.page-container h1 { font-size: 2rem; margin-bottom: 8px; }
-.page-subtitle { color: #666; margin-bottom: 40px; }
-.guide-steps { text-align: left; margin-bottom: 40px; display: flex; flex-direction: column; gap: 24px; }
-.guide-step h3 { font-size: 1.2rem; margin-bottom: 8px; color: var(--color-purple); }
-.guide-step p { line-height: 1.6; color: #444; }
-.btn-primary {
-  display: inline-block;
-  padding: 14px 40px;
-  background: var(--color-black);
-  color: white;
-  border-radius: var(--radius-pill);
-  font-weight: 600;
-  transition: background 0.2s;
+
+.how-to-choose-page *,
+.how-to-choose-page *::before,
+.how-to-choose-page *::after {
+  box-sizing: border-box;
 }
-.btn-primary:hover { background: #333; }
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.guide-hero {
+  position: relative;
+
+  width: min(1500px, calc(100% - 60px));
+  min-height: 680px;
+
+  margin: 35px auto 0;
+  padding: 90px 8%;
+
+  border-radius: 36px;
+
+  background:
+    radial-gradient(
+      circle at 75% 50%,
+      rgba(122, 63, 210, 0.24),
+      transparent 34%
+    ),
+    linear-gradient(
+      135deg,
+      #0b0b0d 0%,
+      #15121a 50%,
+      #09090a 100%
+    );
+
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 60px;
+
+  overflow: hidden;
+}
+
+.guide-hero-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(5px);
+}
+
+.guide-glow-one {
+  width: 450px;
+  height: 450px;
+  right: 10%;
+  top: -180px;
+  background: rgba(141, 72, 235, 0.12);
+}
+
+.guide-glow-two {
+  width: 300px;
+  height: 300px;
+  left: 35%;
+  bottom: -180px;
+  background: rgba(111, 45, 191, 0.1);
+}
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
+.guide-hero-content {
+  position: relative;
+  z-index: 3;
+
+  width: 58%;
+  max-width: 720px;
+}
+
+.guide-badge {
+  width: fit-content;
+
+  padding: 9px 17px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+
+  background: rgba(255, 255, 255, 0.06);
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #ffffff;
+}
+
+.guide-badge-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #9c5de5;
+
+  box-shadow: 0 0 14px rgba(156, 93, 229, 0.9);
+}
+
+.guide-hero h1 {
+  margin: 28px 0 0;
+
+  font-size: clamp(65px, 8vw, 120px);
+
+  line-height: 0.88;
+
+  font-weight: 900;
+
+  letter-spacing: -5px;
+
+  text-transform: uppercase;
+}
+
+.guide-hero h1 span {
+  display: block;
+
+  color: transparent;
+
+  -webkit-text-stroke: 2px #ffffff;
+}
+
+.guide-hero-description {
+  margin: 35px 0 0;
+
+  max-width: 520px;
+
+  font-size: 18px;
+  line-height: 1.7;
+
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.guide-scroll {
+  margin-top: 55px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  font-size: 10px;
+
+  letter-spacing: 2px;
+
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.guide-scroll-line {
+  width: 60px;
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* =========================================================
+   HERO VISUAL
+========================================================= */
+
+.guide-visual {
+  position: relative;
+
+  width: 390px;
+  height: 390px;
+
+  flex-shrink: 0;
+}
+
+.guide-orbit {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border: 1px solid rgba(160, 101, 226, 0.35);
+
+  border-radius: 50%;
+}
+
+.orbit-one {
+  width: 180px;
+  height: 180px;
+}
+
+.orbit-two {
+  width: 275px;
+  height: 275px;
+}
+
+.orbit-three {
+  width: 370px;
+  height: 370px;
+
+  border-color: rgba(255, 255, 255, 0.09);
+}
+
+.guide-center {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 125px;
+  height: 125px;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background: linear-gradient(
+    145deg,
+    #9d60e5,
+    #51218a
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow:
+    0 0 70px rgba(127, 62, 201, 0.5),
+    inset 0 0 30px rgba(255, 255, 255, 0.08);
+}
+
+.guide-center span {
+  font-size: 72px;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.guide-floating-card {
+  position: absolute;
+
+  padding: 13px 17px;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.07);
+
+  backdrop-filter: blur(12px);
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.guide-floating-card span {
+  color: #a76de8;
+}
+
+.guide-floating-card strong {
+  color: #ffffff;
+}
+
+.card-top {
+  top: 35px;
+  right: 15px;
+}
+
+.card-bottom {
+  bottom: 30px;
+  left: 0;
+}
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.guide-intro {
+  width: min(1200px, calc(100% - 60px));
+
+  margin: 120px auto 0;
+
+  display: grid;
+
+  grid-template-columns: 200px 1fr;
+
+  gap: 90px;
+}
+
+.guide-intro-label {
+  padding-top: 10px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+
+  color: #777777;
+}
+
+.guide-intro-label span {
+  color: #7441a9;
+}
+
+.guide-intro-content {
+  max-width: 760px;
+}
+
+.guide-intro-content h2 {
+  margin: 0;
+
+  font-size: clamp(48px, 6vw, 82px);
+
+  line-height: 0.95;
+
+  letter-spacing: -3px;
+
+  font-weight: 900;
+}
+
+.guide-intro-content h2 span {
+  display: block;
+  color: #7c42b1;
+}
+
+.guide-intro-content p {
+  max-width: 620px;
+
+  margin: 32px 0 0;
+
+  font-size: 18px;
+  line-height: 1.8;
+
+  color: #707070;
+}
+
+/* =========================================================
+   STEPS
+========================================================= */
+
+.guide-steps {
+  width: min(1200px, calc(100% - 60px));
+
+  margin: 100px auto 0;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+}
+
+.guide-step {
+  min-height: 210px;
+
+  padding: 40px;
+
+  display: flex;
+
+  gap: 25px;
+
+  border-right: 1px solid #dddddd;
+}
+
+.guide-step:last-child {
+  border-right: none;
+}
+
+.step-number {
+  font-size: 12px;
+  font-weight: 700;
+
+  color: #8851b9;
+}
+
+.step-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+
+  color: #999999;
+}
+
+.guide-step h3 {
+  margin: 8px 0 10px;
+
+  font-size: 25px;
+  letter-spacing: -0.5px;
+}
+
+.guide-step p {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  color: #777777;
+}
+
+/* =========================================================
+   QUESTIONS
+========================================================= */
+
+.guide-questions {
+  width: min(1200px, calc(100% - 60px));
+
+  margin: 150px auto 0;
+}
+
+.questions-heading {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 50px;
+
+  margin-bottom: 55px;
+}
+
+.section-eyebrow {
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  color: #8851b9;
+}
+
+.questions-heading h2 {
+  margin: 17px 0 0;
+
+  font-size: clamp(50px, 6vw, 80px);
+
+  line-height: 0.9;
+
+  letter-spacing: -3px;
+
+  font-weight: 900;
+}
+
+.questions-heading h2 span {
+  display: block;
+
+  color: #7d43b0;
+}
+
+.questions-heading > p {
+  max-width: 270px;
+
+  margin: 0;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+
+  color: #777777;
+}
+
+/* =========================================================
+   FAQ
+========================================================= */
+
+.modern-faq {
+  width: 100%;
+
+  border-top: 1px solid #d9d9d9;
+}
+
+.modern-faq-item {
+  border-bottom: 1px solid #d9d9d9;
+
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.modern-faq-item.is-open {
+  background: #f7f4fa;
+}
+
+.modern-faq-question {
+  width: 100%;
+
+  min-height: 105px;
+
+  padding: 25px 30px;
+
+  border: none;
+
+  background: transparent;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  cursor: pointer;
+
+  color: #111111;
+
+  text-align: left;
+}
+
+.faq-question-left {
+  display: flex;
+
+  align-items: center;
+
+  gap: 35px;
+}
+
+.faq-number {
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  color: #9660c5;
+}
+
+.faq-question-text {
+  font-size: 23px;
+
+  font-weight: 700;
+
+  transition: color 0.25s ease;
+}
+
+.modern-faq-item.is-open .faq-question-text {
+  color: #7040a0;
+}
+
+/* =========================================================
+   PLUS
+========================================================= */
+
+.faq-plus {
+  position: relative;
+
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  border: 1px solid #cccccc;
+
+  border-radius: 50%;
+
+  transition:
+    background-color 0.25s ease,
+    transform 0.3s ease;
+}
+
+.faq-plus span {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 13px;
+  height: 1.5px;
+
+  background: #111111;
+
+  transform: translate(-50%, -50%);
+
+  transition: transform 0.3s ease;
+}
+
+.faq-plus span:last-child {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.faq-plus.active {
+  background: #7c45aa;
+
+  border-color: #7c45aa;
+
+  transform: rotate(180deg);
+}
+
+.faq-plus.active span {
+  background: #ffffff;
+}
+
+.faq-plus.active span:last-child {
+  transform: translate(-50%, -50%) rotate(0);
+}
+
+/* =========================================================
+   FAQ ANSWER
+========================================================= */
+
+.modern-faq-answer {
+  display: grid;
+
+  grid-template-rows: 0fr;
+
+  opacity: 0;
+
+  transition:
+    grid-template-rows 0.4s ease,
+    opacity 0.3s ease;
+}
+
+.modern-faq-answer.answer-open {
+  grid-template-rows: 1fr;
+
+  opacity: 1;
+}
+
+.modern-faq-answer-inner {
+  min-height: 0;
+
+  overflow: hidden;
+
+  padding: 0 95px;
+
+  font-size: 15px;
+
+  line-height: 1.8;
+
+  color: #666666;
+
+  transition: padding 0.35s ease;
+}
+
+.modern-faq-answer.answer-open
+.modern-faq-answer-inner {
+  padding-bottom: 40px;
+}
+
+.modern-faq-answer-inner p {
+  margin: 0 0 15px;
+}
+
+.modern-faq-answer-inner p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================================
+   COMPARISON
+========================================================= */
+
+.guide-comparison {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 18px;
+
+  margin-bottom: 25px;
+}
+
+.comparison-card {
+  padding: 28px;
+
+  border: 1px solid #e1dce5;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+}
+
+.comparison-tag {
+  width: fit-content;
+
+  padding: 6px 12px;
+
+  border-radius: 100px;
+
+  background: #f0e8f7;
+
+  color: #7542a4;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.comparison-card h3 {
+  margin: 18px 0 10px;
+
+  font-size: 21px;
+
+  color: #171717;
+}
+
+.comparison-card p {
+  margin: 0 0 18px;
+}
+
+.comparison-card ul {
+  margin: 0;
+  padding-left: 18px;
+
+  color: #777777;
+}
+
+.comparison-card li {
+  margin-bottom: 7px;
+}
+
+.guide-note {
+  padding: 18px 20px;
+
+  border-left: 3px solid #8147ad;
+
+  background: #ffffff;
+
+  display: flex;
+
+  gap: 15px;
+
+  align-items: flex-start;
+}
+
+.guide-note span {
+  font-size: 10px;
+
+  font-weight: 800;
+
+  color: #8147ad;
+
+  letter-spacing: 1px;
+}
+
+.guide-note p {
+  margin: 0;
+}
+
+/* =========================================================
+   BOTTOM CTA
+========================================================= */
+
+.guide-bottom {
+  position: relative;
+
+  width: min(1200px, calc(100% - 60px));
+
+  min-height: 350px;
+
+  margin: 150px auto 100px;
+
+  padding: 55px 70px;
+
+  border-radius: 28px;
+
+  background: #0d0d0f;
+
+  color: #ffffff;
+
+  overflow: hidden;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.guide-bottom::after {
+  content: "";
+
+  position: absolute;
+
+  width: 400px;
+  height: 400px;
+
+  right: -100px;
+  top: -200px;
+
+  border-radius: 50%;
+
+  background: rgba(125, 62, 180, 0.25);
+
+  filter: blur(20px);
+}
+
+.guide-bottom-number {
+  position: absolute;
+
+  top: 35px;
+  right: 45px;
+
+  font-size: 11px;
+
+  color: #8c5ab5;
+
+  letter-spacing: 2px;
+}
+
+.guide-bottom-content {
+  position: relative;
+  z-index: 2;
+}
+
+.guide-bottom-content > span {
+  font-size: 10px;
+
+  letter-spacing: 2px;
+
+  color: #a56bcf;
+}
+
+.guide-bottom h2 {
+  margin: 15px 0;
+
+  font-size: clamp(45px, 5vw, 72px);
+
+  line-height: 0.9;
+
+  letter-spacing: -3px;
+}
+
+.guide-bottom h2 span {
+  display: block;
+
+  color: #a260d0;
+}
+
+.guide-bottom p {
+  max-width: 500px;
+
+  margin: 20px 0 0;
+
+  color: rgba(255, 255, 255, 0.55);
+
+  line-height: 1.7;
+}
+
+.guide-bottom-arrow {
+  position: relative;
+  z-index: 2;
+
+  width: 75px;
+  height: 75px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 30px;
+
+  color: #ffffff;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+  .guide-hero {
+    min-height: 600px;
+
+    padding: 70px 55px;
+  }
+
+  .guide-hero h1 {
+    font-size: clamp(55px, 8vw, 85px);
+  }
+
+  .guide-visual {
+    width: 300px;
+    height: 300px;
+  }
+
+  .orbit-one {
+    width: 140px;
+    height: 140px;
+  }
+
+  .orbit-two {
+    width: 215px;
+    height: 215px;
+  }
+
+  .orbit-three {
+    width: 290px;
+    height: 290px;
+  }
+
+  .guide-center {
+    width: 100px;
+    height: 100px;
+  }
+
+  .guide-center span {
+    font-size: 58px;
+  }
+
+  .guide-intro {
+    gap: 40px;
+  }
+
+  .guide-step {
+    padding: 30px 25px;
+  }
+
+  .modern-faq-answer-inner {
+    padding-left: 65px;
+    padding-right: 65px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .guide-hero {
+    width: calc(100% - 24px);
+
+    min-height: auto;
+
+    margin-top: 12px;
+
+    padding: 55px 28px 45px;
+
+    border-radius: 25px;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 50px;
+  }
+
+  .guide-hero-content {
+    width: 100%;
+  }
+
+  .guide-hero h1 {
+    margin-top: 25px;
+
+    font-size: clamp(49px, 14vw, 70px);
+
+    letter-spacing: -3px;
+  }
+
+  .guide-hero h1 span {
+    -webkit-text-stroke: 1.5px #ffffff;
+  }
+
+  .guide-hero-description {
+    margin-top: 25px;
+
+    font-size: 15px;
+  }
+
+  .guide-scroll {
+    margin-top: 35px;
+  }
+
+  .guide-visual {
+    width: 280px;
+    height: 280px;
+
+    align-self: center;
+  }
+
+  .orbit-one {
+    width: 125px;
+    height: 125px;
+  }
+
+  .orbit-two {
+    width: 200px;
+    height: 200px;
+  }
+
+  .orbit-three {
+    width: 275px;
+    height: 275px;
+  }
+
+  .guide-center {
+    width: 90px;
+    height: 90px;
+  }
+
+  .guide-center span {
+    font-size: 52px;
+  }
+
+  .guide-floating-card {
+    padding: 10px 13px;
+
+    font-size: 8px;
+  }
+
+  .card-top {
+    top: 20px;
+    right: 0;
+  }
+
+  .card-bottom {
+    bottom: 20px;
+    left: 0;
+  }
+
+  /* INTRO */
+
+  .guide-intro {
+    width: calc(100% - 40px);
+
+    margin-top: 80px;
+
+    display: block;
+  }
+
+  .guide-intro-label {
+    margin-bottom: 25px;
+  }
+
+  .guide-intro-content h2 {
+    font-size: 53px;
+
+    letter-spacing: -2px;
+  }
+
+  .guide-intro-content p {
+    margin-top: 25px;
+
+    font-size: 15px;
+  }
+
+  /* STEPS */
+
+  .guide-steps {
+    width: calc(100% - 40px);
+
+    margin-top: 70px;
+
+    display: block;
+  }
+
+  .guide-step {
+    min-height: auto;
+
+    padding: 27px 10px;
+
+    border-right: none;
+
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .guide-step:last-child {
+    border-bottom: none;
+  }
+
+  /* QUESTIONS */
+
+  .guide-questions {
+    width: calc(100% - 40px);
+
+    margin-top: 90px;
+  }
+
+  .questions-heading {
+    display: block;
+
+    margin-bottom: 40px;
+  }
+
+  .questions-heading h2 {
+    margin-top: 15px;
+
+    font-size: 55px;
+
+    letter-spacing: -2px;
+  }
+
+  .questions-heading > p {
+    margin-top: 25px;
+  }
+
+  .modern-faq-question {
+    min-height: 85px;
+
+    padding: 20px 5px;
+  }
+
+  .faq-question-left {
+    gap: 18px;
+  }
+
+  .faq-question-text {
+    font-size: 17px;
+
+    line-height: 1.35;
+  }
+
+  .faq-number {
+    font-size: 9px;
+  }
+
+  .faq-plus {
+    width: 32px;
+    height: 32px;
+  }
+
+  .faq-plus span {
+    width: 11px;
+  }
+
+  .modern-faq-answer-inner {
+    padding: 0 0 0 28px;
+
+    font-size: 13px;
+
+    line-height: 1.75;
+  }
+
+  .modern-faq-answer.answer-open
+  .modern-faq-answer-inner {
+    padding-bottom: 30px;
+  }
+
+  .guide-comparison {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .comparison-card {
+    padding: 20px;
+  }
+
+  .comparison-card h3 {
+    font-size: 18px;
+  }
+
+  .guide-note {
+    display: block;
+
+    padding: 15px;
+  }
+
+  .guide-note p {
+    margin-top: 8px;
+  }
+
+  /* BOTTOM */
+
+  .guide-bottom {
+    width: calc(100% - 40px);
+
+    min-height: 320px;
+
+    margin-top: 90px;
+    margin-bottom: 60px;
+
+    padding: 40px 30px;
+
+    border-radius: 23px;
+
+    display: block;
+  }
+
+  .guide-bottom h2 {
+    font-size: 52px;
+
+    letter-spacing: -2px;
+  }
+
+  .guide-bottom p {
+    font-size: 14px;
+  }
+
+  .guide-bottom-arrow {
+    width: 55px;
+    height: 55px;
+
+    margin-top: 35px;
+
+    font-size: 23px;
+  }
+
+  .guide-bottom-number {
+    right: 25px;
+    top: 25px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 390px) {
+  .guide-hero {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .guide-hero h1 {
+    font-size: 45px;
+  }
+
+  .guide-visual {
+    width: 245px;
+    height: 245px;
+  }
+
+  .orbit-one {
+    width: 110px;
+    height: 110px;
+  }
+
+  .orbit-two {
+    width: 175px;
+    height: 175px;
+  }
+
+  .orbit-three {
+    width: 240px;
+    height: 240px;
+  }
+
+  .guide-center {
+    width: 78px;
+    height: 78px;
+  }
+
+  .guide-center span {
+    font-size: 45px;
+  }
+
+  .guide-intro-content h2 {
+    font-size: 45px;
+  }
+
+  .questions-heading h2 {
+    font-size: 47px;
+  }
+
+  .faq-question-text {
+    font-size: 15px;
+  }
+
+  .guide-bottom h2 {
+    font-size: 44px;
+  }
+}
