@@ -996,6 +996,11 @@ import { useCart } from "../../contexts/CartContext";
 
 import "./CategoryDetailsPage.css";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+
+import "swiper/css";
+
 const CategoryDetailsPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -1355,6 +1360,71 @@ const CategoryDetailsPage = () => {
         </div>
       </section>
 
+      
+{/* ================= CATEGORY BANNER SLIDER ================= */}
+{/* ================= CATEGORY BANNER SLIDER ================= */}
+
+{(category.banner_1_image ||
+  category.banner_2_image ||
+  category.banner_3_image) && (
+  <section className="category-banners">
+    <div className="category-container">
+
+      <motion.div
+        className="category-banner-slider-wrapper"
+        initial={{
+          opacity: 0,
+          y: 20,
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+        }}
+        viewport={{
+          once: true,
+          amount: 0.2,
+        }}
+        transition={{
+          duration: 0.5,
+        }}
+      >
+        <Swiper
+          modules={[Autoplay]}
+          dir="rtl"
+          slidesPerView={1}
+          spaceBetween={16}
+          loop={true}
+          speed={700}
+          autoplay={{
+            delay: 3500,
+            disableOnInteraction: false,
+          }}
+          className="category-banner-slider"
+        >
+          {[
+            category.banner_1_image,
+            category.banner_2_image,
+            category.banner_3_image,
+          ]
+            .filter(Boolean)
+            .map((banner, index) => (
+              <SwiperSlide key={`${banner}-${index}`}>
+                <div className="category-banner-slide">
+                  <img
+                    src={banner}
+                    alt={`${category.name} banner ${index + 1}`}
+                    loading={index === 0 ? "eager" : "lazy"}
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+        </Swiper>
+      </motion.div>
+
+    </div>
+  </section>
+)}
+
       {/* ======================================================
           AVAILABLE FLAVORS
       ====================================================== */}
@@ -1492,54 +1562,6 @@ const CategoryDetailsPage = () => {
           </section>
         </div>
       </section>
-
-      {/* ======================================================
-          CATEGORY BANNERS
-      ====================================================== */}
-
-      {(category.banner_1_image ||
-        category.banner_2_image ||
-        category.banner_3_image) && (
-        <section className="category-banners">
-          <div className="category-container">
-            <div className="category-banner-grid">
-              {[
-                category.banner_1_image,
-                category.banner_2_image,
-                category.banner_3_image,
-              ]
-                .filter(Boolean)
-                .map((banner, index) => (
-                  <motion.div
-                    className="category-banner"
-                    key={banner}
-                    initial={{
-                      opacity: 0,
-                      y: 20,
-                    }}
-                    whileInView={{
-                      opacity: 1,
-                      y: 0,
-                    }}
-                    viewport={{
-                      once: true,
-                    }}
-                    transition={{
-                      duration: 0.45,
-                      delay: index * 0.08,
-                    }}
-                  >
-                    <img
-                      src={banner}
-                      alt={`${category.name} banner ${index + 1}`}
-                      loading="lazy"
-                    />
-                  </motion.div>
-                ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ======================================================
           RECOMMENDED CATEGORIES
