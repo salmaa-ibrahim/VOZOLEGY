@@ -37,99 +37,82 @@ const AllProductsSection = () => {
   // FETCH PRODUCTS + CATEGORIES FROM SUPABASE
   // ============================================================
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+        // ======================================================
+        // GET PRODUCTS
+        // Also get the related category
+        // ======================================================
 
-      // Get products WITHOUT filtering
-      const {
-        data: productsData,
-        error: productsError,
-      } = await supabase
-        .from("products")
-        .select("*");
+        const {
+          data: productsData,
+          error: productsError,
+        } = await supabase
+          .from("products")
+          .select(`
+            *,
+            categories (
+              id,
+              name,
+              slug
+            )
+          `);
 
-      if (productsError) {
+        if (productsError) {
+          console.error(
+            "PRODUCTS ERROR:",
+            productsError
+          );
+
+          throw productsError;
+        }
+
+        // ======================================================
+        // GET ACTIVE CATEGORIES
+        // ======================================================
+
+        const {
+          data: categoriesData,
+          error: categoriesError,
+        } = await supabase
+          .from("categories")
+          .select("*")
+          .eq("active", true)
+          .order("display_order", {
+            ascending: true,
+          });
+
+        if (categoriesError) {
+          console.error(
+            "CATEGORIES ERROR:",
+            categoriesError
+          );
+
+          throw categoriesError;
+        }
+
+        setProducts(productsData || []);
+        setCategories(categoriesData || []);
+      } catch (err) {
         console.error(
-          "PRODUCTS ERROR:",
-          productsError
+          "FAILED TO LOAD DATA:",
+          err
         );
 
-        throw productsError;
+        setProducts([]);
+        setCategories([]);
+        setError(err);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      // Get categories
-      const {
-        data: categoriesData,
-        error: categoriesError,
-      } = await supabase
-        .from("categories")
-        .select("*")
-        .eq("active", true)
-        .order("display_order", {
-          ascending: true,
-        });
-
-      if (categoriesError) {
-        console.error(
-          "CATEGORIES ERROR:",
-          categoriesError
-        );
-
-        throw categoriesError;
-      }
-
-      console.log(
-        "================================"
-      );
-
-      console.log(
-        "ALL PRODUCTS:",
-        productsData
-      );
-
-      console.log(
-        "ALL CATEGORIES:",
-        categoriesData
-      );
-
-      console.log(
-        "PRODUCT MODES:",
-        productsData?.map((product) => ({
-          id: product.id,
-          name: product.name,
-          mode: product.mode,
-          category_id: product.category_id,
-          available: product.available,
-        }))
-      );
-
-      console.log(
-        "================================"
-      );
-
-      setProducts(productsData || []);
-      setCategories(categoriesData || []);
-    } catch (err) {
-      console.error(
-        "FAILED TO LOAD DATA:",
-        err
-      );
-
-      setProducts([]);
-      setCategories([]);
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchData();
-}, []);
-
+    fetchData();
+  }, []);
 
   // ============================================================
   // RESET CATEGORY WHEN MODE CHANGES
@@ -153,9 +136,9 @@ useEffect(() => {
   }, [products, activeMode]);
 
   // ============================================================
-  // CATEGORIES FOR CURRENT MODE
+  // AVAILABLE CATEGORIES FOR CURRENT MODE
   //
-  // Only show categories that actually have products
+  // Only categories that actually have products
   // in the selected MTL / DL mode.
   // ============================================================
 
@@ -163,12 +146,10 @@ useEffect(() => {
     const categoryIds = new Set(
       modeProducts
         .map((product) => {
-          // Prefer category_id from products table
           if (product.category_id) {
             return String(product.category_id);
           }
 
-          // Fallback if Supabase relationship exists
           if (product.categories?.id) {
             return String(product.categories.id);
           }
@@ -178,21 +159,13 @@ useEffect(() => {
         .filter(Boolean)
     );
 
-    const filteredCategories = categories.filter((category) =>
+    return categories.filter((category) =>
       categoryIds.has(String(category.id))
     );
-
-    return filteredCategories;
   }, [categories, modeProducts]);
 
   // ============================================================
   // FILTER PRODUCTS
-  //
-  // First:
-  // MTL / DL
-  //
-  // Then:
-  // selected category
   // ============================================================
 
   const filteredProducts = useMemo(() => {
@@ -202,7 +175,6 @@ useEffect(() => {
         return true;
       }
 
-      // Product category ID
       const productCategoryId =
         product.category_id ||
         product.categories?.id;
@@ -228,14 +200,16 @@ useEffect(() => {
 
     addToCart(product);
 
-    setAddedProducts((prev) => ({
-      ...prev,
+    setAddedProducts((previous) => ({
+      ...previous,
       [product.id]: true,
     }));
 
     setTimeout(() => {
-      setAddedProducts((prev) => {
-        const updated = { ...prev };
+      setAddedProducts((previous) => {
+        const updated = {
+          ...previous,
+        };
 
         delete updated[product.id];
 
@@ -246,13 +220,27 @@ useEffect(() => {
 
   // ============================================================
   // PRODUCT CARD CLICK
+  //
+  // Clicking the product card opens the CATEGORY PAGE
+  // of that product.
   // ============================================================
 
   const handleProductClick = (product) => {
-    const productIdentifier =
-      product.slug || product.id;
+    const categorySlug =
+      product.categories?.slug;
 
-    navigate(`/products/${productIdentifier}`);
+    if (!categorySlug) {
+      console.error(
+        "CATEGORY SLUG NOT FOUND FOR PRODUCT:",
+        product
+      );
+
+      return;
+    }
+
+    navigate(
+      `/categories/${categorySlug}`
+    );
   };
 
   // ============================================================
@@ -301,7 +289,10 @@ useEffect(() => {
 
         <motion.h2
           className="all-products-title"
-          initial={{ opacity: 0, y: 25 }}
+          initial={{
+            opacity: 0,
+            y: 25,
+          }}
           whileInView={{
             opacity: 1,
             y: 0,
@@ -410,6 +401,7 @@ useEffect(() => {
                 );
               }
             )}
+
           </div>
         </div>
 
@@ -472,10 +464,11 @@ useEffect(() => {
                   >
 
                     {/* =================================================
-                        IMAGE
+                        PRODUCT IMAGE
                     ================================================== */}
 
                     <div className="all-product-image-wrapper">
+
                       <img
                         src={
                           product.image_url ||
@@ -497,10 +490,11 @@ useEffect(() => {
                           </span>
                         </div>
                       )}
+
                     </div>
 
                     {/* =================================================
-                        INFO
+                        PRODUCT INFO
                     ================================================== */}
 
                     <div className="all-product-info">
@@ -524,7 +518,7 @@ useEffect(() => {
 
                       {/* =================================================
                           ADD TO CART
-                      ================================================= */}
+                      ================================================== */}
 
                       <button
                         type="button"
@@ -554,7 +548,9 @@ useEffect(() => {
                           ? "Add to cart"
                           : "Out of stock"}
                       </button>
+
                     </div>
+
                   </motion.article>
                 );
               }
