@@ -1298,7 +1298,7 @@ const CategoryDetailsPage = () => {
 
           <span>/</span>
 
-          <Link to="/categories">Categories</Link>
+          <Link to="/">Categories</Link>
 
           <span>/</span>
 
