@@ -945,34 +945,43 @@
 ========================================================= */
 
 @media (max-width: 700px) {
-  .guide-hero {
+   .guide-hero {
     width: calc(100% - 24px);
 
-    min-height: auto;
+    min-height: 400px;
 
     margin-top: 12px;
 
-    padding: 55px 28px 45px;
+    padding: 0px 24px;
 
     border-radius: 25px;
 
-    flex-direction: column;
+    /* خلي المحتوى جنب بعض */
+    flex-direction: row;
 
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between;
 
-    gap: 50px;
+    gap: 20px;
   }
 
-  .guide-hero-content {
-    width: 100%;
+
+ .guide-hero-content {
+    width: 55%;
+
+    max-width: none;
+
+    flex-shrink: 0;
   }
 
   .guide-hero h1 {
     margin-top: 25px;
 
-    font-size: clamp(49px, 14vw, 70px);
+    font-size: clamp(38px, 8vw, 58px);
 
-    letter-spacing: -3px;
+    letter-spacing: -2.5px;
+
+    line-height: 0.9;
   }
 
   .guide-hero h1 span {
@@ -980,65 +989,79 @@
   }
 
   .guide-hero-description {
-    margin-top: 25px;
+    margin-top: 22px;
 
-    font-size: 15px;
+    font-size: 13px;
+
+    line-height: 1.6;
   }
 
   .guide-scroll {
-    margin-top: 35px;
+    margin-top: 30px;
+
+    gap: 10px;
+
+    font-size: 8px;
   }
 
+  .guide-scroll-line {
+    width: 40px;
+  }
+
+
   .guide-visual {
-    width: 280px;
-    height: 280px;
+    width: 42%;
+    height: 240px;
+
+    flex-shrink: 0;
 
     align-self: center;
   }
 
   .orbit-one {
-    width: 125px;
-    height: 125px;
+    width: 105px;
+    height: 105px;
   }
 
   .orbit-two {
-    width: 200px;
-    height: 200px;
+    width: 165px;
+    height: 165px;
   }
 
   .orbit-three {
-    width: 275px;
-    height: 275px;
+    width: 225px;
+    height: 225px;
   }
 
   .guide-center {
-    width: 90px;
-    height: 90px;
+    width: 75px;
+    height: 75px;
   }
 
   .guide-center span {
-    font-size: 52px;
+    font-size: 43px;
   }
 
   .guide-floating-card {
-    padding: 10px 13px;
+    padding: 8px 10px;
 
-    font-size: 8px;
+    font-size: 7px;
+
+    gap: 6px;
   }
 
   .card-top {
-    top: 20px;
-    right: 0;
+    top: 15px;
+    right: -5px;
   }
 
   .card-bottom {
-    bottom: 20px;
-    left: 0;
+    bottom: 15px;
+    left: -10px;
   }
 
   /* INTRO */
-
-  .guide-intro {
+.guide-intro {
     width: calc(100% - 40px);
 
     margin-top: 80px;
@@ -1061,6 +1084,7 @@
 
     font-size: 15px;
   }
+
 
   /* STEPS */
 
@@ -1278,4 +1302,63 @@
   .guide-bottom h2 {
     font-size: 44px;
   }
+}
+
+
+
+
+/* =========================================================
+   GUIDE ANSWER SECTIONS
+========================================================= */
+
+.guide-answer-section {
+  margin-bottom: 32px;
+}
+
+.guide-answer-section:last-child {
+  margin-bottom: 0;
+}
+
+.guide-answer-section h4 {
+  margin: 0 0 12px;
+
+  font-size: 18px;
+  line-height: 1.4;
+
+  font-weight: 800;
+
+  color: #7040a0;
+}
+
+.guide-answer-section p {
+  margin: 0 0 12px;
+
+  font-size: 15px;
+  line-height: 1.85;
+
+  color: #666666;
+}
+
+.guide-answer-section p:last-child {
+  margin-bottom: 0;
+}
+
+
+
+@media (max-width: 700px) {
+
+  .guide-answer-section {
+    margin-bottom: 27px;
+  }
+
+  .guide-answer-section h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .guide-answer-section p {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
 }

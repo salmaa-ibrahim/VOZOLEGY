@@ -9,23 +9,64 @@ const questions = [
     question: "دليل المبتدئين",
     answer: (
       <>
-        <p>
-          لو دي أول مرة تختار فيها جهاز فيب، أهم حاجة تبدأ بفهم طريقة السحب
-          المناسبة ليك، حجم الجهاز، وتركيز النيكوتين.
-        </p>
+        <div className="guide-answer-section">
+          <h4>حدد سبب استخدامك للفيب</h4>
 
-        <p>
-          لو بتحب إحساس قريب من السيجارة التقليدية والسحبة الهادية،
-          أجهزة MTL بتكون أقرب للتجربة دي.
-        </p>
+          <p>
+            إجابتك هنا هتساعدنا نحدد الاختيار المناسب ليك.
+          </p>
 
-        <p>
-          أما لو بتفضل سحبة أكبر وبخار أكثر، ممكن تلاقي أجهزة DL أنسب
-          لطريقة استخدامك.
-        </p>
+          <p>
+            لو كنت بتدخن وبتدور على بديل قريب من إحساس السجائر، ممكن
+            يناسبك جهاز MTL بسيط زي Vozol Star 40K.
+            أما لو الفيب بالنسبة لك تجربة وهواية، فـ DL والسحبات الكبيرة
+            ممكن تكون الأنسب ليك.
+          </p>
+        </div>
+
+        <div className="guide-answer-section">
+          <h4>اختار تركيز النيكوتين المناسب</h4>
+
+          <p>
+            لو كنت مدخّن سابقًا، ممكن تبدأ بتركيز 25–50 مجم، وبعدها تقلل
+            التركيز تدريجيًا مع الوقت.
+          </p>
+
+          <p>
+            ولو مش مدخّن أو بتدخن بشكل خفيف، اختار تركيز أقل من البداية.
+          </p>
+        </div>
+
+        <div className="guide-answer-section">
+          <h4>اختار أول نكهة ليك</h4>
+
+          <p>
+            لو بتنتقل من السجائر، النكهات القريبة من التبغ ممكن تساعدك
+            في البداية.
+          </p>
+
+          <p>
+            أما لو عايز تجربة مختلفة، ممكن تبدأ بنكهات الفواكه.
+            مفيش نكهة واحدة مناسبة للجميع، فجرّب أكتر من نوع لحد ما
+            تلاقي النكهة اللي تناسبك.
+          </p>
+        </div>
+
+        <div className="guide-answer-section">
+          <h4>اشتري من مصدر موثوق</h4>
+
+          <p>
+            جودة الجهاز والسائل بتفرق في تجربة الاستخدام.
+          </p>
+
+          <p>
+            في VOZOL EGY بنوفر منتجات أصلية ومضمونة 100%.
+          </p>
+        </div>
       </>
     ),
   },
+
   {
     id: 2,
     number: "02",
@@ -81,44 +122,128 @@ const questions = [
       </>
     ),
   },
+
   {
     id: 3,
     number: "03",
     question: "كيف تختار نكهة الفيب المناسبة لك؟",
     answer: (
       <>
-        <p>
-          اختيار النكهة بيعتمد بشكل أساسي على ذوقك الشخصي. لو بتحب النكهات
-          المنعشة، ممكن تبدأ بنكهة Ice أو Mint.
-        </p>
+        <div className="guide-answer-section">
+          <h4>إزاي تختار أول نكهة فيب؟</h4>
 
-        <p>
-          ولو بتحب الطعم الحلو والفواكه، جرب نكهات مثل Mango أو Berry
-          أو النكهات المركبة.
-        </p>
+          <p>
+            اختيار النكهة في أول تجربة ممكن يأثر على انطباعك عن الفيب
+            بشكل كبير.
+          </p>
 
-        <p>
-          الأفضل تبدأ بنكهات قريبة من الأذواق اللي بتحبها بالفعل بدل
-          تجربة نكهات عشوائية.
-        </p>
+          <p>
+            النكهة المناسبة هتخلي التجربة أسهل وأمتع، عشان كده اختار
+            نكهة قريبة من ذوقك.
+          </p>
+        </div>
+
+        <div className="guide-answer-section">
+          <h4>🍂 نكهات التبغ — لو جاي من التدخين</h4>
+
+          <p>
+            لو لسه بتنتقل من السجائر، نكهات Tobacco ممكن تكون اختيار
+            مناسب كبداية.
+          </p>
+
+          <p>
+            هتلاقي منها أنواع مختلفة زي التبغ الكلاسيكي والتبغ بالفانيليا،
+            وكل نوع ليه طعم مختلف شوية عن السيجارة التقليدية.
+          </p>
+        </div>
+
+        <div className="guide-answer-section">
+          <h4>🥭 نكهات الفواكه — لو عايز تجربة مختلفة</h4>
+
+          <p>
+            لو عايز تبعد عن طعم السجائر وتجرب حاجة جديدة، نكهات الفواكه
+            فيها اختيارات كتير.
+          </p>
+
+          <p>
+            من النكهات المشهورة المانجو، البطيخ، والفراولة، لأنها مألوفة
+            وسهلة التجربة.
+          </p>
+        </div>
+
+        <div className="guide-answer-section">
+          <h4>🥤 نكهات المشروبات والحلويات</h4>
+
+          <p>
+            لو بتحب النكهات الغنية والمختلفة، ممكن تجرب نكهات زي الكولا،
+            مشروبات الطاقة والحلويات.
+          </p>
+
+          <p>
+            الفئة دي بتوفر اختيارات متنوعة للي عايز يجرب طعم مختلف.
+          </p>
+        </div>
+
+        <div className="guide-answer-section">
+          <h4>💡 نصيحة: ابدأ بنكهة أو اتنين</h4>
+
+          <p>
+            بدل ما تشتري نكهات كتير من أول مرة، ابدأ بـ نكهة أو اتنين.
+          </p>
+
+          <p>
+            جرّبهم الأول، وبعدها هتعرف إيه اللي يناسب ذوقك وتقدر تختار
+            نكهات جديدة بسهولة.
+          </p>
+        </div>
+
+        <div className="guide-answer-section">
+          <h4>❄️ إيه الفرق بين النكهة العادية و ICE؟</h4>
+
+          <p>
+            بعض النكهات بتكون متوفرة بنسخة ICE أو Super Cool.
+          </p>
+
+          <p>
+            بتكون نفس النكهة الأساسية، لكن مع إحساس بارد ومنعش أثناء السحب.
+          </p>
+
+          <p>
+            لو بتحب الإحساس البارد، ممكن تجرب النسخة المثلجة من النكهة
+            اللي بتحبها.
+          </p>
+        </div>
       </>
     ),
   },
+
   {
     id: 4,
     number: "04",
     question: "ليه جهازك يبقى disposable ؟",
     answer: (
       <>
-        <p>
-          أجهزة الـDisposable مصممة لتكون بسيطة وسهلة الاستخدام، بدون
-          الحاجة لإعادة تعبئة السائل أو تغيير أجزاء الجهاز بشكل متكرر.
-        </p>
+        <div className="guide-answer-section">
+          <h4>جهاز جاهز بالكامل</h4>
 
-        <p>
-          لذلك قد تكون مناسبة لمن يبحث عن تجربة استخدام مباشرة وبأقل
-          خطوات ممكنة.
-        </p>
+          <p>
+            جهاز جاهز للاستخدام، بيحتوي على السائل والبطارية والكويل في
+            جهاز واحد.
+          </p>
+
+          <p>
+            استخدمه لحد ما يخلص، وبعدها تقدر تستبدله بواحد جديد.
+          </p>
+
+          <p>
+            مفيش تعبئة، ولا شحن، ولا صيانة.
+          </p>
+
+          <p>
+            بسيط وسهل الاستخدام، من غير أي إعدادات، ومناسب للسفر أو كتجربة
+            أولى. كمان سعره بيكون مناسب كبداية.
+          </p>
+        </div>
       </>
     ),
   },
@@ -139,11 +264,6 @@ const HowToChoosePage = () => {
         <div className="guide-hero-glow guide-glow-two" />
 
         <div className="guide-hero-content">
-          <div className="guide-badge">
-            <span className="guide-badge-dot" />
-            VAPE GUIDE
-          </div>
-
           <h1>
             HOW TO
             <span>CHOOSE YOUR VAPE</span>
@@ -154,11 +274,6 @@ const HowToChoosePage = () => {
             <br />
             خلينا نساعدك تفهم الاختيارات وتحدد الأنسب ليك.
           </p>
-
-          <div className="guide-scroll">
-            <span>EXPLORE GUIDE</span>
-            <span className="guide-scroll-line" />
-          </div>
         </div>
 
         <div className="guide-visual">
@@ -183,7 +298,7 @@ const HowToChoosePage = () => {
       </section>
 
       {/* INTRO */}
-      <section className="guide-intro">
+      {/* <section className="guide-intro">
         <div className="guide-intro-label">
           <span>01</span>
           START HERE
@@ -200,10 +315,10 @@ const HowToChoosePage = () => {
             وحجم الجهاز كلها عوامل بتفرق في تجربة كل شخص.
           </p>
         </div>
-      </section>
+      </section> */}
 
       {/* STEPS */}
-      <section className="guide-steps">
+      {/* <section className="guide-steps">
         <div className="guide-step">
           <span className="step-number">01</span>
 
@@ -233,13 +348,13 @@ const HowToChoosePage = () => {
             <p>اختار الخيار الأقرب لاحتياجاتك.</p>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* QUESTIONS */}
       <section className="guide-questions">
         <div className="questions-heading">
           <div>
-            <span className="section-eyebrow">02 — QUESTIONS</span>
+            {/* <span className="section-eyebrow">02 — QUESTIONS</span> */}
 
             <h2>
               GOT
@@ -305,7 +420,7 @@ const HowToChoosePage = () => {
       </section>
 
       {/* BOTTOM CTA */}
-      <section className="guide-bottom">
+      {/* <section className="guide-bottom">
         <div className="guide-bottom-number">03</div>
 
         <div className="guide-bottom-content">
@@ -323,7 +438,7 @@ const HowToChoosePage = () => {
         </div>
 
         <div className="guide-bottom-arrow">↗</div>
-      </section>
+      </section> */}
     </main>
   );
 };
