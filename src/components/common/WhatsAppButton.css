@@ -1,0 +1,283 @@
+
+/* =========================================================
+   WHATSAPP FLOATING BUTTON
+========================================================= */
+
+.whatsapp-floating-button {
+  position: fixed;
+
+  right: 28px;
+  bottom: 28px;
+
+  z-index: 9999;
+
+  /* IMPORTANT:
+     Text LEFT
+     Icon RIGHT
+  */
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+
+  text-decoration: none;
+
+  background: transparent;
+
+  border: none;
+  outline: none;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   WHATSAPP ICON
+========================================================= */
+
+.whatsapp-floating-button__icon {
+  width: 72px;
+  height: 72px;
+
+  flex: 0 0 72px;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  /* Small continuous movement */
+  animation: whatsappGentleMove 3s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   CHAT WITH US
+========================================================= */
+
+.whatsapp-floating-button__tooltip {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 58px;
+
+  padding: 0 28px;
+
+  margin-right: 12px;
+
+  background: #202020;
+
+  color: #ffffff;
+
+  border-radius: 14px;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================================
+   ARROW
+   Points from the text toward the WhatsApp icon
+========================================================= */
+
+.whatsapp-floating-button__tooltip::after {
+  content: "";
+
+  position: absolute;
+
+  right: -14px;
+  top: 50%;
+
+  width: 0;
+  height: 0;
+
+  transform: translateY(-50%);
+
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+
+  border-left: 14px solid #202020;
+}
+
+
+/* =========================================================
+   NO HOVER CHANGES
+========================================================= */
+
+.whatsapp-floating-button:hover {
+  transform: none;
+
+  background: transparent;
+}
+
+.whatsapp-floating-button:hover
+.whatsapp-floating-button__tooltip {
+  background: #202020;
+
+  color: #ffffff;
+}
+
+.whatsapp-floating-button:hover
+.whatsapp-floating-button__icon {
+  transform: none;
+}
+
+
+/* =========================================================
+   GENTLE ICON ANIMATION
+========================================================= */
+
+@keyframes whatsappGentleMove {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+  .whatsapp-floating-button {
+    right: 22px;
+    bottom: 22px;
+  }
+
+  .whatsapp-floating-button__icon {
+    width: 44px;
+    height: 44px;
+
+    flex-basis: 44px;
+  }
+
+  .whatsapp-floating-button__tooltip {
+    height: 42px;
+
+    padding: 0 13px;
+
+    margin-right: 10px;
+
+    border-radius: 13px;
+
+    font-size: 14px;
+  }
+
+  .whatsapp-floating-button__tooltip::after {
+    right: -12px;
+
+    border-top-width: 9px;
+    border-bottom-width: 9px;
+
+    border-left-width: 12px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+  .whatsapp-floating-button {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .whatsapp-floating-button__icon {
+    width: 36px;
+    height: 36px;
+
+    flex-basis: 36px;
+  }
+
+  .whatsapp-floating-button__tooltip {
+    height: 36px;
+
+    padding: 0 8px;
+
+    margin-right: 8px;
+
+    border-radius: 11px;
+
+    font-size: 11px;
+  }
+
+  .whatsapp-floating-button__tooltip::after {
+    right: -10px;
+
+    border-top-width: 8px;
+    border-bottom-width: 8px;
+
+    border-left-width: 10px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+  .whatsapp-floating-button {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .whatsapp-floating-button__icon {
+    width: 30px;
+    height: 30px;
+
+    flex-basis: 30px;
+  }
+
+  .whatsapp-floating-button__tooltip {
+    height: 32px;
+
+    padding: 0 15px;
+
+    margin-right: 7px;
+
+    border-radius: 10px;
+
+    font-size: 10px;
+  }
+
+  .whatsapp-floating-button__tooltip::after {
+    right: -8px;
+
+    border-top-width: 7px;
+    border-bottom-width: 7px;
+
+    border-left-width: 9px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-floating-button__icon {
+    animation: none;
+  }
+}
