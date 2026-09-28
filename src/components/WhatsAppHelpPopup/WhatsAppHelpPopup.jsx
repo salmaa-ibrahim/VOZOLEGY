@@ -57,8 +57,8 @@ export default function WhatsAppHelpPopup({ whatsappNumber }) {
           <img src="/icons/whatsappp.png" alt="" />
         </div>
 
-        <p className="whatsapp-help-eyebrow">VOZOL EGYPT</p>
-        <h2 id="whatsapp-help-title">Need a little help?</h2>
+        <p className="whatsapp-help-eyebrow">VOZOL EGY</p>
+        <h2 id="whatsapp-help-title">Need Help?</h2>
         {/* <p className="whatsapp-help-copy">We&apos;re here for you on WhatsApp.</p> */}
         <p className="whatsapp-help-copy">محتار في اختيارك ؟ محتاج مساعدة ؟ </p>
         <p className="whatsapp-help-copy">احنا معاك و موجودين علشان نساعدك 24 ساعه على واتساب .. تواصل معنا</p>
