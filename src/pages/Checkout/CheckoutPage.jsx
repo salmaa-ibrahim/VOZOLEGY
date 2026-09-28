@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import emailjs from "@emailjs/browser";
 import { useCart } from "../../contexts/CartContext";
 import "./CheckoutPage.css";
+
+/* =========================================================
+   EMAILJS CONFIGURATION
+   ========================================================= */
+
+const EMAILJS_SERVICE_ID = "service_0yy4boh";
+const EMAILJS_TEMPLATE_ID = "template_c00mmne";
+const EMAILJS_PUBLIC_KEY = "g2zziO6y7TRchkobH";
 
 /* =========================================================
    EGYPT GOVERNORATES / CITIES / DELIVERY AREAS
@@ -344,6 +353,7 @@ const CheckoutPage = () => {
   const { cartItems, clearCart, subtotal } = useCart();
 
   const [orderCompleted, setOrderCompleted] = useState(false);
+  const [isSendingOrder, setIsSendingOrder] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -389,12 +399,6 @@ const CheckoutPage = () => {
     const { name, value } = e.target;
 
     setFormData((prev) => {
-      /*
-        When governorate changes:
-        reset city because the previous city
-        may not belong to the new governorate.
-      */
-
       if (name === "governorate") {
         return {
           ...prev,
@@ -411,11 +415,101 @@ const CheckoutPage = () => {
   };
 
   /* =========================================================
+     SEND ORDER EMAIL
+     ========================================================= */
+
+  const sendOrderEmail = async () => {
+    const orderNumber = `VZ-${Date.now().toString().slice(-8)}`;
+
+    const orderDate = new Date().toLocaleString("en-EG", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+
+    const orderItems = cartItems
+      .map((item) => {
+        const itemTotal = item.price * item.quantity;
+
+        return `
+          <div style="padding:12px 0; border-bottom:1px solid #eeeeee;">
+            <div style="font-weight:700; color:#222222;">
+              ${item.name}
+            </div>
+
+            ${
+              item.flavor
+                ? `
+                  <div style="margin-top:3px; color:#777777; font-size:13px;">
+                    Flavor: ${item.flavor}
+                  </div>
+                `
+                : ""
+            }
+
+            <div style="margin-top:3px; color:#777777; font-size:13px;">
+              Quantity: ${item.quantity}
+            </div>
+
+            <div style="margin-top:5px; color:#7b35d6; font-weight:700;">
+              ${itemTotal} LE
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+
+    const shipping = deliveryMethod === "standard" ? 100 : "By Agreement";
+
+    const total =
+      deliveryMethod === "standard" ? `${subtotal + 100} LE` : "To be confirmed";
+
+    const templateParams = {
+      order_number: orderNumber,
+      order_date: orderDate,
+
+      customer_name: formData.fullName,
+      phone: formData.phone,
+      whatsapp: formData.whatsapp,
+
+      governorate: formData.governorate,
+      city: formData.city,
+      street: formData.street || "Not provided",
+      building: formData.building || "Not provided",
+      apartment: formData.apartment || "Not provided",
+      address_details: formData.addressDetails || "None",
+
+      delivery_method:
+        deliveryMethod === "standard"
+          ? "Standard Delivery - 2–3 Business Days"
+          : "Same Day Express - By Agreement",
+
+      order_items: orderItems,
+
+      subtotal: subtotal,
+      shipping: shipping,
+      total: total,
+    };
+
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      templateParams,
+      {
+        publicKey: EMAILJS_PUBLIC_KEY,
+      },
+    );
+
+    return orderNumber;
+  };
+
+  /* =========================================================
      PLACE ORDER
      ========================================================= */
 
-  const handlePlaceOrder = (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
+
+    if (isSendingOrder) return;
 
     /* Required fields */
 
@@ -424,49 +518,62 @@ const CheckoutPage = () => {
       !formData.phone ||
       !formData.whatsapp ||
       !formData.governorate ||
-      !formData.city 
-      // !formData.street ||
-      // !formData.building ||
-      // !formData.apartment
+      !formData.city
     ) {
       alert("Please fill in all required fields.");
       return;
     }
 
-    /*
-      Show completed screen BEFORE clearing cart.
-      Otherwise cart becomes empty and Checkout
-      immediately redirects to Cart.
-    */
+    setIsSendingOrder(true);
 
-    setOrderCompleted(true);
+    try {
+      /*
+        Send the order details to EmailJS
+        BEFORE clearing the cart.
+      */
 
-    /* =====================================================
-       SAME DAY EXPRESS → WHATSAPP
-       ===================================================== */
+      await sendOrderEmail();
 
-    if (deliveryMethod === "express") {
-      const orderProducts = cartItems
-        .map(
-          (item) =>
-            `• ${item.name} - ${item.flavor || "N/A"} x${item.quantity} - ${
-              item.price * item.quantity
-            } LE`,
-        )
-        .join("\n");
+      /*
+        Show completed screen BEFORE clearing cart.
+        Otherwise cart becomes empty and Checkout
+        immediately redirects to Cart.
+      */
 
-      const address = [
-        formData.governorate,
-        formData.city,
-        formData.street,
-        `Building ${formData.building}`,
-        `Apartment ${formData.apartment}`,
-        formData.addressDetails ? `Details: ${formData.addressDetails}` : "",
-      ]
-        .filter(Boolean)
-        .join(", ");
+      setOrderCompleted(true);
 
-      const whatsappMessage = `
+      /* =====================================================
+         SAME DAY EXPRESS → WHATSAPP
+         ===================================================== */
+
+      if (deliveryMethod === "express") {
+        const orderProducts = cartItems
+          .map(
+            (item) =>
+              `• ${item.name} - ${item.flavor || "N/A"} x${
+                item.quantity
+              } - ${item.price * item.quantity} LE`,
+          )
+          .join("\n");
+
+        const address = [
+          formData.governorate,
+          formData.city,
+          formData.street,
+          formData.building
+            ? `Building ${formData.building}`
+            : "",
+          formData.apartment
+            ? `Apartment ${formData.apartment}`
+            : "",
+          formData.addressDetails
+            ? `Details: ${formData.addressDetails}`
+            : "",
+        ]
+          .filter(Boolean)
+          .join(", ");
+
+        const whatsappMessage = `
 Hello VOZOL EGY 👋🏻
 
 I would like to place an order.
@@ -499,33 +606,45 @@ Total:
 To be confirmed
 
 Thank you ❤️
-      `.trim();
+        `.trim();
 
-      /*
-        Replace this with your real WhatsApp business number.
-        Example:
-        201070022988
-      */
+        /*
+          Replace this with your real WhatsApp business number.
+        */
 
-      const whatsappNumber = "201000000000";
+        const whatsappNumber = "201000000000";
 
-      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-        whatsappMessage,
-      )}`;
+        const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+          whatsappMessage,
+        )}`;
+
+        clearCart();
+
+        window.open(whatsappURL, "_blank");
+
+        return;
+      }
+
+      /* =====================================================
+         STANDARD DELIVERY
+         NO WHATSAPP REDIRECT
+         ===================================================== */
 
       clearCart();
+    } catch (error) {
+      console.error("EmailJS order error:", error);
 
-      window.open(whatsappURL, "_blank");
+      alert(
+        "We couldn't send your order right now. Please try again.",
+      );
+
+      setOrderCompleted(false);
+      setIsSendingOrder(false);
 
       return;
     }
 
-    /* =====================================================
-       STANDARD DELIVERY
-       NO WHATSAPP REDIRECT
-       ===================================================== */
-
-    clearCart();
+    setIsSendingOrder(false);
   };
 
   /* =========================================================
@@ -540,7 +659,9 @@ Thank you ❤️
 
           <h1>Order Completed!</h1>
 
-          <p className="order-success__message">Thank you for your order ❤️</p>
+          <p className="order-success__message">
+            Thank you for your order ❤️
+          </p>
 
           {deliveryMethod === "standard" ? (
             <p className="order-success__details">
@@ -574,6 +695,7 @@ Thank you ❤️
   return (
     <main className="checkout-page">
       <div className="checkout-container">
+
         {/* ===================================================
             HEADER
         =================================================== */}
@@ -586,7 +708,11 @@ Thank you ❤️
           <span className="checkout-header__line"></span>
         </div>
 
-        <form className="checkout-layout" onSubmit={handlePlaceOrder}>
+        <form
+          className="checkout-layout"
+          onSubmit={handlePlaceOrder}
+        >
+
           {/* =================================================
               01 — CUSTOMER INFORMATION
           ================================================= */}
@@ -602,7 +728,6 @@ Thank you ❤️
             </div>
 
             <div className="checkout-grid">
-              {/* Full Name */}
 
               <div className="checkout-field checkout-field--full">
                 <label>
@@ -619,8 +744,6 @@ Thank you ❤️
                 />
               </div>
 
-              {/* Phone */}
-
               <div className="checkout-field">
                 <label>
                   Phone Number <span>*</span>
@@ -636,8 +759,6 @@ Thank you ❤️
                 />
               </div>
 
-              {/* WhatsApp */}
-
               <div className="checkout-field">
                 <label>
                   WhatsApp Number <span>*</span>
@@ -652,6 +773,7 @@ Thank you ❤️
                   required
                 />
               </div>
+
             </div>
           </section>
 
@@ -670,9 +792,6 @@ Thank you ❤️
             </div>
 
             <div className="checkout-grid">
-              {/* =============================================
-                  GOVERNORATE
-              ============================================= */}
 
               <div className="checkout-field">
                 <label>
@@ -685,19 +804,22 @@ Thank you ❤️
                   onChange={handleChange}
                   required
                 >
-                  <option value="">Select Governorate</option>
+                  <option value="">
+                    Select Governorate
+                  </option>
 
-                  {Object.keys(egyptLocations).map((governorate) => (
-                    <option key={governorate} value={governorate}>
-                      {governorate}
-                    </option>
-                  ))}
+                  {Object.keys(egyptLocations).map(
+                    (governorate) => (
+                      <option
+                        key={governorate}
+                        value={governorate}
+                      >
+                        {governorate}
+                      </option>
+                    ),
+                  )}
                 </select>
               </div>
-
-              {/* =============================================
-                  CITY / AREA
-              ============================================= */}
 
               <div className="checkout-field">
                 <label>
@@ -718,17 +840,15 @@ Thank you ❤️
                   </option>
 
                   {formData.governorate &&
-                    egyptLocations[formData.governorate]?.map((city) => (
+                    egyptLocations[
+                      formData.governorate
+                    ]?.map((city) => (
                       <option key={city} value={city}>
                         {city}
                       </option>
                     ))}
                 </select>
               </div>
-
-              {/* =============================================
-                  STREET
-              ============================================= */}
 
               <div className="checkout-field checkout-field--full">
                 <label>Street</label>
@@ -742,10 +862,6 @@ Thank you ❤️
                 />
               </div>
 
-              {/* =============================================
-                  BUILDING
-              ============================================= */}
-
               <div className="checkout-field">
                 <label>Building Number</label>
 
@@ -757,10 +873,6 @@ Thank you ❤️
                   placeholder="Building number"
                 />
               </div>
-
-              {/* =============================================
-                  APARTMENT
-              ============================================= */}
 
               <div className="checkout-field">
                 <label>Apartment Number</label>
@@ -774,10 +886,6 @@ Thank you ❤️
                 />
               </div>
 
-              {/* =============================================
-                  ADDRESS DETAILS
-              ============================================= */}
-
               <div className="checkout-field checkout-field--full">
                 <label>Address Details</label>
 
@@ -789,6 +897,7 @@ Thank you ❤️
                   rows="4"
                 />
               </div>
+
             </div>
           </section>
 
@@ -802,16 +911,19 @@ Thank you ❤️
 
               <div>
                 <h2>Delivery Method</h2>
-                <p>Choose your preferred delivery option</p>
+                <p>
+                  Choose your preferred delivery option
+                </p>
               </div>
             </div>
 
             <div className="delivery-options">
-              {/* STANDARD DELIVERY */}
 
               <label
                 className={`delivery-option ${
-                  deliveryMethod === "standard" ? "delivery-option--active" : ""
+                  deliveryMethod === "standard"
+                    ? "delivery-option--active"
+                    : ""
                 }`}
               >
                 <input
@@ -819,7 +931,9 @@ Thank you ❤️
                   name="delivery"
                   value="standard"
                   checked={deliveryMethod === "standard"}
-                  onChange={(e) => setDeliveryMethod(e.target.value)}
+                  onChange={(e) =>
+                    setDeliveryMethod(e.target.value)
+                  }
                 />
 
                 <div className="delivery-option__radio"></div>
@@ -831,15 +945,17 @@ Thank you ❤️
                     <strong>100 LE</strong>
                   </div>
 
-                  <p>Delivery within 2–3 business days.</p>
+                  <p>
+                    Delivery within 2–3 business days.
+                  </p>
                 </div>
               </label>
 
-              {/* SAME DAY EXPRESS */}
-
               <label
                 className={`delivery-option ${
-                  deliveryMethod === "express" ? "delivery-option--active" : ""
+                  deliveryMethod === "express"
+                    ? "delivery-option--active"
+                    : ""
                 }`}
               >
                 <input
@@ -847,7 +963,9 @@ Thank you ❤️
                   name="delivery"
                   value="express"
                   checked={deliveryMethod === "express"}
-                  onChange={(e) => setDeliveryMethod(e.target.value)}
+                  onChange={(e) =>
+                    setDeliveryMethod(e.target.value)
+                  }
                 />
 
                 <div className="delivery-option__radio"></div>
@@ -860,11 +978,12 @@ Thank you ❤️
                   </div>
 
                   <p>
-                    Same-day delivery. Shipping cost will be confirmed with you
-                    through WhatsApp.
+                    Same-day delivery. Shipping cost will be
+                    confirmed with you through WhatsApp.
                   </p>
                 </div>
               </label>
+
             </div>
           </section>
 
@@ -873,39 +992,59 @@ Thank you ❤️
           ================================================= */}
 
           <aside className="checkout-summary">
+
             <div className="checkout-summary__header">
               <h2>ORDER SUMMARY</h2>
 
               <span>
-                {cartItems.length} {cartItems.length === 1 ? "Item" : "Items"}
+                {cartItems.length}{" "}
+                {cartItems.length === 1
+                  ? "Item"
+                  : "Items"}
               </span>
             </div>
 
             <div className="checkout-summary__items">
+
               {cartItems.map((item) => (
-                <div className="checkout-summary__item" key={item.id}>
+                <div
+                  className="checkout-summary__item"
+                  key={item.id}
+                >
+
                   <div className="checkout-summary__image">
-                    <img src={item.image_url || item.image} alt={item.name} />
+                    <img
+                      src={item.image_url || item.image}
+                      alt={item.name}
+                    />
                   </div>
 
                   <div className="checkout-summary__info">
+
                     <h3>{item.name}</h3>
 
                     {item.flavor && (
                       <p>
-                        Flavor: <span>{item.flavor}</span>
+                        Flavor:{" "}
+                        <span>{item.flavor}</span>
                       </p>
                     )}
 
                     <p>Qty: {item.quantity}</p>
+
                   </div>
 
-                  <strong>{item.price * item.quantity} LE</strong>
+                  <strong>
+                    {item.price * item.quantity} LE
+                  </strong>
+
                 </div>
               ))}
+
             </div>
 
             <div className="checkout-summary__totals">
+
               <div>
                 <span>Subtotal</span>
 
@@ -916,27 +1055,44 @@ Thank you ❤️
                 <span>Shipping</span>
 
                 <strong>
-                  {deliveryMethod === "standard" ? "100 LE" : "By Agreement"}
+                  {deliveryMethod === "standard"
+                    ? "100 LE"
+                    : "By Agreement"}
                 </strong>
               </div>
 
               <div className="checkout-summary__total">
+
                 <span>Total</span>
 
                 <strong>
-                  {deliveryMethod === "standard" ? subtotal + 100 : subtotal} LE
+                  {deliveryMethod === "standard"
+                    ? subtotal + 100
+                    : subtotal}{" "}
+                  LE
                 </strong>
+
               </div>
+
             </div>
 
-            <button type="submit" className="place-order-button">
-              PLACE ORDER
+            <button
+              type="submit"
+              className="place-order-button"
+              disabled={isSendingOrder}
+            >
+              {isSendingOrder
+                ? "PLACING ORDER..."
+                : "PLACE ORDER"}
             </button>
 
             <p className="checkout-summary__note">
-              By placing your order, you agree to our delivery terms.
+              By placing your order, you agree to our
+              delivery terms.
             </p>
+
           </aside>
+
         </form>
       </div>
     </main>
