@@ -1,11 +1,10 @@
-
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { supabase } from "../../lib/supabase";
 import { useCart } from "../../contexts/CartContext";
-
+import { siteConfig } from "../../config/siteConfig";
 import "./CategoryDetailsPage.css";
 
 /* ============================================================
@@ -45,8 +44,7 @@ const CategoryDetailsPage = () => {
     event.stopPropagation();
 
     const isAvailable =
-      product?.available === true ||
-      product?.status === "active";
+      product?.available === true || product?.status === "active";
 
     if (!isAvailable) return;
 
@@ -81,10 +79,7 @@ const CategoryDetailsPage = () => {
            1. GET CURRENT CATEGORY
         -------------------------------------------------------- */
 
-        const {
-          data: categoryData,
-          error: categoryError,
-        } = await supabase
+        const { data: categoryData, error: categoryError } = await supabase
           .from("categories")
           .select("*")
           .eq("slug", slug)
@@ -109,10 +104,7 @@ const CategoryDetailsPage = () => {
            2. GET PRODUCTS BELONGING TO CURRENT CATEGORY
         -------------------------------------------------------- */
 
-        const {
-          data: productsData,
-          error: productsError,
-        } = await supabase
+        const { data: productsData, error: productsError } = await supabase
           .from("products")
           .select("*")
           .eq("category_id", categoryData.id)
@@ -131,10 +123,7 @@ const CategoryDetailsPage = () => {
            No limit — show every available category.
         -------------------------------------------------------- */
 
-        const {
-          data: categoriesData,
-          error: categoriesError,
-        } = await supabase
+        const { data: categoriesData, error: categoriesError } = await supabase
           .from("categories")
           .select("*")
           .neq("id", categoryData.id)
@@ -144,10 +133,7 @@ const CategoryDetailsPage = () => {
           });
 
         if (categoriesError) {
-          console.error(
-            "Recommended categories error:",
-            categoriesError
-          );
+          console.error("Recommended categories error:", categoriesError);
         }
 
         /* --------------------------------------------------------
@@ -168,8 +154,7 @@ const CategoryDetailsPage = () => {
           setRecommendedCategories([]);
 
           setError(
-            err?.message ||
-              "Something went wrong while loading this category."
+            err?.message || "Something went wrong while loading this category.",
           );
         }
       } finally {
@@ -224,9 +209,7 @@ const CategoryDetailsPage = () => {
 
           slug: product.slug,
 
-          available:
-            product.available === true ||
-            product.status === "active",
+          available: product.available === true || product.status === "active",
 
           product,
         });
@@ -247,9 +230,7 @@ const CategoryDetailsPage = () => {
       ["Name", category.name],
       [
         "Flavor",
-        flavors.length > 0
-          ? flavors.map((item) => item.name).join(", ")
-          : null,
+        flavors.length > 0 ? flavors.map((item) => item.name).join(", ") : null,
       ],
       ["Battery", category.battery],
       ["Capacity", category.capacity],
@@ -265,11 +246,7 @@ const CategoryDetailsPage = () => {
   ============================================================ */
 
   if (loading) {
-    return (
-      <div className="category-page-loading">
-        Loading...
-      </div>
-    );
+    return <div className="category-page-loading">Loading...</div>;
   }
 
   /* ============================================================
@@ -281,13 +258,9 @@ const CategoryDetailsPage = () => {
       <div className="category-page-error">
         <h2>Category Not Found</h2>
 
-        <p>
-          {error || "This category does not exist."}
-        </p>
+        <p>{error || "This category does not exist."}</p>
 
-        <Link to="/categories">
-          Back to Categories
-        </Link>
+        <Link to="/categories">Back to Categories</Link>
       </div>
     );
   }
@@ -298,34 +271,22 @@ const CategoryDetailsPage = () => {
 
   return (
     <main className="category-page">
-
       {/* ======================================================
           BREADCRUMB
       ====================================================== */}
 
       <div className="category-container">
-
-        <nav
-          className="category-breadcrumb"
-          aria-label="Breadcrumb"
-        >
-          <Link to="/">
-            Home
-          </Link>
+        <nav className="category-breadcrumb" aria-label="Breadcrumb">
+          <Link to="/">Home</Link>
 
           <span>/</span>
 
-          <Link to="/">
-            Categories
-          </Link>
+          <Link to="/">Categories</Link>
 
           <span>/</span>
 
-          <strong>
-            {category.name}
-          </strong>
+          <strong>{category.name}</strong>
         </nav>
-
       </div>
 
       {/* ======================================================
@@ -383,15 +344,8 @@ const CategoryDetailsPage = () => {
 
       </section> */}
 
-
-
-
-
       <section className="category-hero">
-
         <div className="category-container category-hero-inner">
-
-
           <motion.div
             className="category-hero-image"
             initial={{
@@ -415,9 +369,7 @@ const CategoryDetailsPage = () => {
               alt={category.name}
             />
           </motion.div>
-
         </div>
-
       </section>
 
       {/* ======================================================
@@ -426,111 +378,73 @@ const CategoryDetailsPage = () => {
 
       {flavors.length > 0 && (
         <section className="category-section">
-
           <div className="category-container">
-
             <div className="category-section-heading">
-              <h2>
-                CHOOSE YOUR FLAVOR
-              </h2>
+              <h2>CHOOSE YOUR FLAVOR</h2>
             </div>
 
             <div className="all-products-grid">
-
               <AnimatePresence mode="popLayout">
-
                 {products.map((product) => {
-
-                  const isAdded =
-                    Boolean(
-                      addedProducts[product.id]
-                    );
+                  const isAdded = Boolean(addedProducts[product.id]);
 
                   const isAvailable =
-                    product.available === true ||
-                    product.status === "active";
+                    product.available === true || product.status === "active";
 
                   return (
                     <motion.article
                       key={product.id}
                       className="all-product-card"
-
                       layout
-
                       initial={{
                         opacity: 0,
                         y: 25,
                       }}
-
                       animate={{
                         opacity: 1,
                         y: 0,
                       }}
-
                       exit={{
                         opacity: 0,
                         scale: 0.96,
                       }}
-
                       transition={{
                         duration: 0.35,
                       }}
-
-                      onClick={() =>
-                        handleProductClick(product)
-                      }
-
+                      onClick={() => handleProductClick(product)}
                       role="button"
                       tabIndex={0}
-
                       onKeyDown={(event) => {
-
-                        if (
-                          event.key === "Enter" ||
-                          event.key === " "
-                        ) {
+                        if (event.key === "Enter" || event.key === " ") {
                           event.preventDefault();
 
-                          handleProductClick(
-                            product
-                          );
+                          handleProductClick(product);
                         }
-
                       }}
                     >
-
                       {/* =================================================
                           PRODUCT IMAGE
                       ================================================= */}
 
                       <div className="all-product-image-wrapper">
-
                         <img
                           src={
                             product.image_url ||
                             product.image ||
                             "/images/products/placeholder.png"
                           }
-
                           alt={`${product.name}${
-                            product.flavor
-                              ? ` - ${product.flavor}`
-                              : ""
+                            product.flavor ? ` - ${product.flavor}` : ""
                           }`}
-
                           className="all-product-image"
-
                           loading="lazy"
                         />
 
                         {!isAvailable && (
                           <div className="product-unavailable-overlay">
-                            <span>
-                              OUT OF STOCK
-                            </span>
+                            <span>OUT OF STOCK</span>
                           </div>
                         )}
-
                       </div>
 
                       {/* =================================================
@@ -538,64 +452,57 @@ const CategoryDetailsPage = () => {
                       ================================================= */}
 
                       <div className="all-product-info">
-
-                        <h3 className="all-product-name">
-                          {product.flavor}
-                        </h3>
-
+                        <h3 className="all-product-name">{product.flavor}</h3>
                         <p className="all-product-price">
-                          LE{" "}
-                          {Number(
-                            product.price || 0
-                          ).toFixed(2)}
+                          LE {Number(product.price || 0).toFixed(2)}
                         </p>
-
                         {/* ADD TO CART */}
 
-                        <button
-                          type="button"
+                        <div className="add-to-cart-section">
+                          <button
+                            type="button"
+                            className={`add-to-cart-button ${
+                              isAdded ? "added" : ""
+                            } ${!isAvailable ? "disabled" : ""}`}
+                            disabled={!isAvailable || isAdded}
+                            onClick={(event) => handleAddToCart(event, product)}
+                          >
+                            {isAdded
+                              ? "Added!"
+                              : isAvailable
+                                ? "Add to Cart"
+                                : "Out of Stock"}
+                          </button>
 
-                          className={`add-to-cart-button ${
-                            isAdded
-                              ? "added"
-                              : ""
-                          } ${
-                            !isAvailable
-                              ? "disabled"
-                              : ""
-                          }`}
+                          <a
+                            href={`https://wa.me/${siteConfig.social.whatsapp}?text=${encodeURIComponent(
+                              `Hello, I’m interested in this product:
 
-                          disabled={
-                            !isAvailable ||
-                            isAdded
-                          }
+Product: ${product.name}
+Flavor: ${product.flavor || "N/A"}
+Price: ${product.price} EGP
 
-                          onClick={(event) =>
-                            handleAddToCart(
-                              event,
-                              product
-                            )
-                          }
-                        >
-                          {isAdded
-                            ? "Added!"
-                            : isAvailable
-                              ? "Add to Cart"
-                              : "Out of Stock"}
-                        </button>
-
+Please provide me with more details.`,
+                            )}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="whatsapp-button"
+                            aria-label="Contact us on WhatsApp"
+                          >
+                            <img
+                              src="/icons/whatsappp.png"
+                              alt="WhatsApp"
+                              className="whatsapp-icon"
+                            />
+                          </a>
+                        </div>
                       </div>
-
                     </motion.article>
                   );
                 })}
-
               </AnimatePresence>
-
             </div>
-
           </div>
-
         </section>
       )}
 
@@ -604,46 +511,25 @@ const CategoryDetailsPage = () => {
       ====================================================== */}
 
       <section className="category-section category-info-section">
-
         <div className="category-container">
-
           <section className="category-information-section">
-
             <div className="category-container">
-
-              <h2 className="category-section-title">
-                PRODUCT INFORMATION
-              </h2>
+              <h2 className="category-section-title">PRODUCT INFORMATION</h2>
 
               <div className="category-information-table">
+                {information.map(([label, value]) => (
+                  <div className="category-information-row" key={label}>
+                    <div className="category-information-label">{label}</div>
 
-                {information.map(
-                  ([label, value]) => (
-                    <div
-                      className="category-information-row"
-                      key={label}
-                    >
-
-                      <div className="category-information-label">
-                        {label}
-                      </div>
-
-                      <div className="category-information-value">
-                        {value || "—"}
-                      </div>
-
+                    <div className="category-information-value">
+                      {value || "—"}
                     </div>
-                  )
-                )}
-
+                  </div>
+                ))}
               </div>
-
             </div>
-
           </section>
-
         </div>
-
       </section>
 
       {/* ======================================================
@@ -655,13 +541,9 @@ const CategoryDetailsPage = () => {
       {(category.banner_1_image ||
         category.banner_2_image ||
         category.banner_3_image) && (
-
         <section className="category-banners">
-
           <div className="category-container">
-
             <div className="category-banner-grid">
-
               {[
                 category.banner_1_image,
                 category.banner_2_image,
@@ -671,47 +553,34 @@ const CategoryDetailsPage = () => {
                 .filter(Boolean)
 
                 .map((banner, index) => (
-
                   <motion.div
                     className="category-banner"
                     key={banner}
-
                     initial={{
                       opacity: 0,
                       y: 20,
                     }}
-
                     whileInView={{
                       opacity: 1,
                       y: 0,
                     }}
-
                     viewport={{
                       once: true,
                     }}
-
                     transition={{
                       duration: 0.45,
                       delay: index * 0.08,
                     }}
                   >
-
                     <img
                       src={banner}
-                      alt={`${category.name} banner ${
-                        index + 1
-                      }`}
+                      alt={`${category.name} banner ${index + 1}`}
                       loading="lazy"
                     />
-
                   </motion.div>
-
                 ))}
-
             </div>
-
           </div>
-
         </section>
       )}
 
@@ -723,73 +592,46 @@ const CategoryDetailsPage = () => {
       ====================================================== */}
 
       {recommendedCategories.length > 0 && (
-
         <section className="category-section category-recommended-section">
-
           <div className="category-container">
-
             <div className="category-section-heading">
-
               <div>
-                <h2>
-                  YOU MAY ALSO LIKE
-                </h2>
+                <h2>YOU MAY ALSO LIKE</h2>
               </div>
-
             </div>
 
             <div className="category-recommended-grid">
+              {recommendedCategories.map((item) => (
+                <Link
+                  to={`/categories/${item.slug}`}
+                  className="category-recommended-card"
+                  key={item.id}
+                >
+                  <div className="category-recommended-image">
+                    <img
+                      src={
+                        item.image_url ||
+                        item.mobile_image_url ||
+                        "/images/products/placeholder.png"
+                      }
+                      alt={item.name}
+                      loading="lazy"
+                    />
+                  </div>
 
-              {recommendedCategories.map(
-                (item) => (
+                  <div className="category-recommended-content">
+                    <h4>{item.name}</h4>
 
-                  <Link
-                    to={`/categories/${item.slug}`}
-                    className="category-recommended-card"
-                    key={item.id}
-                  >
-
-                    <div className="category-recommended-image">
-
-                      <img
-                        src={
-                          item.image_url ||
-                          item.mobile_image_url ||
-                          "/images/products/placeholder.png"
-                        }
-
-                        alt={item.name}
-
-                        loading="lazy"
-                      />
-
-                    </div>
-
-                    <div className="category-recommended-content">
-
-                      <h4>
-                        {item.name}
-                      </h4>
-
-                      <span className="category-recommended-arrow">
-                        Explore →
-                      </span>
-
-                    </div>
-
-                  </Link>
-
-                )
-              )}
-
+                    <span className="category-recommended-arrow">
+                      Explore →
+                    </span>
+                  </div>
+                </Link>
+              ))}
             </div>
-
           </div>
-
         </section>
-
       )}
-
     </main>
   );
 };
