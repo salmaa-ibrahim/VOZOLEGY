@@ -686,8 +686,8 @@
   overflow: hidden;
   transition: all 0.25s ease;
   border-radius: 50%;
-  border: #15121a solid 1px;
-  padding: 8px;
+  /* border: #15121a solid 1px;
+  padding: 8px; */
 }
 
 .whatsapp-icon {
