@@ -52,7 +52,7 @@ const CategoryShowcase = () => {
 
   if (categories.length === 0) {
     return (
-      <section className="category-showcase">
+      <section className="category-showcase ">
         <motion.h2
           className="all-products-title"
           initial={{ opacity: 0, y: 25 }}
@@ -62,6 +62,7 @@ const CategoryShowcase = () => {
         >
           Discover Our Category
         </motion.h2>
+        
 
         <p className="loading">No categories available.</p>
       </section>
@@ -77,8 +78,13 @@ const CategoryShowcase = () => {
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.6 }}
       >
-        Discover Our Category
+        Discover Our Category <br />
+        <span className="section-subtitle">
+        Disposable Vape
+      </span>
+        
       </motion.h2>
+      
 
       <div className="category-grid">
         {categories.map((cat) => (
