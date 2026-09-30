@@ -30,6 +30,11 @@ const LoginPage = () => {
         <button type="submit">Sign In</button>
       </form>
       <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
+      <br /> <br />
+      <a href="/">
+      <button type="submit">Continue without Login</button>
+
+      </a>
     </div>
   );
 };
