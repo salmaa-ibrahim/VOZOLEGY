@@ -9,26 +9,30 @@ export default function WhatsAppHelpPopup({ whatsappNumber }) {
   useEffect(() => {
     if (typeof window === "undefined") return undefined;
 
-    try {
-      if (window.sessionStorage.getItem(SESSION_KEY) === "1") {
-        return undefined;
-      }
-    } catch {
-      // Continue without session persistence if browser storage is unavailable.
-    }
+    let timerId;
 
-    const timerId = window.setTimeout(() => setIsOpen(true), 15_000);
-    return () => window.clearTimeout(timerId);
+    const showPopup = () => {
+      setIsOpen(true);
+    };
+
+    // First appearance after 20 seconds
+    timerId = window.setTimeout(showPopup, 20_000);
+
+    return () => {
+      window.clearTimeout(timerId);
+    };
   }, []);
 
   const closePopup = () => {
-    try {
-      window.sessionStorage.setItem(SESSION_KEY, "1");
-    } catch {
-      // The popup still closes for this render if browser storage is unavailable.
-    }
     setIsOpen(false);
+
+    // Show again 40 seconds after closing
+    window.setTimeout(() => {
+      setIsOpen(true);
+    }, 40_000);
   };
+
+ 
 
   if (!isOpen || !whatsappNumber) return null;
 
@@ -61,8 +65,9 @@ export default function WhatsAppHelpPopup({ whatsappNumber }) {
         <h2 id="whatsapp-help-title">Need Help?</h2>
         {/* <p className="whatsapp-help-copy">We&apos;re here for you on WhatsApp.</p> */}
         <p className="whatsapp-help-copy">محتار في اختيارك ؟ محتاج مساعدة ؟ </p>
-        <p className="whatsapp-help-copy">احنا معاك و موجودين علشان نساعدك 24 ساعه على واتساب .. تواصل معنا</p>
-
+        <p className="whatsapp-help-copy">
+          احنا معاك و موجودين علشان نساعدك 24 ساعه على واتساب .. تواصل معنا
+        </p>
 
         <a
           className="whatsapp-help-cta"

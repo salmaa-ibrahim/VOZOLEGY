@@ -26,9 +26,9 @@ const WhatsAppButton = () => {
         className="whatsapp-floating-button__icon"
       />
 
-      <span className="whatsapp-floating-button__tooltip">
+      {/* <span className="whatsapp-floating-button__tooltip">
         Chat with us
-      </span>
+      </span> */}
     </a>
   );
 };
