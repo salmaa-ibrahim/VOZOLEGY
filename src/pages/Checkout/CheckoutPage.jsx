@@ -379,7 +379,7 @@ const CheckoutPage = () => {
       left: 0,
       behavior: "instant",
     });
-  }, []);
+  }, [orderCompleted]);
 
   /* =========================================================
      IF CART IS EMPTY → RETURN TO CART
