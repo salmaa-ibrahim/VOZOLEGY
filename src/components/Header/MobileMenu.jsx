@@ -97,8 +97,6 @@
 
 // export default MobileMenu;
 
-
-
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
@@ -179,10 +177,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
 
         console.log("Mobile Menu Categories:", data);
       } catch (error) {
-        console.error(
-          "Failed to load mobile menu categories:",
-          error
-        );
+        console.error("Failed to load mobile menu categories:", error);
 
         setCategories([]);
       } finally {
@@ -321,22 +316,16 @@ const MobileMenu = ({ isOpen, onClose }) => {
             {/* ================================================== */}
 
             <div className="drawer__body">
-
               {/* ================================================== */}
               {/* Search */}
               {/* ================================================== */}
 
               <div className="menu-search-wrapper">
-                <form
-                  className="menu-search"
-                  onSubmit={handleSearch}
-                >
+                <form className="menu-search" onSubmit={handleSearch}>
                   <input
                     type="search"
                     value={searchQuery}
-                    onChange={(event) =>
-                      setSearchQuery(event.target.value)
-                    }
+                    onChange={(event) => setSearchQuery(event.target.value)}
                     placeholder="Search products..."
                     aria-label="Search products"
                     autoComplete="off"
@@ -349,13 +338,10 @@ const MobileMenu = ({ isOpen, onClose }) => {
 
                 {searchQuery.trim() && (
                   <div className="search-suggestions">
-
                     {/* Loading */}
 
                     {isSearching && (
-                      <div className="search-status">
-                        Searching...
-                      </div>
+                      <div className="search-status">Searching...</div>
                     )}
 
                     {/* Results */}
@@ -365,9 +351,33 @@ const MobileMenu = ({ isOpen, onClose }) => {
                       searchResults.length > 0 && (
                         <div className="search-results">
                           {searchResults.map((product) => (
+                            // <Link
+                            //   key={product.id}
+                            //   to={`/products/${product.slug}`}
+                            //   className="search-result"
+                            //   onClick={() => {
+                            //     setSearchQuery("");
+                            //     setSearchResults([]);
+                            //     onClose();
+                            //   }}
+                            // >
+                            //   <div className="search-result__content">
+                            //     <span className="search-result__name">
+                            //       {product.name}
+                            //     </span>
+
+                            //     {product.price !== undefined &&
+                            //       product.price !== null && (
+                            //         <span className="search-result__price">
+                            //           {product.price}{" "}
+                            //           {siteConfig.store.currencySymbol}
+                            //         </span>
+                            //       )}
+                            //   </div>
+                            // </Link>
                             <Link
                               key={product.id}
-                              to={`/products/${product.slug}`}
+                              to={`/products/${product.id}`}
                               className="search-result"
                               onClick={() => {
                                 setSearchQuery("");
@@ -375,10 +385,24 @@ const MobileMenu = ({ isOpen, onClose }) => {
                                 onClose();
                               }}
                             >
+                              {product.image_url && (
+                                <img
+                                  src={product.image_url}
+                                  alt={product.flavor || product.name}
+                                  className="search-result__image"
+                                />
+                              )}
+
                               <div className="search-result__content">
                                 <span className="search-result__name">
                                   {product.name}
                                 </span>
+
+                                {product.flavor && (
+                                  <span className="search-result__flavor">
+                                    {product.flavor}
+                                  </span>
+                                )}
 
                                 {product.price !== undefined &&
                                   product.price !== null && (
@@ -398,9 +422,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                     {!isSearching &&
                       !searchError &&
                       searchResults.length === 0 && (
-                        <div className="search-status">
-                          No products found
-                        </div>
+                        <div className="search-status">No products found</div>
                       )}
 
                     {/* Error */}
@@ -419,7 +441,6 @@ const MobileMenu = ({ isOpen, onClose }) => {
               {/* ================================================== */}
 
               <nav className="menu-nav">
-
                 {/* Home */}
 
                 <Link
@@ -434,6 +455,30 @@ const MobileMenu = ({ isOpen, onClose }) => {
                 {/* Categories */}
                 {/* ================================================== */}
 
+                {/* <div className="menu-categories">
+                  {categoriesLoading ? (
+                    <div className="menu-category-loading">
+                      Loading categories...
+                    </div>
+                  ) : categories.length > 0 ? (
+                    categories.map((category) => (
+                      <Link
+                        key={category.id}
+                        to={`/categories/${category.slug}`}
+                        onClick={onClose}
+                        className="menu-link"
+                      >
+                        {category.image}
+                        {category.name}
+                      </Link>
+                    ))
+                  ) : (
+                    <div className="menu-category-empty">
+                      No categories available
+                    </div>
+                  )}
+                </div> */}
+
                 <div className="menu-categories">
                   {categoriesLoading ? (
                     <div className="menu-category-loading">
@@ -447,7 +492,15 @@ const MobileMenu = ({ isOpen, onClose }) => {
                         onClick={onClose}
                         className="menu-link"
                       >
-                        {category.name}
+                        {category.image_url && (
+                          <img
+                            src={category.image_url}
+                            alt={category.name}
+                            className="menu-category-image"
+                          />
+                        )}
+
+                        <span>{category.name}</span>
                       </Link>
                     ))
                   ) : (
@@ -471,9 +524,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                       to={item.path}
                       onClick={onClose}
                       className={`menu-link ${
-                        item.path === "/how-to-choose"
-                          ? "menu-link--bold"
-                          : ""
+                        item.path === "/how-to-choose" ? "menu-link--bold" : ""
                       }`}
                     >
                       {item.label}
@@ -486,9 +537,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                 {/* Social Heading */}
                 {/* ================================================== */}
 
-                <p className="menu-heading">
-                  Come closer to us
-                </p>
+                <p className="menu-heading">Come closer to us</p>
 
                 {/* ================================================== */}
                 {/* Social Links */}
@@ -499,11 +548,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                     <a
                       key={social.id}
                       href={social.url}
-                      target={
-                        social.id === "phone"
-                          ? undefined
-                          : "_blank"
-                      }
+                      target={social.id === "phone" ? undefined : "_blank"}
                       rel={
                         social.id === "phone"
                           ? undefined
@@ -529,9 +574,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
             {/* ================================================== */}
 
             <div className="drawer__footer">
-              <p className="copyright">
-                {siteConfig.messages.copyright}
-              </p>
+              <p className="copyright">{siteConfig.messages.copyright}</p>
             </div>
           </motion.div>
         </>

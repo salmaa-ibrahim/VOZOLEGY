@@ -10,7 +10,7 @@ import HowToChooseSection from "../../components/HowToChoose/HowToChooseSection"
 import AllProducts from "../../components/AllProducts/AllProducts";
 import MakeJoyBanner from "../../components/makeJoyBanner/makJoyBanner";
 import VozolVideo from "../../components/VozolVideo/VozolVideo";
-
+import SearchComponent from "../../components/SearchComponent/SearchComponent";
 import { supabase } from "../../lib/supabase";
 
 // import './Home.css';
@@ -100,6 +100,7 @@ const Home = () => {
       {/* ======================================================
           CONTACT
       ======================================================= */}
+<SearchComponent />
 
       <ContactSection />
 
