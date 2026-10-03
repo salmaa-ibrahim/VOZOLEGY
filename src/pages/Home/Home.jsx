@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import "./Home.css";
 import HeroSlider from "../../components/HeroSlider/HeroSlider";
 import ContactSection from "../../components/ContactSection/ContactSection";
 import CategoryShowcase from "../../components/CategoryShowcase/CategoryShowcase";
