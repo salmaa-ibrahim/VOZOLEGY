@@ -29,7 +29,7 @@ export default function WhatsAppHelpPopup({ whatsappNumber }) {
     // Show again 40 seconds after closing
     window.setTimeout(() => {
       setIsOpen(true);
-    }, 40_000);
+    }, 70_000);
   };
 
  
