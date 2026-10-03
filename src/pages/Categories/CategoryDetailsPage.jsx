@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { supabase } from "../../lib/supabase";
 import { useCart } from "../../contexts/CartContext";
 import { siteConfig } from "../../config/siteConfig";
+import SEO from "../../seo/SEO";
 import "./CategoryDetailsPage.css";
 
 /* ============================================================
@@ -270,30 +271,40 @@ const CategoryDetailsPage = () => {
   ============================================================ */
 
   return (
-    <main className="category-page">
-      {/* ======================================================
+    <>
+      <SEO
+        title={category.seo_title || `${category.name} | VOZOL EGY`}
+        description={
+          category.seo_description ||
+          `Explore ${category.name} flavors at VOZOL EGY. Discover available flavors, product details and more in Egypt.`
+        }
+        url={`https://vozolegy.com/categories/${category.slug}`}
+        image={category.image_url || category.banner_image}
+      />
+      <main className="category-page">
+        {/* ======================================================
           BREADCRUMB
       ====================================================== */}
 
-      <div className="category-container">
-        <nav className="category-breadcrumb" aria-label="Breadcrumb">
-          <Link to="/">Home</Link>
+        <div className="category-container">
+          <nav className="category-breadcrumb" aria-label="Breadcrumb">
+            <Link to="/">Home</Link>
 
-          <span>/</span>
+            <span>/</span>
 
-          <Link to="/">Categories</Link>
+            <Link to="/">Categories</Link>
 
-          <span>/</span>
+            <span>/</span>
 
-          <strong>{category.name}</strong>
-        </nav>
-      </div>
+            <strong>{category.name}</strong>
+          </nav>
+        </div>
 
-      {/* ======================================================
+        {/* ======================================================
           HERO
       ====================================================== */}
 
-      {/* <section className="category-hero">
+        {/* <section className="category-hero">
 
         <div className="category-container category-hero-inner">
 
@@ -344,295 +355,298 @@ const CategoryDetailsPage = () => {
 
       </section> */}
 
-      <section className="category-hero">
-        <div className="category-container category-hero-inner">
-          <motion.div
-            className="category-hero-image"
-            initial={{
-              opacity: 0,
-              scale: 0.96,
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-            }}
-            transition={{
-              duration: 0.6,
-            }}
-          >
-            <img
-              src={
-                category.banner_image ||
-                category.mobile_image_url ||
-                "/images/products/placeholder.png"
-              }
-              alt={category.name}
-            />
-          </motion.div>
-        </div>
-      </section>
+        <section className="category-hero">
+          <div className="category-container category-hero-inner">
+            <motion.div
+              className="category-hero-image"
+              initial={{
+                opacity: 0,
+                scale: 0.96,
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+              }}
+              transition={{
+                duration: 0.6,
+              }}
+            >
+              <img
+                src={
+                  category.banner_image ||
+                  category.mobile_image_url ||
+                  "/images/products/placeholder.png"
+                }
+                alt={category.name}
+              />
+            </motion.div>
+          </div>
+        </section>
 
-      {/* ======================================================
+        {/* ======================================================
           ALL PRODUCTS / FLAVORS
       ====================================================== */}
 
-      {flavors.length > 0 && (
-        <section className="category-section">
-          <div className="category-container">
-            <div className="category-section-heading">
-              <h2>CHOOSE YOUR FLAVOR</h2>
-            </div>
+        {flavors.length > 0 && (
+          <section className="category-section">
+            <div className="category-container">
+              <div className="category-section-heading">
+                <h2>CHOOSE YOUR FLAVOR</h2>
+              </div>
 
-            <div className="all-products-grid">
-              <AnimatePresence mode="popLayout">
-                {products.map((product) => {
-                  const isAdded = Boolean(addedProducts[product.id]);
+              <div className="all-products-grid">
+                <AnimatePresence mode="popLayout">
+                  {products.map((product) => {
+                    const isAdded = Boolean(addedProducts[product.id]);
 
-                  const isAvailable =
-                    product.available === true || product.status === "active";
+                    const isAvailable =
+                      product.available === true || product.status === "active";
 
-                  return (
-                    <motion.article
-                      key={product.id}
-                      className="all-product-card"
-                      layout
-                      initial={{
-                        opacity: 0,
-                        y: 25,
-                      }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                      }}
-                      exit={{
-                        opacity: 0,
-                        scale: 0.96,
-                      }}
-                      transition={{
-                        duration: 0.35,
-                      }}
-                      onClick={() => handleProductClick(product)}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter" || event.key === " ") {
-                          event.preventDefault();
+                    return (
+                      <motion.article
+                        key={product.id}
+                        className="all-product-card"
+                        layout
+                        initial={{
+                          opacity: 0,
+                          y: 25,
+                        }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                        }}
+                        exit={{
+                          opacity: 0,
+                          scale: 0.96,
+                        }}
+                        transition={{
+                          duration: 0.35,
+                        }}
+                        onClick={() => handleProductClick(product)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
 
-                          handleProductClick(product);
-                        }
-                      }}
-                    >
-                      {/* =================================================
+                            handleProductClick(product);
+                          }
+                        }}
+                      >
+                        {/* =================================================
                           PRODUCT IMAGE
                       ================================================= */}
 
-                      <div className="all-product-image-wrapper">
-                        <img
-                          src={
-                            product.image_url ||
-                            product.image ||
-                            "/images/products/placeholder.png"
-                          }
-                          alt={`${product.name}${
-                            product.flavor ? ` - ${product.flavor}` : ""
-                          }`}
-                          className="all-product-image"
-                          loading="lazy"
-                        />
+                        <div className="all-product-image-wrapper">
+                          <img
+                            src={
+                              product.image_url ||
+                              product.image ||
+                              "/images/products/placeholder.png"
+                            }
+                            alt={`${product.name}${
+                              product.flavor ? ` - ${product.flavor}` : ""
+                            }`}
+                            className="all-product-image"
+                            loading="lazy"
+                          />
 
-                        {!isAvailable && (
-                          <div className="product-unavailable-overlay">
-                            <span>OUT OF STOCK</span>
-                          </div>
-                        )}
-                      </div>
+                          {!isAvailable && (
+                            <div className="product-unavailable-overlay">
+                              <span>OUT OF STOCK</span>
+                            </div>
+                          )}
+                        </div>
 
-                      {/* =================================================
+                        {/* =================================================
                           PRODUCT INFO
                       ================================================= */}
 
-                      <div className="all-product-info">
-                        <h3 className="all-product-name">{product.flavor}</h3>
-                        <p className="all-product-price">
-                          LE {Number(product.price || 0).toFixed(2)}
-                        </p>
-                        {/* ADD TO CART */}
+                        <div className="all-product-info">
+                          <h3 className="all-product-name">{product.flavor}</h3>
+                          <p className="all-product-price">
+                            LE {Number(product.price || 0).toFixed(2)}
+                          </p>
+                          {/* ADD TO CART */}
 
-                        <div className="add-to-cart-section">
-                          <button
-                            type="button"
-                            className={`add-to-cart-button ${
-                              isAdded ? "added" : ""
-                            } ${!isAvailable ? "disabled" : ""}`}
-                            disabled={!isAvailable || isAdded}
-                            onClick={(event) => handleAddToCart(event, product)}
-                          >
-                            {isAdded
-                              ? "Added!"
-                              : isAvailable
-                                ? "Add to Cart"
-                                : "Out of Stock"}
-                          </button>
+                          <div className="add-to-cart-section">
+                            <button
+                              type="button"
+                              className={`add-to-cart-button ${
+                                isAdded ? "added" : ""
+                              } ${!isAvailable ? "disabled" : ""}`}
+                              disabled={!isAvailable || isAdded}
+                              onClick={(event) =>
+                                handleAddToCart(event, product)
+                              }
+                            >
+                              {isAdded
+                                ? "Added!"
+                                : isAvailable
+                                  ? "Add to Cart"
+                                  : "Out of Stock"}
+                            </button>
 
-                          <a
-                            href={`https://wa.me/${siteConfig.social.whatsapp}?text=${encodeURIComponent(
-                              `Hello, I’m interested in this product:
+                            <a
+                              href={`https://wa.me/${siteConfig.social.whatsapp}?text=${encodeURIComponent(
+                                `Hello, I’m interested in this product:
 
 Product: ${product.name}
 Flavor: ${product.flavor || "N/A"}
 Price: ${product.price} EGP
 
 Please provide me with more details.`,
-                            )}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="whatsapp-button"
-                            aria-label="Contact us on WhatsApp"
-                          >
-                            <img
-                              src="/icons/whatsappp.png"
-                              alt="WhatsApp"
-                              className="whatsapp-icon"
-                            />
-                          </a>
+                              )}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="whatsapp-button"
+                              aria-label="Contact us on WhatsApp"
+                            >
+                              <img
+                                src="/icons/whatsappp.png"
+                                alt="WhatsApp"
+                                className="whatsapp-icon"
+                              />
+                            </a>
+                          </div>
                         </div>
-                      </div>
-                    </motion.article>
-                  );
-                })}
-              </AnimatePresence>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ======================================================
-          PRODUCT INFORMATION
-      ====================================================== */}
-
-      <section className="category-section category-info-section">
-        <div className="category-container">
-          <section className="category-information-section">
-            <div className="category-container">
-              <h2 className="category-section-title">PRODUCT INFORMATION</h2>
-
-              <div className="category-information-table">
-                {information.map(([label, value]) => (
-                  <div className="category-information-row" key={label}>
-                    <div className="category-information-label">{label}</div>
-
-                    <div className="category-information-value">
-                      {value || "—"}
-                    </div>
-                  </div>
-                ))}
+                      </motion.article>
+                    );
+                  })}
+                </AnimatePresence>
               </div>
             </div>
           </section>
-        </div>
-      </section>
+        )}
 
-      {/* ======================================================
+        {/* ======================================================
+          PRODUCT INFORMATION
+      ====================================================== */}
+
+        <section className="category-section category-info-section">
+          <div className="category-container">
+            <section className="category-information-section">
+              <div className="category-container">
+                <h2 className="category-section-title">PRODUCT INFORMATION</h2>
+
+                <div className="category-information-table">
+                  {information.map(([label, value]) => (
+                    <div className="category-information-row" key={label}>
+                      <div className="category-information-label">{label}</div>
+
+                      <div className="category-information-value">
+                        {value || "—"}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        {/* ======================================================
           CATEGORY BANNERS
           
           Static grid — no slider
       ====================================================== */}
 
-      {(category.banner_1_image ||
-        category.banner_2_image ||
-        category.banner_3_image) && (
-        <section className="category-banners">
-          <div className="category-container">
-            <div className="category-banner-grid">
-              {[
-                category.banner_1_image,
-                category.banner_2_image,
-                category.banner_3_image,
-              ]
+        {(category.banner_1_image ||
+          category.banner_2_image ||
+          category.banner_3_image) && (
+          <section className="category-banners">
+            <div className="category-container">
+              <div className="category-banner-grid">
+                {[
+                  category.banner_1_image,
+                  category.banner_2_image,
+                  category.banner_3_image,
+                ]
 
-                .filter(Boolean)
+                  .filter(Boolean)
 
-                .map((banner, index) => (
-                  <motion.div
-                    className="category-banner"
-                    key={banner}
-                    initial={{
-                      opacity: 0,
-                      y: 20,
-                    }}
-                    whileInView={{
-                      opacity: 1,
-                      y: 0,
-                    }}
-                    viewport={{
-                      once: true,
-                    }}
-                    transition={{
-                      duration: 0.45,
-                      delay: index * 0.08,
-                    }}
-                  >
-                    <img
-                      src={banner}
-                      alt={`${category.name} banner ${index + 1}`}
-                      loading="lazy"
-                    />
-                  </motion.div>
-                ))}
+                  .map((banner, index) => (
+                    <motion.div
+                      className="category-banner"
+                      key={banner}
+                      initial={{
+                        opacity: 0,
+                        y: 20,
+                      }}
+                      whileInView={{
+                        opacity: 1,
+                        y: 0,
+                      }}
+                      viewport={{
+                        once: true,
+                      }}
+                      transition={{
+                        duration: 0.45,
+                        delay: index * 0.08,
+                      }}
+                    >
+                      <img
+                        src={banner}
+                        alt={`${category.name} banner ${index + 1}`}
+                        loading="lazy"
+                      />
+                    </motion.div>
+                  ))}
+              </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        )}
 
-      {/* ======================================================
+        {/* ======================================================
           YOU MAY ALSO LIKE
 
           ALL ACTIVE CATEGORIES
           Current category excluded
       ====================================================== */}
 
-      {recommendedCategories.length > 0 && (
-        <section className="category-section category-recommended-section">
-          <div className="category-container">
-            <div className="category-section-heading">
-              <div>
-                <h2>YOU MAY ALSO LIKE</h2>
+        {recommendedCategories.length > 0 && (
+          <section className="category-section category-recommended-section">
+            <div className="category-container">
+              <div className="category-section-heading">
+                <div>
+                  <h2>YOU MAY ALSO LIKE</h2>
+                </div>
+              </div>
+
+              <div className="category-recommended-grid">
+                {recommendedCategories.map((item) => (
+                  <Link
+                    to={`/categories/${item.slug}`}
+                    className="category-recommended-card"
+                    key={item.id}
+                  >
+                    <div className="category-recommended-image">
+                      <img
+                        src={
+                          item.image_url ||
+                          item.mobile_image_url ||
+                          "/images/products/placeholder.png"
+                        }
+                        alt={item.name}
+                        loading="lazy"
+                      />
+                    </div>
+
+                    <div className="category-recommended-content">
+                      <h4>{item.name}</h4>
+
+                      <span className="category-recommended-arrow">
+                        Explore →
+                      </span>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </div>
-
-            <div className="category-recommended-grid">
-              {recommendedCategories.map((item) => (
-                <Link
-                  to={`/categories/${item.slug}`}
-                  className="category-recommended-card"
-                  key={item.id}
-                >
-                  <div className="category-recommended-image">
-                    <img
-                      src={
-                        item.image_url ||
-                        item.mobile_image_url ||
-                        "/images/products/placeholder.png"
-                      }
-                      alt={item.name}
-                      loading="lazy"
-                    />
-                  </div>
-
-                  <div className="category-recommended-content">
-                    <h4>{item.name}</h4>
-
-                    <span className="category-recommended-arrow">
-                      Explore →
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-    </main>
+          </section>
+        )}
+      </main>
+    </>
   );
 };
 

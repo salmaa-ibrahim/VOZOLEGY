@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 
 import HeroSlider from "../../components/HeroSlider/HeroSlider";
@@ -12,7 +11,7 @@ import MakeJoyBanner from "../../components/makeJoyBanner/makJoyBanner";
 import VozolVideo from "../../components/VozolVideo/VozolVideo";
 import SearchComponent from "../../components/SearchComponent/SearchComponent";
 import { supabase } from "../../lib/supabase";
-
+import SEO from "../../seo/SEO";
 // import './Home.css';
 
 const Home = () => {
@@ -34,7 +33,8 @@ const Home = () => {
 
         const { data, error } = await supabase
           .from("products")
-          .select(`
+          .select(
+            `
             *,
             category:categories (
               id,
@@ -42,14 +42,12 @@ const Home = () => {
               slug,
               active
             )
-          `)
+          `,
+          )
           .order("created_at", { ascending: false });
 
         if (error) {
-          console.error(
-            "Home Products Supabase Error:",
-            error
-          );
+          console.error("Home Products Supabase Error:", error);
 
           throw error;
         }
@@ -57,22 +55,14 @@ const Home = () => {
         if (isMounted) {
           setProducts(data || []);
 
-          console.log(
-            "Home Products from Supabase:",
-            data || []
-          );
+          console.log("Home Products from Supabase:", data || []);
         }
       } catch (error) {
-        console.error(
-          "Failed to fetch Home products:",
-          error
-        );
+        console.error("Failed to fetch Home products:", error);
 
         if (isMounted) {
           setProducts([]);
-          setProductsError(
-            "Unable to load products right now."
-          );
+          setProductsError("Unable to load products right now.");
         }
       } finally {
         if (isMounted) {
@@ -89,62 +79,67 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="home-page">
-
-      {/* ======================================================
+    <>
+      <SEO
+        title="VOZOL EGY | VOZOL Vape in Egypt"
+        description="Explore VOZOL vape products, flavors and categories at VOZOL EGY. Discover available VOZOL products in Egypt."
+        url="https://vozolegy.com/"
+      />
+      <div className="home-page">
+        {/* ======================================================
           HERO
       ======================================================= */}
 
-      <HeroSlider />
+        <HeroSlider />
 
-      {/* ======================================================
+        {/* ======================================================
           CONTACT
       ======================================================= */}
-<SearchComponent />
+        <SearchComponent />
 
-      <ContactSection />
+        <ContactSection />
 
-      {/* ======================================================
+        {/* ======================================================
           CATEGORIES
       ======================================================= */}
 
-      <CategoryShowcase />
+        <CategoryShowcase />
 
-      {/* ======================================================
+        {/* ======================================================
           SOCIAL
       ======================================================= */}
 
-      <SocialFollowBanner />
+        <SocialFollowBanner />
 
-      {/* ======================================================
+        {/* ======================================================
           ALL PRODUCTS
       ======================================================= */}
 
-      {productsLoading ? (
-        <section className="all-products-loading">
-          <p>Loading products...</p>
-        </section>
-      ) : productsError ? (
-        <section className="all-products-error">
-          <p>{productsError}</p>
-        </section>
-      ) : (
-        <AllProducts products={products} />
-      )}
+        {productsLoading ? (
+          <section className="all-products-loading">
+            <p>Loading products...</p>
+          </section>
+        ) : productsError ? (
+          <section className="all-products-error">
+            <p>{productsError}</p>
+          </section>
+        ) : (
+          <AllProducts products={products} />
+        )}
 
-      {/* ======================================================
+        {/* ======================================================
           OTHER SECTIONS
       ======================================================= */}
 
-      <HowToChooseSection />
+        <HowToChooseSection />
 
-      <VozolVideo />
+        <VozolVideo />
 
-      <MakeJoyBanner />
+        <MakeJoyBanner />
 
-      <ScrollingGallery />
-
-    </div>
+        <ScrollingGallery />
+      </div>
+    </>
   );
 };
 

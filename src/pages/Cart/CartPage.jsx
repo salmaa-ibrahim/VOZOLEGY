@@ -2,25 +2,34 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../contexts/CartContext';
 import './CartPage.css';
+import SEO from "../../seo/SEO";
 
 const CartPage = () => {
   const { cartItems, updateQuantity, removeFromCart, clearCart, subtotal, shipping, grandTotal } = useCart();
 
   if (cartItems.length === 0) {
     return (
-      <div className="cart-page empty">
-        <h2>Your Cart is Empty</h2>
-        <Link to="/" className="btn-primary">Continue Shopping</Link>
-      </div>
+      <>
+        <div className="cart-page empty">
+          <h2>Your Cart is Empty</h2>
+          <Link to="/" className="btn-primary">Continue Shopping</Link>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="cart-page">
-      <h1>Your Cart</h1>
-      <div className="cart-layout">
-        <div className="cart-items">
-          {cartItems.map(item => (
+    <>
+      <SEO
+        title="VOZOL EGY | Your Cart"
+        description="View your cart items and proceed to checkout."
+        url="https://vozolegy.com/cart"
+      />
+      <div className="cart-page">
+        <h1>Your Cart</h1>
+        <div className="cart-layout">
+          <div className="cart-items">
+            {cartItems.map(item => (
             <div key={item.id} className="cart-row">
               <img src={item.image_url} alt={item.name} />
               <div className="cart-row__details">
@@ -48,6 +57,7 @@ const CartPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

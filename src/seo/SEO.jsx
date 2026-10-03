@@ -1,26 +1,114 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async'; // Requires: npm install react-helmet-async
-// Or just use standard document head manipulation if you want to avoid extra deps.
-// For production, react-helmet-async is recommended for SPA SEO.
+import React from "react";
+import { Helmet } from "react-helmet-async";
 
-const SEO = ({ title, description, url, image }) => {
+const SITE_URL = "https://vozolegy.com";
+
+const DEFAULT_TITLE =
+  "VOZOL EGY | VOZOL Vape in Egypt";
+
+const DEFAULT_DESCRIPTION =
+  "VOZOL EGY - Explore VOZOL vape products, flavors and categories in Egypt.";
+
+const DEFAULT_IMAGE =
+  `${SITE_URL}/images/logo/og-image.webp`;
+
+const SEO = ({
+  title,
+  description,
+  url,
+  image,
+  type = "website",
+  noIndex = false,
+}) => {
+  const finalTitle = title || DEFAULT_TITLE;
+  const finalDescription = description || DEFAULT_DESCRIPTION;
+
+  const finalUrl = url
+    ? url.startsWith("http")
+      ? url
+      : `${SITE_URL}${url.startsWith("/") ? url : `/${url}`}`
+    : `${SITE_URL}${window.location.pathname}`;
+
+  const finalImage = image
+    ? image.startsWith("http")
+      ? image
+      : `${SITE_URL}${image.startsWith("/") ? image : `/${image}`}`
+    : DEFAULT_IMAGE;
+
   return (
     <Helmet>
-      <title>{title || 'VOZOL EGY - Premium Vape Shop'}</title>
-      <meta name="description" content={description || 'Shop the latest VOZOL vapes in Egypt.'} />
-      <link rel="canonical" href={url || window.location.href} />
-      
+      <title>{finalTitle}</title>
+
+      <meta
+        name="description"
+        content={finalDescription}
+      />
+
+      {noIndex && (
+        <meta
+          name="robots"
+          content="noindex, nofollow"
+        />
+      )}
+
+      <link
+        rel="canonical"
+        href={finalUrl}
+      />
+
       {/* Open Graph */}
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image || '/images/logo/og-image.webp'} />
-      <meta property="og:url" content={url || window.location.href} />
-      <meta property="og:type" content="website" />
-      
+
+      <meta
+        property="og:title"
+        content={finalTitle}
+      />
+
+      <meta
+        property="og:description"
+        content={finalDescription}
+      />
+
+      <meta
+        property="og:image"
+        content={finalImage}
+      />
+
+      <meta
+        property="og:url"
+        content={finalUrl}
+      />
+
+      <meta
+        property="og:type"
+        content={type}
+      />
+
+      <meta
+        property="og:site_name"
+        content="VOZOL EGY"
+      />
+
       {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
+
+      <meta
+        name="twitter:card"
+        content="summary_large_image"
+      />
+
+      <meta
+        name="twitter:title"
+        content={finalTitle}
+      />
+
+      <meta
+        name="twitter:description"
+        content={finalDescription}
+      />
+
+      <meta
+        name="twitter:image"
+        content={finalImage}
+      />
     </Helmet>
   );
 };
