@@ -377,7 +377,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                             // </Link>
                             <Link
                               key={product.id}
-                              to={`/products/${product.id}`}
+                              to={`/categories/${product.categories?.slug}`}
                               className="search-result"
                               onClick={() => {
                                 setSearchQuery("");

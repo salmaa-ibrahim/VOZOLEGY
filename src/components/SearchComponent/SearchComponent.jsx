@@ -129,7 +129,7 @@ const SearchComponent = ({
               {searchResults.map((product) => (
                 <Link
                   key={product.id}
-                  to={`/products/${product.id}`}
+                  to={`/categories/${product.categories?.slug}`}
                   className="search-component__result"
                   onClick={handleResultClick}
                 >
