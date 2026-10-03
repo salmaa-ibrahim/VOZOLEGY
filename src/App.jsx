@@ -8,10 +8,11 @@ import WhatsAppButton from "./components/common/WhatsAppButton";
 import "./styles/globals.css";
 import WhatsAppHelpPopup from "./components/WhatsAppHelpPopup/WhatsAppHelpPopup";
 import { siteConfig } from "./config/siteConfig";
-
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <AppProvider>
         <AuthProvider>
           <CartProvider>
