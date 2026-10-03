@@ -184,6 +184,8 @@
   font-size: clamp(18px, 1.6vw, 25px);
   line-height: 1.15;
   font-weight: 600;
+  text-transform: uppercase;
+
 }
 
 .category-page .all-product-price {
