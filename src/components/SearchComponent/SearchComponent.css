@@ -103,7 +103,7 @@ display: flex;
 .search-component__results {
   position: absolute;
   top: calc(100% + 8px);
-  left: 20;
+  left: 40;
   width: 80%;
   max-height: 430px;
   overflow-y: auto;
