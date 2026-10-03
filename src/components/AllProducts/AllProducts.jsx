@@ -1,4 +1,3 @@
-
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -17,7 +16,9 @@ import "./AllProduct.css";
 const MODE_OPTIONS = ["MTL", "DL"];
 
 const normalizeValue = (value) => {
-  return String(value || "").trim().toLowerCase();
+  return String(value || "")
+    .trim()
+    .toLowerCase();
 };
 
 const AllProductsSection = () => {
@@ -53,17 +54,14 @@ const AllProductsSection = () => {
         // GET PRODUCTS
         // ======================================================
 
-        const {
-          data: productsData,
-          error: productsError,
-        } = await supabase
-          .from("products")
-          .select(`
+        const { data: productsData, error: productsError } =
+          await supabase.from("products").select(`
             *,
             categories (
               id,
               name,
-              slug
+              slug,
+      display_order  
             )
           `);
 
@@ -76,10 +74,7 @@ const AllProductsSection = () => {
         // GET ACTIVE CATEGORIES
         // ======================================================
 
-        const {
-          data: categoriesData,
-          error: categoriesError,
-        } = await supabase
+        const { data: categoriesData, error: categoriesError } = await supabase
           .from("categories")
           .select("*")
           .eq("active", true)
@@ -88,21 +83,23 @@ const AllProductsSection = () => {
           });
 
         if (categoriesError) {
-          console.error(
-            "CATEGORIES ERROR:",
-            categoriesError
-          );
+          console.error("CATEGORIES ERROR:", categoriesError);
 
           throw categoriesError;
         }
 
         setProducts(productsData || []);
+        const sortedProducts = (productsData || []).sort((a, b) => {
+          const orderA = Number(a.categories?.display_order ?? 9999);
+          const orderB = Number(b.categories?.display_order ?? 9999);
+
+          return orderA - orderB;
+        });
+
+        setProducts(sortedProducts);
         setCategories(categoriesData || []);
       } catch (err) {
-        console.error(
-          "FAILED TO LOAD DATA:",
-          err
-        );
+        console.error("FAILED TO LOAD DATA:", err);
 
         setProducts([]);
         setCategories([]);
@@ -129,10 +126,7 @@ const AllProductsSection = () => {
 
   const modeProducts = useMemo(() => {
     return products.filter((product) => {
-      return (
-        normalizeValue(product.mode) ===
-        normalizeValue(activeMode)
-      );
+      return normalizeValue(product.mode) === normalizeValue(activeMode);
     });
   }, [products, activeMode]);
 
@@ -154,11 +148,11 @@ const AllProductsSection = () => {
 
           return null;
         })
-        .filter(Boolean)
+        .filter(Boolean),
     );
 
     return categories.filter((category) =>
-      categoryIds.has(String(category.id))
+      categoryIds.has(String(category.id)),
     );
   }, [categories, modeProducts]);
 
@@ -172,14 +166,9 @@ const AllProductsSection = () => {
         return true;
       }
 
-      const productCategoryId =
-        product.category_id ||
-        product.categories?.id;
+      const productCategoryId = product.category_id || product.categories?.id;
 
-      return (
-        String(productCategoryId) ===
-        String(activeCategory)
-      );
+      return String(productCategoryId) === String(activeCategory);
     });
   }, [modeProducts, activeCategory]);
 
@@ -220,35 +209,23 @@ const AllProductsSection = () => {
   // ============================================================
 
   const handleProductClick = (product) => {
-    const categorySlug =
-      product.categories?.slug;
+    const categorySlug = product.categories?.slug;
 
     if (!categorySlug) {
-      console.error(
-        "CATEGORY SLUG NOT FOUND FOR PRODUCT:",
-        product
-      );
+      console.error("CATEGORY SLUG NOT FOUND FOR PRODUCT:", product);
 
       return;
     }
 
-    navigate(
-      `/categories/${categorySlug}`
-    );
+    navigate(`/categories/${categorySlug}`);
   };
 
   // ============================================================
   // KEYBOARD ACCESS FOR CARD
   // ============================================================
 
-  const handleProductKeyDown = (
-    event,
-    product
-  ) => {
-    if (
-      event.key === "Enter" ||
-      event.key === " "
-    ) {
+  const handleProductKeyDown = (event, product) => {
+    if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
 
       handleProductClick(product);
@@ -263,9 +240,7 @@ const AllProductsSection = () => {
     return (
       <section className="all-products-section">
         <div className="all-products-container">
-          <div className="all-products-loading">
-            Loading products...
-          </div>
+          <div className="all-products-loading">Loading products...</div>
         </div>
       </section>
     );
@@ -279,9 +254,7 @@ const AllProductsSection = () => {
     return (
       <section className="all-products-section">
         <div className="all-products-container">
-          <div className="all-products-error">
-            Failed to load products.
-          </div>
+          <div className="all-products-error">Failed to load products.</div>
         </div>
       </section>
     );
@@ -294,7 +267,6 @@ const AllProductsSection = () => {
   return (
     <section className="all-products-section">
       <div className="all-products-container">
-
         {/* =====================================================
             TITLE
         ====================================================== */}
@@ -325,27 +297,16 @@ const AllProductsSection = () => {
         ====================================================== */}
 
         <div className="mode-switch-wrapper">
-          <div
-            className="mode-switch"
-            role="tablist"
-            aria-label="Product mode"
-          >
+          <div className="mode-switch" role="tablist" aria-label="Product mode">
             {MODE_OPTIONS.map((mode) => {
-              const isActive =
-                activeMode === mode;
+              const isActive = activeMode === mode;
 
               return (
                 <button
                   key={mode}
                   type="button"
-                  className={`mode-button ${
-                    isActive
-                      ? "active"
-                      : ""
-                  }`}
-                  onClick={() =>
-                    setActiveMode(mode)
-                  }
+                  className={`mode-button ${isActive ? "active" : ""}`}
+                  onClick={() => setActiveMode(mode)}
                   role="tab"
                   aria-selected={isActive}
                 >
@@ -369,49 +330,31 @@ const AllProductsSection = () => {
             <button
               type="button"
               className={`category-button ${
-                activeCategory === "all"
-                  ? "active"
-                  : ""
+                activeCategory === "all" ? "active" : ""
               }`}
-              onClick={() =>
-                setActiveCategory("all")
-              }
+              onClick={() => setActiveCategory("all")}
               role="tab"
-              aria-selected={
-                activeCategory === "all"
-              }
+              aria-selected={activeCategory === "all"}
             >
               ALL
             </button>
 
-            {availableCategories.map(
-              (category) => {
-                const isActive =
-                  String(activeCategory) ===
-                  String(category.id);
+            {availableCategories.map((category) => {
+              const isActive = String(activeCategory) === String(category.id);
 
-                return (
-                  <button
-                    key={category.id}
-                    type="button"
-                    className={`category-button ${
-                      isActive
-                        ? "active"
-                        : ""
-                    }`}
-                    onClick={() =>
-                      setActiveCategory(
-                        category.id
-                      )
-                    }
-                    role="tab"
-                    aria-selected={isActive}
-                  >
-                    {category.name}
-                  </button>
-                );
-              }
-            )}
+              return (
+                <button
+                  key={category.id}
+                  type="button"
+                  className={`category-button ${isActive ? "active" : ""}`}
+                  onClick={() => setActiveCategory(category.id)}
+                  role="tab"
+                  aria-selected={isActive}
+                >
+                  {category.name}
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -421,45 +364,27 @@ const AllProductsSection = () => {
 
         {filteredProducts.length > 0 && (
           <div className="products-slider-wrapper">
-
-           
-
             {/* SWIPER */}
 
             <Swiper
-              modules={[
-                Autoplay,
-                Navigation,
-              ]}
+              modules={[Autoplay, Navigation]}
               className="all-products-swiper"
-
               slidesPerView={1.35}
               spaceBetween={12}
-
-              loop={
-                filteredProducts.length > 1
-              }
-
+              loop={filteredProducts.length > 1}
               speed={800}
-
               grabCursor={true}
               allowTouchMove={true}
-
               watchOverflow={false}
-
               navigation={{
-                prevEl:
-                  ".products-slider-arrow--left",
-                nextEl:
-                  ".products-slider-arrow--right",
+                prevEl: ".products-slider-arrow--left",
+                nextEl: ".products-slider-arrow--right",
               }}
-
               autoplay={{
                 delay: 2600,
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true,
               }}
-
               breakpoints={{
                 381: {
                   slidesPerView: 2,
@@ -482,177 +407,114 @@ const AllProductsSection = () => {
                 },
               }}
             >
-              {filteredProducts.map(
-                (product) => {
-                  const isAdded =
-                    Boolean(
-                      addedProducts[
-                        product.id
-                      ]
-                    );
+              {filteredProducts.map((product) => {
+                const isAdded = Boolean(addedProducts[product.id]);
 
-                  return (
-                    <SwiperSlide
-                      key={product.id}
-                      className="all-product-slide"
+                return (
+                  <SwiperSlide key={product.id} className="all-product-slide">
+                    <motion.article
+                      className="all-product-card"
+                      initial={{
+                        opacity: 0,
+                        y: 25,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                      }}
+                      transition={{
+                        duration: 0.35,
+                      }}
+                      onClick={() => handleProductClick(product)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(event) =>
+                        handleProductKeyDown(event, product)
+                      }
                     >
-                      <motion.article
-                        className="all-product-card"
-
-                        initial={{
-                          opacity: 0,
-                          y: 25,
-                        }}
-
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                        }}
-
-                        transition={{
-                          duration: 0.35,
-                        }}
-
-                        onClick={() =>
-                          handleProductClick(
-                            product
-                          )
-                        }
-
-                        role="button"
-                        tabIndex={0}
-
-                        onKeyDown={(event) =>
-                          handleProductKeyDown(
-                            event,
-                            product
-                          )
-                        }
-                      >
-
-                        {/* =====================================
+                      {/* =====================================
                             PRODUCT IMAGE
                         ====================================== */}
 
-                        <div className="all-product-image-wrapper">
+                      <div className="all-product-image-wrapper">
+                        <img
+                          src={product.image_url || product.image}
+                          alt={`${product.name}${
+                            product.flavor ? ` - ${product.flavor}` : ""
+                          }`}
+                          className="all-product-image"
+                          loading="lazy"
+                          draggable="false"
+                        />
 
-                          <img
-                            src={
-                              product.image_url ||
-                              product.image
-                            }
-                            alt={`${product.name}${
-                              product.flavor
-                                ? ` - ${product.flavor}`
-                                : ""
-                            }`}
-                            className="all-product-image"
-                            loading="lazy"
-                            draggable="false"
-                          />
+                        {!product.available && (
+                          <div className="product-unavailable-overlay">
+                            <span>OUT OF STOCK</span>
+                          </div>
+                        )}
+                      </div>
 
-                          {!product.available && (
-                            <div className="product-unavailable-overlay">
-                              <span>
-                                OUT OF STOCK
-                              </span>
-                            </div>
-                          )}
-
-                        </div>
-
-                        {/* =====================================
+                      {/* =====================================
                             PRODUCT INFO
                         ====================================== */}
 
-                        <div className="all-product-info">
+                      <div className="all-product-info">
+                        <h3 className="all-product-name">{product.name}</h3>
 
-                          <h3 className="all-product-name">
-                            {product.name}
-                          </h3>
+                        {product.flavor && (
+                          <p className="all-product-flavor">{product.flavor}</p>
+                        )}
 
-                          {product.flavor && (
-                            <p className="all-product-flavor">
-                              {product.flavor}
-                            </p>
-                          )}
+                        <p className="all-product-price">
+                          LE {Number(product.price || 0).toFixed(2)}
+                        </p>
 
-                          <p className="all-product-price">
-                            LE{" "}
-                            {Number(
-                              product.price || 0
-                            ).toFixed(2)}
-                          </p>
-
-                          {/* ===================================
+                        {/* ===================================
                               ADD TO CART
                           ==================================== */}
 
-                          <button
-                            type="button"
-                            className={`add-to-cart-button ${
-                              isAdded
-                                ? "added"
-                                : ""
-                            } ${
-                              !product.available
-                                ? "disabled"
-                                : ""
-                            }`}
-                            disabled={
-                              !product.available ||
-                              isAdded
-                            }
-                            onClick={(event) =>
-                              handleAddToCart(
-                                event,
-                                product
-                              )
-                            }
-                          >
-                            {isAdded
-                              ? "Added !"
-                              : product.available
+                        <button
+                          type="button"
+                          className={`add-to-cart-button ${
+                            isAdded ? "added" : ""
+                          } ${!product.available ? "disabled" : ""}`}
+                          disabled={!product.available || isAdded}
+                          onClick={(event) => handleAddToCart(event, product)}
+                        >
+                          {isAdded
+                            ? "Added !"
+                            : product.available
                               ? "Add to cart"
                               : "Out of stock"}
-                          </button>
-
-                        </div>
-
-                      </motion.article>
-                    </SwiperSlide>
-                  );
-                }
-              )}
+                        </button>
+                      </div>
+                    </motion.article>
+                  </SwiperSlide>
+                );
+              })}
             </Swiper>
 
-             {/* LEFT ARROW */}
+            {/* LEFT ARROW */}
 
             <div className="arrow-btns">
               <button
-              type="button"
-              className="products-slider-arrow products-slider-arrow--left"
-              aria-label="Previous products"
-            >
-              <span aria-hidden="true">
-                &#10094;
-              </span>
-            </button>
+                type="button"
+                className="products-slider-arrow products-slider-arrow--left"
+                aria-label="Previous products"
+              >
+                <span aria-hidden="true">&#10094;</span>
+              </button>
 
-            {/* RIGHT ARROW */}
+              {/* RIGHT ARROW */}
 
-
-            <button
-              type="button"
-              className="products-slider-arrow products-slider-arrow--right"
-              aria-label="Next products"
-            >
-              <span aria-hidden="true">
-                &#10095;
-              </span>
-            </button>
+              <button
+                type="button"
+                className="products-slider-arrow products-slider-arrow--right"
+                aria-label="Next products"
+              >
+                <span aria-hidden="true">&#10095;</span>
+              </button>
             </div>
-
           </div>
         )}
 
@@ -670,13 +532,9 @@ const AllProductsSection = () => {
               opacity: 1,
             }}
           >
-            <p>
-              No products available in
-              this category.
-            </p>
+            <p>No products available in this category.</p>
           </motion.div>
         )}
-
       </div>
     </section>
   );
