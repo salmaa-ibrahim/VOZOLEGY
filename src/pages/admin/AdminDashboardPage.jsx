@@ -118,9 +118,9 @@ const AdminDashboardPage = () => {
   const [categoryBannerImagePreview, setCategoryBannerImagePreview] =
     useState("");
 
-  /* =====================================
-     LOAD DATA
-  ===================================== */
+  /* ================================
+   LOAD ADMIN DATA
+================================ */
 
   const loadData = async () => {
     setLoading(true);
@@ -130,128 +130,129 @@ const AdminDashboardPage = () => {
       const [ordersResult, customersResult, productsResult, categoriesResult] =
         await Promise.all([
           /* ================================
-           ORDERS
-        ================================= */
+         ORDERS
+      ================================= */
 
           supabase
             .from("orders")
             .select(
               `
-              id,
-              user_id,
-              customer_name,
-              customer_email,
-              customer_phone,
-              customer_whatsapp,
-              order_number,
-              order_status,
-              payment_method,
-              payment_status,
-              delivery_method,
-              shipping_cost,
-              governorate,
-              city,
-              street,
-              building_number,
-              apartment_number,
-              address_details,
-              subtotal,
-              total_amount,
-              currency,
-              customer_notes,
-              admin_notes,
-              created_at,
-              updated_at,
-              confirmed_at,
-              shipped_at,
-              delivered_at,
-              cancelled_at,
-              notes,
-              order_items (
-                id,
-                product_id,
-                product_name,
-                flavor,
-                quantity,
-                unit_price,
-                created_at
-              )
-            `,
+          id,
+          user_id,
+          customer_name,
+          customer_email,
+          customer_phone,
+          customer_whatsapp,
+          order_number,
+          order_status,
+          payment_method,
+          payment_status,
+          delivery_method,
+          shipping_cost,
+          governorate,
+          city,
+          street,
+          building_number,
+          apartment_number,
+          address_details,
+          subtotal,
+          total_amount,
+          currency,
+          customer_notes,
+          admin_notes,
+          created_at,
+          updated_at,
+          confirmed_at,
+          shipped_at,
+          delivered_at,
+          cancelled_at,
+          notes,
+
+          order_items (
+            id,
+            product_id,
+            product_name,
+            flavor,
+            quantity,
+            unit_price,
+            created_at
+          )
+        `,
             )
             .order("created_at", {
               ascending: false,
             }),
 
           /* ================================
-           CUSTOMERS
-        ================================= */
+         CUSTOMERS
+      ================================= */
 
           supabase
             .from("profiles")
             .select(
               `
-              id,
-              email,
-              full_name,
-              phone,
-              role,
-              created_at
-            `,
+          id,
+          email,
+          full_name,
+          phone,
+          role,
+          created_at
+        `,
             )
             .order("created_at", {
               ascending: false,
             }),
 
           /* ================================
-           PRODUCTS
-        ================================= */
+         PRODUCTS
+      ================================= */
 
           supabase
             .from("products")
             .select(
               `
-              id,
-              name,
-              flavor,
-              price,
-              mode,
-              available,
-              category_id,
-              image_url,
-              stock_quantity
-            `,
+          id,
+          name,
+          flavor,
+          price,
+          mode,
+          available,
+          category_id,
+          image_url,
+          stock_quantity
+        `,
             )
             .order("name"),
 
           /* ================================
-           CATEGORIES
-        ================================= */
+         CATEGORIES
+      ================================= */
 
           supabase
             .from("categories")
             .select(
               `
-              id,
-              name,
-              slug,
-              description,
-              image_url,
-              mobile_image_url,
-              alt_text,
-              promo_label,
-              display_order,
-              featured_on_home,
-              active,
-              seo_title,
-              seo_description,
-              battery,
-              capacity,
-              nicotine_strength,
-              puff_counts,
-              charging,
-              special_feature,
-              banner_image
-            `,
+          id,
+          name,
+          slug,
+          description,
+          image_url,
+          mobile_image_url,
+          alt_text,
+          promo_label,
+          display_order,
+          featured_on_home,
+          active,
+          seo_title,
+          seo_description,
+          battery,
+          capacity,
+          nicotine_strength,
+          puff_counts,
+          charging,
+          special_feature,
+          banner_image
+        `,
             )
             .order("display_order"),
         ]);
@@ -290,8 +291,8 @@ const AdminDashboardPage = () => {
   }, []);
 
   /* =====================================
-     IMAGE UPLOAD
-  ===================================== */
+   IMAGE UPLOAD
+===================================== */
 
   const uploadImage = async (file, bucket, folder) => {
     if (!file) return null;
@@ -339,8 +340,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     STATS
-  ===================================== */
+   STATS
+===================================== */
 
   const stats = useMemo(() => {
     const pending = orders.filter(
@@ -375,8 +376,8 @@ const AdminDashboardPage = () => {
   }, [orders]);
 
   /* =====================================
-     CUSTOMER MAP
-  ===================================== */
+   CUSTOMER MAP
+===================================== */
 
   const customerMap = useMemo(() => {
     return customers.reduce((map, customer) => {
@@ -386,8 +387,8 @@ const AdminDashboardPage = () => {
   }, [customers]);
 
   /* =====================================
-     ORDER CUSTOMER HELPER
-  ===================================== */
+   ORDER CUSTOMER HELPER
+===================================== */
 
   const getOrderCustomer = (order) => {
     const profileCustomer = order.user_id ? customerMap[order.user_id] : null;
@@ -417,8 +418,32 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     RESET PRODUCT FORM
-  ===================================== */
+   GET PRODUCT CATEGORY
+===================================== */
+
+  const getProductCategory = (productId) => {
+    if (!productId) {
+      return "—";
+    }
+
+    const product = products.find(
+      (item) => String(item.id) === String(productId),
+    );
+
+    if (!product) {
+      return "—";
+    }
+
+    const category = categories.find(
+      (item) => String(item.id) === String(product.category_id),
+    );
+
+    return category?.name || "—";
+  };
+
+  /* =====================================
+   RESET PRODUCT FORM
+===================================== */
 
   const resetProductForm = () => {
     setProductForm({
@@ -438,8 +463,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     RESET CATEGORY FORM
-  ===================================== */
+   RESET CATEGORY FORM
+===================================== */
 
   const resetCategoryForm = () => {
     setCategoryForm({
@@ -476,8 +501,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     PRODUCT IMAGE SELECT
-  ===================================== */
+   PRODUCT IMAGE SELECT
+===================================== */
 
   const handleProductImageChange = (event) => {
     const file = event.target.files?.[0];
@@ -504,8 +529,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     CATEGORY MAIN IMAGE SELECT
-  ===================================== */
+   CATEGORY MAIN IMAGE SELECT
+===================================== */
 
   const handleCategoryImageChange = (event) => {
     const file = event.target.files?.[0];
@@ -532,8 +557,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     CATEGORY MOBILE IMAGE SELECT
-  ===================================== */
+   CATEGORY MOBILE IMAGE SELECT
+===================================== */
 
   const handleCategoryMobileImageChange = (event) => {
     const file = event.target.files?.[0];
@@ -560,8 +585,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     CATEGORY BANNER IMAGE SELECT
-  ===================================== */
+   CATEGORY BANNER IMAGE SELECT
+===================================== */
 
   const handleCategoryBannerImageChange = (event) => {
     const file = event.target.files?.[0];
@@ -588,8 +613,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     SAVE PRODUCT
-  ===================================== */
+   SAVE PRODUCT
+===================================== */
 
   const saveProduct = async (event) => {
     event.preventDefault();
@@ -620,7 +645,9 @@ const AdminDashboardPage = () => {
 
         available: Boolean(productForm.available),
 
-        category_id: productForm.category_id || null,
+        category_id: productForm.category_id
+          ? Number(productForm.category_id)
+          : null,
 
         image_url: imageUrl,
 
@@ -661,8 +688,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     EDIT PRODUCT
-  ===================================== */
+   EDIT PRODUCT
+===================================== */
 
   const editProduct = (product) => {
     setProductForm({
@@ -690,8 +717,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     DELETE PRODUCT
-  ===================================== */
+   DELETE PRODUCT
+===================================== */
 
   const deleteProduct = async (product) => {
     const confirmed = window.confirm(
@@ -723,8 +750,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     SAVE CATEGORY
-  ===================================== */
+   SAVE CATEGORY
+===================================== */
 
   const saveCategory = async (event) => {
     event.preventDefault();
@@ -740,7 +767,6 @@ const AdminDashboardPage = () => {
 
       let bannerImageUrl = categoryForm.banner_image || null;
 
-      /* Main Category Image */
       if (categoryImageFile) {
         imageUrl = await uploadImage(
           categoryImageFile,
@@ -749,7 +775,6 @@ const AdminDashboardPage = () => {
         );
       }
 
-      /* Mobile Category Image */
       if (categoryMobileImageFile) {
         mobileImageUrl = await uploadImage(
           categoryMobileImageFile,
@@ -758,7 +783,6 @@ const AdminDashboardPage = () => {
         );
       }
 
-      /* Banner Image */
       if (categoryBannerImageFile) {
         bannerImageUrl = await uploadImage(
           categoryBannerImageFile,
@@ -841,8 +865,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     EDIT CATEGORY
-  ===================================== */
+   EDIT CATEGORY
+===================================== */
 
   const editCategory = (category) => {
     setCategoryForm({
@@ -908,8 +932,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     DELETE CATEGORY
-  ===================================== */
+   DELETE CATEGORY
+===================================== */
 
   const deleteCategory = async (category) => {
     const confirmed = window.confirm(`Delete "${category.name}"?`);
@@ -937,8 +961,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     UPDATE ORDER STATUS
-  ===================================== */
+   UPDATE ORDER STATUS
+===================================== */
 
   const updateOrderStatus = async (order, status) => {
     setSaving(true);
@@ -989,8 +1013,8 @@ const AdminDashboardPage = () => {
   };
 
   /* =====================================
-     LOADING
-  ===================================== */
+   LOADING
+===================================== */
 
   if (loading) {
     return (
@@ -1004,8 +1028,8 @@ const AdminDashboardPage = () => {
     <main className="admin-page">
       <div className="admin-container">
         {/* =====================================
-            HEADER
-        ===================================== */}
+          HEADER
+      ===================================== */}
 
         <header className="admin-header">
           <div>
@@ -1022,8 +1046,8 @@ const AdminDashboardPage = () => {
         </header>
 
         {/* =====================================
-            MESSAGES
-        ===================================== */}
+          MESSAGES
+      ===================================== */}
 
         {error && (
           <div className="admin-message admin-message-error">{error}</div>
@@ -1034,8 +1058,8 @@ const AdminDashboardPage = () => {
         )}
 
         {/* =====================================
-            TABS
-        ===================================== */}
+          TABS
+      ===================================== */}
 
         <nav className="admin-tabs">
           {[
@@ -1056,27 +1080,24 @@ const AdminDashboardPage = () => {
         </nav>
 
         {/* =====================================
-            OVERVIEW
-        ===================================== */}
+          OVERVIEW
+      ===================================== */}
 
         {section === "overview" && (
           <>
             <section className="admin-stats">
               <div className="admin-stat">
                 <span>TOTAL ORDERS</span>
-
                 <strong>{stats.totalOrders}</strong>
               </div>
 
               <div className="admin-stat">
                 <span>PENDING</span>
-
                 <strong>{stats.pending}</strong>
               </div>
 
               <div className="admin-stat">
                 <span>REJECTED</span>
-
                 <strong>{stats.rejected}</strong>
               </div>
 
@@ -1094,6 +1115,8 @@ const AdminDashboardPage = () => {
                 <small>Confirmed / Delivered / Completed orders only</small>
               </div>
             </section>
+
+            {/* RECENT ORDERS */}
 
             <section className="admin-card">
               <div className="admin-card-header">
@@ -1160,8 +1183,8 @@ const AdminDashboardPage = () => {
         )}
 
         {/* =====================================
-            ORDERS
-        ===================================== */}
+          ORDERS
+      ===================================== */}
 
         {section === "orders" && (
           <section className="admin-card">
@@ -1171,15 +1194,189 @@ const AdminDashboardPage = () => {
 
             <div className="admin-table-wrapper">
               <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>Order</th>
-                    <th>Customer</th>
-                    <th>Date</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
+                
+                  <thead>
+                    <tr>
+                      <th>Order</th>
+                      <th>Customer</th>
+                      <th>Phone</th>
+                      <th>WhatsApp</th>
+                      <th>Address</th>
+                      <th>Products</th>
+                      <th>Subtotal</th>
+                      <th>Shipping Cost</th>
+                      <th>Delivery</th>
+                      <th>Total</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {orders.length > 0 ? (
+                      orders.map((order) => {
+                        const customer = getOrderCustomer(order);
+
+                        return (
+                          <tr key={order.id}>
+                            {/* ORDER */}
+                            <td>
+                              <strong>
+                                #
+                                {order.order_number ||
+                                  String(order.id).slice(0, 8)}
+                              </strong>
+                            </td>
+
+                            {/* CUSTOMER */}
+                            <td>
+                              <strong>{customer.name || "Guest"}</strong>
+
+                              {customer.email && (
+                                <div className="admin-order-customer-email">
+                                  {customer.email}
+                                </div>
+                              )}
+                            </td>
+
+                            {/* PHONE */}
+                            <td>{customer.phone || "—"}</td>
+
+                            {/* WHATSAPP */}
+                            <td>{customer.whatsapp || "—"}</td>
+
+                            {/* ADDRESS */}
+                            <td>
+                              <div className="admin-order-address">
+                                {customer.governorate && (
+                                  <div>
+                                    <strong>Governorate:</strong>{" "}
+                                    {customer.governorate}
+                                  </div>
+                                )}
+
+                                {customer.city && (
+                                  <div>
+                                    <strong>City:</strong> {customer.city}
+                                  </div>
+                                )}
+
+                                {customer.address && (
+                                  <div>
+                                    <strong>Address:</strong> {customer.address}
+                                  </div>
+                                )}
+
+                                {!customer.governorate &&
+                                  !customer.city &&
+                                  !customer.address && <span>—</span>}
+                              </div>
+                            </td>
+
+                            {/* PRODUCTS */}
+                            <td>
+                              <div className="admin-order-products">
+                                {order.order_items &&
+                                order.order_items.length > 0 ? (
+                                  order.order_items.map((item) => {
+                                    const categoryName = getProductCategory(
+                                      item.product_id,
+                                    );
+
+                                    return (
+                                      <div
+                                        key={item.id}
+                                        className="admin-order-product"
+                                      >
+                                        <div className="admin-order-product-name">
+                                          {item.product_name || "Product"}
+                                        </div>
+
+                                        {item.flavor && (
+                                          <div className="admin-order-product-flavor">
+                                            {item.flavor}
+                                          </div>
+                                        )}
+
+                                        <div className="admin-order-product-category">
+                                          Category: {categoryName}
+                                        </div>
+
+                                        <div className="admin-order-product-details">
+                                          {Number(
+                                            item.unit_price || 0,
+                                          ).toLocaleString("en-US")}{" "}
+                                          {order.currency || "EGP"} ×{" "}
+                                          {item.quantity || 0}
+                                        </div>
+                                      </div>
+                                    );
+                                  })
+                                ) : (
+                                  <span>No products</span>
+                                )}
+                              </div>
+                            </td>
+
+                            {/* SUBTOTAL */}
+                            <td>
+                              <strong>
+                                {Number(order.subtotal || 0).toLocaleString(
+                                  "en-US",
+                                )}{" "}
+                                {order.currency || "EGP"}
+                              </strong>
+                            </td>
+
+                            {/* SHIPPING COST */}
+                            <td>
+                              <strong>
+                                {Number(
+                                  order.shipping_cost || 0,
+                                ).toLocaleString("en-US")}{" "}
+                                {order.currency || "EGP"}
+                              </strong>
+                            </td>
+
+                            {/* DELIVERY */}
+                            <td>{order.delivery_method || "—"}</td>
+
+                            {/* TOTAL */}
+                            <td>
+                              <strong>
+                                {Number(order.total_amount || 0).toLocaleString(
+                                  "en-US",
+                                )}{" "}
+                                {order.currency || "EGP"}
+                              </strong>
+                            </td>
+
+                            {/* STATUS */}
+                            <td>
+                              <select
+                                value={order.order_status || "pending"}
+                                disabled={saving}
+                                onChange={(event) =>
+                                  updateOrderStatus(order, event.target.value)
+                                }
+                              >
+                                {orderStatuses.map((status) => (
+                                  <option key={status} value={status}>
+                                    {statusLabel(status)}
+                                  </option>
+                                ))}
+                              </select>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td colSpan="11" style={{ textAlign: "center" }}>
+                          No orders found.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
 
                 <tbody>
                   {orders.map((order) => {
@@ -1187,21 +1384,119 @@ const AdminDashboardPage = () => {
 
                     return (
                       <tr key={order.id}>
-                        <td>
-                          #{order.order_number || String(order.id).slice(0, 8)}
-                        </td>
+                        {/* ORDER */}
 
                         <td>
-                          <strong>{customer.name}</strong>
-
-                          <small>
-                            {customer.phone || customer.email || ""}
-                          </small>
+                          <strong>
+                            #
+                            {order.order_number || String(order.id).slice(0, 8)}
+                          </strong>
                         </td>
 
-                        <td>{date(order.created_at)}</td>
+                        {/* CUSTOMER */}
 
-                        <td>{money(order.total_amount)}</td>
+                        <td>
+                          <div className="admin-order-customer">
+                            <strong>{customer.name}</strong>
+
+                            {customer.email && <small>{customer.email}</small>}
+                          </div>
+                        </td>
+
+                        {/* PHONE */}
+
+                        <td>{customer.phone || "—"}</td>
+
+                        {/* WHATSAPP */}
+
+                        <td>{customer.whatsapp || "—"}</td>
+
+                        {/* ADDRESS */}
+
+                        <td>
+                          <div className="admin-order-address">
+                            {[
+                              order.governorate,
+                              order.city,
+                              order.street,
+
+                              order.building_number &&
+                                `Building: ${order.building_number}`,
+
+                              order.apartment_number &&
+                                `Apartment: ${order.apartment_number}`,
+
+                              order.address_details,
+                            ]
+                              .filter(Boolean)
+                              .map((item, index) => (
+                                <div key={index}>{item}</div>
+                              ))}
+
+                            {![
+                              order.governorate,
+                              order.city,
+                              order.street,
+                              order.building_number,
+                              order.apartment_number,
+                              order.address_details,
+                            ].some(Boolean) && <span>—</span>}
+                          </div>
+                        </td>
+
+                        {/* PRODUCTS */}
+
+                        <td>
+                          <div className="admin-order-products">
+                            {order.order_items &&
+                            order.order_items.length > 0 ? (
+                              order.order_items.map((item) => {
+                                const categoryName = getProductCategory(
+                                  item.product_id,
+                                );
+
+                                return (
+                                  <div
+                                    key={item.id}
+                                    className="admin-order-product"
+                                  >
+                                    <div className="admin-order-product-name">
+                                      {item.product_name || "Product"}
+                                    </div>
+
+                                    {item.flavor && (
+                                      <div className="admin-order-product-flavor">
+                                        {item.flavor}
+                                      </div>
+                                    )}
+
+                                    <div className="admin-order-product-details">
+                                      {Number(
+                                        item.unit_price || 0,
+                                      ).toLocaleString("en-US")}{" "}
+                                      {order.currency || "EGP"} ×{" "}
+                                      {item.quantity || 0}
+                                    </div>
+                                  </div>
+                                );
+                              })
+                            ) : (
+                              <span>No products</span>
+                            )}
+                          </div>
+                        </td>
+
+                        {/* DELIVERY */}
+
+                        <td>{order.delivery_method || "—"}</td>
+
+                        {/* TOTAL */}
+
+                        <td>
+                          <strong>{money(order.total_amount)}</strong>
+                        </td>
+
+                        {/* STATUS */}
 
                         <td>
                           <select
@@ -1225,7 +1520,7 @@ const AdminDashboardPage = () => {
                   {orders.length === 0 && (
                     <tr>
                       <td
-                        colSpan="5"
+                        colSpan="9"
                         style={{
                           textAlign: "center",
                         }}
@@ -1241,8 +1536,8 @@ const AdminDashboardPage = () => {
         )}
 
         {/* =====================================
-            CUSTOMERS
-        ===================================== */}
+          CUSTOMERS
+      ===================================== */}
 
         {section === "customers" && (
           <section className="admin-card">
@@ -1306,8 +1601,8 @@ const AdminDashboardPage = () => {
         )}
 
         {/* =====================================
-            PRODUCTS
-        ===================================== */}
+          PRODUCTS
+      ===================================== */}
 
         {section === "products" && (
           <>
@@ -1498,16 +1793,32 @@ const AdminDashboardPage = () => {
                             <img
                               src={product.image_url}
                               alt={product.name || "Product"}
-                              style={{
-                                width: "60px",
-                                height: "60px",
-                                objectFit: "cover",
-                                borderRadius: "10px",
-                              }}
+                              className="admin-product-table-image"
                             />
                           ) : (
                             "—"
                           )}
+                        </td>
+                        {/* SUBTOTAL */}
+
+                        <td>
+                          <strong>
+                            {Number(order.subtotal || 0).toLocaleString(
+                              "en-US",
+                            )}{" "}
+                            {order.currency || "EGP"}
+                          </strong>
+                        </td>
+
+                        {/* SHIPPING COST */}
+
+                        <td>
+                          <strong>
+                            {Number(order.shipping_cost || 0).toLocaleString(
+                              "en-US",
+                            )}{" "}
+                            {order.currency || "EGP"}
+                          </strong>
                         </td>
 
                         <td>{product.name}</td>
@@ -1565,8 +1876,8 @@ const AdminDashboardPage = () => {
         )}
 
         {/* =====================================
-            CATEGORIES
-        ===================================== */}
+          CATEGORIES
+      ===================================== */}
 
         {section === "categories" && (
           <>
@@ -1920,12 +2231,7 @@ const AdminDashboardPage = () => {
                               alt={
                                 category.alt_text || category.name || "Category"
                               }
-                              style={{
-                                width: "70px",
-                                height: "70px",
-                                objectFit: "cover",
-                                borderRadius: "10px",
-                              }}
+                              className="admin-category-table-image"
                             />
                           ) : (
                             "—"
@@ -1939,12 +2245,7 @@ const AdminDashboardPage = () => {
                               alt={
                                 category.alt_text || category.name || "Category"
                               }
-                              style={{
-                                width: "70px",
-                                height: "70px",
-                                objectFit: "cover",
-                                borderRadius: "10px",
-                              }}
+                              className="admin-category-table-image"
                             />
                           ) : (
                             "—"
@@ -1992,12 +2293,7 @@ const AdminDashboardPage = () => {
                             <img
                               src={category.banner_image}
                               alt={category.name || "Banner"}
-                              style={{
-                                width: "100px",
-                                height: "60px",
-                                objectFit: "cover",
-                                borderRadius: "10px",
-                              }}
+                              className="admin-category-banner-image"
                             />
                           ) : (
                             "—"

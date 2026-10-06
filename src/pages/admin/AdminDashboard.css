@@ -420,3 +420,233 @@
 .admin-description-box::-webkit-scrollbar-thumb:hover {
   background: #888;
 }
+
+
+.admin-order-address {
+  width: 240px;
+  max-width: 240px;
+  max-height: 90px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 13px;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+.admin-order-address::-webkit-scrollbar {
+  width: 5px;
+}
+
+.admin-order-address::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.admin-order-address::-webkit-scrollbar-thumb {
+  background: #b8b8b8;
+  border-radius: 10px;
+}
+
+
+/* =====================================
+   ORDER CUSTOMER
+===================================== */
+
+.admin-order-customer {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.admin-order-customer strong {
+  font-size: 13px;
+}
+
+.admin-order-customer small {
+  font-size: 11px;
+  color: #777;
+}
+
+
+/* =====================================
+   ORDER ADDRESS
+===================================== */
+
+.admin-order-address {
+  width: 220px;
+  max-width: 220px;
+  height: 90px;
+  max-height: 90px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 8px 10px;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+
+  background: #fafafa;
+
+  color: #333;
+
+  font-size: 12px;
+  line-height: 1.6;
+
+  word-break: break-word;
+  box-sizing: border-box;
+}
+
+.admin-order-address::-webkit-scrollbar {
+  width: 5px;
+}
+
+.admin-order-address::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.admin-order-address::-webkit-scrollbar-thumb {
+  background: #b8b8b8;
+  border-radius: 10px;
+}
+
+.admin-order-address::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+
+/* =====================================
+   ORDER PRODUCTS
+===================================== */
+
+.admin-order-products {
+  width: 260px;
+  max-width: 260px;
+
+  height: 120px;
+  max-height: 120px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding: 8px;
+
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+
+  background: #fafafa;
+
+  box-sizing: border-box;
+}
+
+.admin-order-products::-webkit-scrollbar {
+  width: 5px;
+}
+
+.admin-order-products::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.admin-order-products::-webkit-scrollbar-thumb {
+  background: #b8b8b8;
+  border-radius: 10px;
+}
+
+.admin-order-products::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+
+/* =====================================
+   SINGLE ORDER PRODUCT
+===================================== */
+
+.admin-order-product {
+  padding: 8px 0;
+
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.admin-order-product:first-child {
+  padding-top: 0;
+}
+
+.admin-order-product:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.admin-order-product-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+}
+
+.admin-order-product-flavor {
+  margin-top: 2px;
+
+  font-size: 12px;
+
+  color: #666;
+}
+
+.admin-order-product-category {
+  margin-top: 3px;
+
+  font-size: 11px;
+
+  color: #777;
+}
+
+.admin-order-product-details {
+  margin-top: 4px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  color: #222;
+}
+
+
+/* =====================================
+   PRODUCT TABLE IMAGE
+===================================== */
+
+.admin-product-table-image {
+  width: 60px;
+  height: 60px;
+
+  object-fit: cover;
+
+  border-radius: 10px;
+}
+
+
+/* =====================================
+   CATEGORY TABLE IMAGE
+===================================== */
+
+.admin-category-table-image {
+  width: 70px;
+  height: 70px;
+
+  object-fit: cover;
+
+  border-radius: 10px;
+}
+
+.admin-category-banner-image {
+  width: 100px;
+  height: 60px;
+
+  object-fit: cover;
+
+  border-radius: 10px;
+}
