@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { supabase } from "../lib/supabase";
 
@@ -135,29 +130,43 @@ export const AuthProvider = ({ children }) => {
     city,
     fullAddress,
   }) => {
-    const cleanEmail = String(email || "").trim();
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
 
-    const { data, error } = await supabase.auth.signUp({
-      email: cleanEmail,
-      password,
-
-      options: {
-        data: {
-          full_name: fullName,
-          phone,
-          whatsapp,
-          governorate,
-          city,
-          full_address: fullAddress,
+        options: {
+          data: {
+            full_name: fullName?.trim() || "",
+            phone: phone?.trim() || "",
+            whatsapp: whatsapp?.trim() || "",
+            governorate: governorate?.trim() || "",
+            city: city?.trim() || "",
+            full_address: fullAddress?.trim() || "",
+          },
         },
-      },
-    });
+      });
 
-    if (error) {
-      throw new Error(error.message);
+      if (error) {
+        return {
+          success: false,
+          error: error.message,
+        };
+      }
+
+      return {
+        success: true,
+        user: data.user,
+        session: data.session,
+      };
+    } catch (error) {
+      console.error("Sign up error:", error);
+
+      return {
+        success: false,
+        error: error.message || "Could not create account.",
+      };
     }
-
-    return data;
   };
 
   const signOut = async () => {
@@ -176,8 +185,7 @@ export const AuthProvider = ({ children }) => {
     return fetchProfile(user.id);
   };
 
-  const isAdmin =
-    String(profile?.role || "").toLowerCase() === "admin";
+  const isAdmin = String(profile?.role || "").toLowerCase() === "admin";
 
   return (
     <AuthContext.Provider
@@ -201,9 +209,7 @@ export const useAuth = () => {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error(
-      "useAuth must be used inside AuthProvider"
-    );
+    throw new Error("useAuth must be used inside AuthProvider");
   }
 
   return context;

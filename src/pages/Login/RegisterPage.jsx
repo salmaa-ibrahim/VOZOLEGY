@@ -650,6 +650,7 @@ const RegisterPage = () => {
             Governorate
 
             <select
+            className="auth-select"
               name="governorate"
               value={
                 formData.governorate
@@ -688,6 +689,7 @@ const RegisterPage = () => {
             City
 
             <select
+                className="auth-select"
               name="city"
               value={
                 formData.city
@@ -725,6 +727,7 @@ const RegisterPage = () => {
             Full Address
 
             <textarea
+            className="auth-select"
               name="fullAddress"
               value={
                 formData.fullAddress
