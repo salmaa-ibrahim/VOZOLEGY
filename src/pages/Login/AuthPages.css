@@ -1,0 +1,355 @@
+/* =====================================================
+   AUTH PAGES
+===================================================== */
+
+.auth-page {
+  min-height: 100vh;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(94, 43, 151, 0.08),
+      transparent 35%
+    ),
+    #f7f7f8;
+}
+
+.auth-shell {
+  width: 100%;
+  max-width: 1080px;
+  min-height: 680px;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.10);
+}
+
+.auth-shell-compact {
+  min-height: 610px;
+}
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+.auth-brand-panel {
+  position: relative;
+  overflow: hidden;
+  padding: 42px;
+  display: flex;
+  flex-direction: column;
+  background: #171717;
+  color: #fff;
+}
+
+.auth-wordmark {
+  position: relative;
+  z-index: 2;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.auth-wordmark span {
+  color: #a66bd2;
+}
+
+.auth-brand-copy {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.auth-kicker {
+  display: inline-block;
+  color: #9c9c9c;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.auth-brand-copy p {
+  margin-top: 18px;
+  font-size: 42px;
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+.auth-brand-copy em {
+  color: #b476df;
+  font-style: normal;
+}
+
+.auth-brand-foot {
+  position: relative;
+  z-index: 2;
+  color: #888;
+  font-size: 11px;
+}
+
+.auth-brand-orb {
+  position: absolute;
+  right: -100px;
+  bottom: -100px;
+  width: 340px;
+  height: 340px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      #c28ee6,
+      #714196 45%,
+      #301842 70%,
+      #171717 71%
+    );
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 200px;
+  font-weight: 900;
+  transform: rotate(-12deg);
+}
+
+/* =====================================================
+   FORM PANEL
+===================================================== */
+
+.auth-form-panel {
+  padding: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-form-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 34px;
+}
+
+.auth-form-top a {
+  color: #777;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.auth-form-top a:hover {
+  color: #5e2b97;
+}
+
+.auth-form-panel h1 {
+  margin: 0;
+  color: #181818;
+  font-size: 38px;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.auth-intro {
+  margin: 12px 0 28px;
+  color: #858585;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.auth-form-spaced {
+  margin-top: 12px;
+}
+
+.auth-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #353535;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.auth-form input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #dedee2;
+  border-radius: 10px;
+  outline: none;
+  background: #fafafa;
+  color: #171717;
+  font-family: inherit;
+  font-size: 12px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.auth-form input:focus {
+  border-color: #8d5ab8;
+  background: #fff;
+  box-shadow:
+    0 0 0 3px rgba(141, 90, 184, 0.1);
+}
+
+.auth-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.auth-optional {
+  margin-left: 5px;
+  color: #999;
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.auth-submit {
+  width: 100%;
+  height: 50px;
+  margin-top: 5px;
+  border-radius: 10px;
+  background: #171717;
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.auth-submit:hover:not(:disabled) {
+  background: #7545a5;
+  transform: translateY(-1px);
+}
+
+.auth-submit:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+/* =====================================================
+   MESSAGES
+===================================================== */
+
+.auth-alert,
+.auth-success {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 9px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.auth-alert {
+  border: 1px solid #f0caca;
+  background: #fff5f5;
+  color: #a92d25;
+}
+
+.auth-success {
+  border: 1px solid #d8e8c8;
+  background: #f4faee;
+  color: #527237;
+}
+
+.auth-message {
+  margin-top: 10px;
+}
+
+.auth-switch {
+  margin-top: 23px;
+  color: #777;
+  font-size: 11px;
+  text-align: center;
+}
+
+.auth-switch a {
+  margin-left: 5px;
+  color: #7545a5;
+  font-weight: 700;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 800px) {
+  .auth-page {
+    padding: 15px;
+  }
+
+  .auth-shell {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .auth-brand-panel {
+    min-height: 250px;
+    padding: 28px;
+  }
+
+  .auth-brand-copy {
+    margin-top: 55px;
+    margin-bottom: 0;
+  }
+
+  .auth-brand-copy p {
+    font-size: 31px;
+  }
+
+  .auth-brand-orb {
+    width: 220px;
+    height: 220px;
+    right: -75px;
+    bottom: -95px;
+    font-size: 130px;
+  }
+
+  .auth-form-panel {
+    padding: 32px 25px;
+  }
+}
+
+@media (max-width: 520px) {
+  .auth-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-form-panel h1 {
+    font-size: 31px;
+  }
+
+  .auth-brand-panel {
+    min-height: 220px;
+  }
+
+  .auth-brand-copy p {
+    font-size: 27px;
+  }
+}

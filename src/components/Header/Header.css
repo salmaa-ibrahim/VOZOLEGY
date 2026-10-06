@@ -1,50 +1,323 @@
 .header {
-  background: var(--color-white);
-  /* border-bottom: 1px solid var(--color-border); */
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
+  background: var(--color-white);
 }
-svg{
+
+.header svg {
   color: var(--color-black);
 }
+
 .header__container {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
   max-width: 1200px;
   margin: 0 auto;
-  color: black;
+  padding: 12px 16px;
 }
+
 .header__logo {
   width: 120px;
   height: auto;
-  margin-left:30px;
+  margin-left: 30px;
 }
+
+.header__logo img {
+  width: 100%;
+  height: auto;
+}
+
 .header__actions {
   display: flex;
-  gap: 16px;
   align-items: center;
+  gap: 16px;
 }
+
 .header__icon {
-  background: none;
-  border: none;
-  padding: 4px;
   position: relative;
-}
-.cart-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  background: var(--color-red);
-  color: white;
-  font-size: 0.65rem;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #111;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.header__icon:hover,
+.header__icon.is-active {
+  background: #f4f1f7;
+}
+
+.header__icon:active {
+  transform: scale(0.96);
+}
+
+/* =====================================================
+   CART BADGE
+===================================================== */
+
+.cart-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-purple);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* =====================================================
+   ACCOUNT WRAPPER
+===================================================== */
+
+.header__account-wrapper {
+  position: relative;
+}
+
+/* =====================================================
+   ACCOUNT DROPDOWN
+===================================================== */
+
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: -4px;
+  z-index: 1200;
+  width: 270px;
+  padding: 8px;
+  border: 1px solid #ece8ef;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.14),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+  animation: accountDropdownIn 0.18s ease-out;
+}
+
+.account-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: 17px;
+  width: 12px;
+  height: 12px;
+  border-top: 1px solid #ece8ef;
+  border-left: 1px solid #ece8ef;
+  background: #fff;
+  transform: rotate(45deg);
+}
+
+/* =====================================================
+   USER
+===================================================== */
+
+.account-dropdown__user {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 9px;
+}
+
+.account-dropdown__avatar {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      135deg,
+      #2e0d4e,
+      #7c42a5
+    );
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.account-dropdown__user-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.account-dropdown__user-info strong {
+  overflow: hidden;
+  color: #171717;
+  font-size: 12px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-dropdown__user-info span {
+  overflow: hidden;
+  color: #8a8a8a;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =====================================================
+   DIVIDER
+===================================================== */
+
+.account-dropdown__divider {
+  height: 1px;
+  margin: 6px 4px;
+  background: #f0edf2;
+}
+
+/* =====================================================
+   ITEMS
+===================================================== */
+
+.account-dropdown__item,
+.account-dropdown__logout {
+  width: 100%;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 10px;
+  border-radius: 10px;
+  color: #3d3d3d;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.account-dropdown__item:hover {
+  background: #f7f3fa;
+  color: var(--color-purple);
+}
+
+.account-dropdown__icon {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 7px;
+  background: #f5f3f6;
+  color: #666;
+  font-size: 12px;
+}
+
+.account-dropdown__item:hover
+.account-dropdown__icon {
+  background: #ede4f2;
+  color: var(--color-purple);
+}
+
+.account-dropdown__admin {
+  color: var(--color-purple);
+}
+
+.account-dropdown__admin
+.account-dropdown__icon {
+  background: #eee4f5;
+  color: var(--color-purple);
+}
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+.account-dropdown__logout {
+  cursor: pointer;
+  color: #a13f3f;
+}
+
+.account-dropdown__logout:hover {
+  background: #fff4f4;
+  color: #9b2525;
+}
+
+.account-dropdown__logout
+.account-dropdown__icon {
+  background: #fff0f0;
+  color: #a13f3f;
+}
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+@keyframes accountDropdownIn {
+  from {
+    opacity: 0;
+    transform:
+      translateY(-6px)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+  .header__container {
+    padding: 10px 12px;
+  }
+
+  .header__logo {
+    width: 105px;
+    margin-left: 0;
+  }
+
+  .header__actions {
+    gap: 8px;
+  }
+
+  .header__icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .account-dropdown {
+    position: fixed;
+    top: 64px;
+    right: 12px;
+    width: min(
+      280px,
+      calc(100vw - 24px)
+    );
+  }
+
+  .account-dropdown::before {
+    right: 18px;
+  }
 }
