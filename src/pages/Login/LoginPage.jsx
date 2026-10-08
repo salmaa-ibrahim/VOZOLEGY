@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
+import SEO from "../../seo/SEO";
 
 import "./LoginPage.css";
 
@@ -60,65 +61,73 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="auth-page">
-      <section className="auth-card">
-        <div className="auth-card-header">
-          <span>VOZOL EGY</span>
+    <>
+      <SEO
+        title="Login | VOZOL EGY"
+        description="Log in to your VOZOL EGY account."
+        url="https://vozolegy.com/login"
+        noIndex
+      />
+      <main className="auth-page">
+        <section className="auth-card">
+          <div className="auth-card-header">
+            <span>VOZOL EGY</span>
 
-          <h1>Welcome Back</h1>
+            <h1>Welcome Back</h1>
 
-          <p>Sign in to your account.</p>
-        </div>
-
-        {error && <div className="auth-error">{error}</div>}
-
-        <form onSubmit={handleSubmit} className="auth-form">
-          <label>
-            Email
-            <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="Enter your email"
-              autoComplete="email"
-              required
-            />
-          </label>
-
-          <label>
-            Password
-            <input
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Enter your password"
-              autoComplete="current-password"
-              required
-            />
-          </label>
-
-          <div className="auth-forgot">
-            <Link to="/forgot-password">Forgot Password?</Link>
+            <p>Sign in to your account.</p>
           </div>
 
-          <button type="submit" className="auth-submit" disabled={loading}>
-            {loading ? "Signing In..." : "Sign In"}
-          </button>
-        </form>
+          {error && <div className="auth-error">{error}</div>}
 
-        <div className="auth-footer">
-          <p>Don't have an account?</p>
+          <form onSubmit={handleSubmit} className="auth-form">
+            <label>
+              Email
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="Enter your email"
+                autoComplete="email"
+                required
+              />
+            </label>
 
-          <Link to="/register" className="auth-link">
-            Sign Up
-          </Link>
+            <label>
+              Password
+              <input
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Enter your password"
+                autoComplete="current-password"
+                required
+              />
+            </label>
 
-          <Link to="/" className="auth-home-link">
-            ← Back to Home
-          </Link>
-        </div>
-      </section>
-    </main>
+            <div className="auth-forgot">
+              <Link to="/forgot-password">Forgot Password?</Link>
+            </div>
+
+            <button type="submit" className="auth-submit" disabled={loading}>
+              {loading ? "Signing In..." : "Sign In"}
+            </button>
+          </form>
+
+          <div className="auth-footer">
+            <p>Don't have an account?</p>
+
+            <Link to="/register" className="auth-link">
+              Sign Up
+            </Link>
+
+            <Link to="/" className="auth-home-link">
+              ← Back to Home
+            </Link>
+          </div>
+        </section>
+      </main>
+    </>
   );
 };
 

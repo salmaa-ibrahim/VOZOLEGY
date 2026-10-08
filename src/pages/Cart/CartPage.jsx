@@ -32,8 +32,9 @@ const CartPage = () => {
     <>
       <SEO
         title="VOZOL EGY | Your Cart"
-        description="View your cart items and proceed to checkout."
+        description="Review your selected products and continue to checkout."
         url="https://vozolegy.com/cart"
+        noIndex
       />
       <div className="cart-page">
         <h1>Your Cart</h1>

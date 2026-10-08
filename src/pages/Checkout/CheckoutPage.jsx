@@ -1347,8 +1347,6 @@
 
 // export default CheckoutPage;
 
-
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
@@ -1358,6 +1356,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabase";
 
 import "./CheckoutPage.css";
+import SEO from "../../seo/SEO";
 
 /* =========================================================
    EMAILJS CONFIGURATION
@@ -1741,8 +1740,7 @@ const CheckoutPage = () => {
   const numericSubtotal = Number(subtotal || 0);
 
   const isFreeStandardShipping =
-    deliveryMethod === "standard" &&
-    numericSubtotal >= FREE_SHIPPING_THRESHOLD;
+    deliveryMethod === "standard" && numericSubtotal >= FREE_SHIPPING_THRESHOLD;
 
   const currentShippingCost =
     deliveryMethod === "standard"
@@ -1854,13 +1852,9 @@ const CheckoutPage = () => {
     const combinedAddress = [
       formData.street.trim(),
 
-      formData.building.trim()
-        ? `Building ${formData.building.trim()}`
-        : "",
+      formData.building.trim() ? `Building ${formData.building.trim()}` : "",
 
-      formData.apartment.trim()
-        ? `Apartment ${formData.apartment.trim()}`
-        : "",
+      formData.apartment.trim() ? `Apartment ${formData.apartment.trim()}` : "",
 
       formData.addressDetails.trim(),
     ]
@@ -2123,9 +2117,7 @@ const CheckoutPage = () => {
         : "By Agreement";
 
     const total =
-      deliveryMethod === "standard"
-        ? `${currentTotal} LE`
-        : "To be confirmed";
+      deliveryMethod === "standard" ? `${currentTotal} LE` : "To be confirmed";
 
     const templateParams = {
       order_number: orderNumber,
@@ -2258,9 +2250,7 @@ const CheckoutPage = () => {
         const orderProducts = cartItems
           .map(
             (item) =>
-              `• ${item.name} - ${item.flavor || "N/A"} x${
-                item.quantity
-              } - ${
+              `• ${item.name} - ${item.flavor || "N/A"} x${item.quantity} - ${
                 Number(item.price) * Number(item.quantity)
               } LE`,
           )
@@ -2273,17 +2263,11 @@ const CheckoutPage = () => {
 
           formData.street,
 
-          formData.building
-            ? `Building ${formData.building}`
-            : "",
+          formData.building ? `Building ${formData.building}` : "",
 
-          formData.apartment
-            ? `Apartment ${formData.apartment}`
-            : "",
+          formData.apartment ? `Apartment ${formData.apartment}` : "",
 
-          formData.addressDetails
-            ? `Details: ${formData.addressDetails}`
-            : "",
+          formData.addressDetails ? `Details: ${formData.addressDetails}` : "",
         ]
           .filter(Boolean)
           .join(", ");
@@ -2361,9 +2345,7 @@ Thank you ❤️
     } catch (error) {
       console.error("PLACE ORDER ERROR:", error);
 
-      alert(
-        "We couldn't place your order right now. Please try again.",
-      );
+      alert("We couldn't place your order right now. Please try again.");
 
       setOrderCompleted(false);
 
@@ -2383,9 +2365,7 @@ Thank you ❤️
 
           <h1>Order Completed!</h1>
 
-          <p className="order-success__message">
-            Thank you for your order ❤️
-          </p>
+          <p className="order-success__message">Thank you for your order ❤️</p>
 
           {deliveryMethod === "standard" ? (
             <p className="order-success__details">
@@ -2417,450 +2397,391 @@ Thank you ❤️
   ========================================================= */
 
   return (
-    <main className="checkout-page">
-      <div className="checkout-container">
+    <>
+      <SEO
+        title="Checkout | VOZOL EGY"
+        description="Complete your order with VOZOL EGY."
+        url="https://vozolegy.com/checkout"
+        noIndex
+      />
 
-        {/* ===================================================
+      <main className="checkout-page">
+        <div className="checkout-container">
+          {/* ===================================================
             HEADER
         =================================================== */}
 
-        <div className="checkout-header">
-          <span className="checkout-header__line"></span>
+          <div className="checkout-header">
+            <span className="checkout-header__line"></span>
 
-          <h1>CHECKOUT</h1>
+            <h1>CHECKOUT</h1>
 
-          <span className="checkout-header__line"></span>
-        </div>
+            <span className="checkout-header__line"></span>
+          </div>
 
-        <form
-          className="checkout-layout"
-          onSubmit={handlePlaceOrder}
-        >
-
-          {/* =================================================
+          <form className="checkout-layout" onSubmit={handlePlaceOrder}>
+            {/* =================================================
               01 — CUSTOMER INFORMATION
           ================================================= */}
 
-          <section className="checkout-card">
-            <div className="checkout-card__heading">
-              <span>01</span>
+            <section className="checkout-card">
+              <div className="checkout-card__heading">
+                <span>01</span>
 
-              <div>
-                <h2>Customer Information</h2>
+                <div>
+                  <h2>Customer Information</h2>
 
-                <p>
-                  Your saved account information is filled automatically.
-                </p>
-              </div>
-            </div>
-
-            <div className="checkout-grid">
-
-              <div className="checkout-field checkout-field--full">
-                <label>
-                  Full Name <span>*</span>
-                </label>
-
-                <input
-                  type="text"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  placeholder="Enter your full name"
-                  required
-                />
+                  <p>Your saved account information is filled automatically.</p>
+                </div>
               </div>
 
-              <div className="checkout-field">
-                <label>
-                  Phone Number <span>*</span>
-                </label>
+              <div className="checkout-grid">
+                <div className="checkout-field checkout-field--full">
+                  <label>
+                    Full Name <span>*</span>
+                  </label>
 
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="01XXXXXXXXX"
-                  required
-                />
+                  <input
+                    type="text"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    placeholder="Enter your full name"
+                    required
+                  />
+                </div>
+
+                <div className="checkout-field">
+                  <label>
+                    Phone Number <span>*</span>
+                  </label>
+
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="01XXXXXXXXX"
+                    required
+                  />
+                </div>
+
+                <div className="checkout-field">
+                  <label>
+                    WhatsApp Number <span>*</span>
+                  </label>
+
+                  <input
+                    type="tel"
+                    name="whatsapp"
+                    value={formData.whatsapp}
+                    onChange={handleChange}
+                    placeholder="01XXXXXXXXX"
+                    required
+                  />
+                </div>
               </div>
+            </section>
 
-              <div className="checkout-field">
-                <label>
-                  WhatsApp Number <span>*</span>
-                </label>
-
-                <input
-                  type="tel"
-                  name="whatsapp"
-                  value={formData.whatsapp}
-                  onChange={handleChange}
-                  placeholder="01XXXXXXXXX"
-                  required
-                />
-              </div>
-
-            </div>
-          </section>
-
-          {/* =================================================
+            {/* =================================================
               02 — DELIVERY ADDRESS
           ================================================= */}
 
-          <section className="checkout-card">
-            <div className="checkout-card__heading">
-              <span>02</span>
+            <section className="checkout-card">
+              <div className="checkout-card__heading">
+                <span>02</span>
 
-              <div>
-                <h2>Delivery Address</h2>
+                <div>
+                  <h2>Delivery Address</h2>
 
-                <p>
-                  Your saved address is filled automatically.
-                </p>
+                  <p>Your saved address is filled automatically.</p>
+                </div>
               </div>
-            </div>
 
-            <div className="checkout-grid">
+              <div className="checkout-grid">
+                <div className="checkout-field">
+                  <label>
+                    Governorate <span>*</span>
+                  </label>
 
-              <div className="checkout-field">
-                <label>
-                  Governorate <span>*</span>
-                </label>
+                  <select
+                    name="governorate"
+                    value={formData.governorate}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">Select Governorate</option>
 
-                <select
-                  name="governorate"
-                  value={formData.governorate}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">
-                    Select Governorate
-                  </option>
-
-                  {Object.keys(egyptLocations).map(
-                    (governorate) => (
-                      <option
-                        key={governorate}
-                        value={governorate}
-                      >
+                    {Object.keys(egyptLocations).map((governorate) => (
+                      <option key={governorate} value={governorate}>
                         {governorate}
                       </option>
-                    ),
-                  )}
-                </select>
-              </div>
-
-              <div className="checkout-field">
-                <label>
-                  City / Area <span>*</span>
-                </label>
-
-                <select
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  disabled={!formData.governorate}
-                  required
-                >
-                  <option value="">
-                    {formData.governorate
-                      ? "Select City / Area"
-                      : "Select Governorate First"}
-                  </option>
-
-                  {formData.governorate &&
-                    egyptLocations[
-                      formData.governorate
-                    ]?.map((city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
                     ))}
-                </select>
+                  </select>
+                </div>
+
+                <div className="checkout-field">
+                  <label>
+                    City / Area <span>*</span>
+                  </label>
+
+                  <select
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    disabled={!formData.governorate}
+                    required
+                  >
+                    <option value="">
+                      {formData.governorate
+                        ? "Select City / Area"
+                        : "Select Governorate First"}
+                    </option>
+
+                    {formData.governorate &&
+                      egyptLocations[formData.governorate]?.map((city) => (
+                        <option key={city} value={city}>
+                          {city}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+
+                <div className="checkout-field checkout-field--full">
+                  <label>Street</label>
+
+                  <input
+                    type="text"
+                    name="street"
+                    value={formData.street}
+                    onChange={handleChange}
+                    placeholder="Street name"
+                  />
+                </div>
+
+                <div className="checkout-field">
+                  <label>Building Number</label>
+
+                  <input
+                    type="text"
+                    name="building"
+                    value={formData.building}
+                    onChange={handleChange}
+                    placeholder="Building number"
+                  />
+                </div>
+
+                <div className="checkout-field">
+                  <label>Apartment Number</label>
+
+                  <input
+                    type="text"
+                    name="apartment"
+                    value={formData.apartment}
+                    onChange={handleChange}
+                    placeholder="Apartment number"
+                  />
+                </div>
+
+                <div className="checkout-field checkout-field--full">
+                  <label>Address Details</label>
+
+                  <textarea
+                    name="addressDetails"
+                    value={formData.addressDetails}
+                    onChange={handleChange}
+                    placeholder="Landmark, floor, additional details..."
+                    rows="4"
+                  />
+                </div>
               </div>
+            </section>
 
-              <div className="checkout-field checkout-field--full">
-                <label>Street</label>
-
-                <input
-                  type="text"
-                  name="street"
-                  value={formData.street}
-                  onChange={handleChange}
-                  placeholder="Street name"
-                />
-              </div>
-
-              <div className="checkout-field">
-                <label>Building Number</label>
-
-                <input
-                  type="text"
-                  name="building"
-                  value={formData.building}
-                  onChange={handleChange}
-                  placeholder="Building number"
-                />
-              </div>
-
-              <div className="checkout-field">
-                <label>Apartment Number</label>
-
-                <input
-                  type="text"
-                  name="apartment"
-                  value={formData.apartment}
-                  onChange={handleChange}
-                  placeholder="Apartment number"
-                />
-              </div>
-
-              <div className="checkout-field checkout-field--full">
-                <label>Address Details</label>
-
-                <textarea
-                  name="addressDetails"
-                  value={formData.addressDetails}
-                  onChange={handleChange}
-                  placeholder="Landmark, floor, additional details..."
-                  rows="4"
-                />
-              </div>
-
-            </div>
-          </section>
-
-          {/* =================================================
+            {/* =================================================
               03 — DELIVERY METHOD
           ================================================= */}
 
-          <section className="checkout-card">
-            <div className="checkout-card__heading">
-              <span>03</span>
+            <section className="checkout-card">
+              <div className="checkout-card__heading">
+                <span>03</span>
 
-              <div>
-                <h2>Delivery Method</h2>
+                <div>
+                  <h2>Delivery Method</h2>
 
-                <p>
-                  Choose your preferred delivery option
-                </p>
+                  <p>Choose your preferred delivery option</p>
+                </div>
               </div>
-            </div>
 
-            <div className="delivery-options">
+              <div className="delivery-options">
+                {/* STANDARD */}
 
-              {/* STANDARD */}
+                <label
+                  className={`delivery-option ${
+                    deliveryMethod === "standard"
+                      ? "delivery-option--active"
+                      : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="delivery"
+                    value="standard"
+                    checked={deliveryMethod === "standard"}
+                    onChange={(event) => setDeliveryMethod(event.target.value)}
+                  />
 
-              <label
-                className={`delivery-option ${
-                  deliveryMethod === "standard"
-                    ? "delivery-option--active"
-                    : ""
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="delivery"
-                  value="standard"
-                  checked={deliveryMethod === "standard"}
-                  onChange={(event) =>
-                    setDeliveryMethod(event.target.value)
-                  }
-                />
+                  <div className="delivery-option__radio"></div>
 
-                <div className="delivery-option__radio"></div>
+                  <div className="delivery-option__content">
+                    <div className="delivery-option__top">
+                      <h3>Standard Delivery</h3>
 
-                <div className="delivery-option__content">
+                      <strong>
+                        {isFreeStandardShipping
+                          ? "FREE"
+                          : `${STANDARD_SHIPPING_COST} LE`}
+                      </strong>
+                    </div>
 
-                  <div className="delivery-option__top">
-                    <h3>Standard Delivery</h3>
+                    <p>Delivery within 2–3 business days.</p>
 
-                    <strong>
-                      {isFreeStandardShipping
-                        ? "FREE"
-                        : `${STANDARD_SHIPPING_COST} LE`}
-                    </strong>
-                  </div>
-
-                  <p>
-                    Delivery within 2–3 business days.
-                  </p>
-
-                  {isFreeStandardShipping ? (
-                    <p>
-                      🎉 Free shipping on orders of{" "}
-                      {FREE_SHIPPING_THRESHOLD} LE or more.
-                    </p>
-                  ) : (
-                    amountUntilFreeShipping > 0 && (
+                    {isFreeStandardShipping ? (
                       <p>
-                        Add {amountUntilFreeShipping} LE more
-                        to get FREE shipping.
+                        🎉 Free shipping on orders of {FREE_SHIPPING_THRESHOLD}{" "}
+                        LE or more.
                       </p>
-                    )
-                  )}
-
-                </div>
-              </label>
-
-              {/* EXPRESS */}
-
-              <label
-                className={`delivery-option ${
-                  deliveryMethod === "express"
-                    ? "delivery-option--active"
-                    : ""
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="delivery"
-                  value="express"
-                  checked={deliveryMethod === "express"}
-                  onChange={(event) =>
-                    setDeliveryMethod(event.target.value)
-                  }
-                />
-
-                <div className="delivery-option__radio"></div>
-
-                <div className="delivery-option__content">
-
-                  <div className="delivery-option__top">
-                    <h3>Same Day Express</h3>
-
-                    <strong>By Agreement</strong>
+                    ) : (
+                      amountUntilFreeShipping > 0 && (
+                        <p>
+                          Add {amountUntilFreeShipping} LE more to get FREE
+                          shipping.
+                        </p>
+                      )
+                    )}
                   </div>
+                </label>
 
-                  <p>
-                    Same-day delivery. Shipping cost will be
-                    confirmed with you through WhatsApp.
-                  </p>
+                {/* EXPRESS */}
 
-                </div>
-              </label>
+                <label
+                  className={`delivery-option ${
+                    deliveryMethod === "express"
+                      ? "delivery-option--active"
+                      : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="delivery"
+                    value="express"
+                    checked={deliveryMethod === "express"}
+                    onChange={(event) => setDeliveryMethod(event.target.value)}
+                  />
 
-            </div>
-          </section>
+                  <div className="delivery-option__radio"></div>
 
-          {/* =================================================
+                  <div className="delivery-option__content">
+                    <div className="delivery-option__top">
+                      <h3>Same Day Express</h3>
+
+                      <strong>By Agreement</strong>
+                    </div>
+
+                    <p>
+                      Same-day delivery. Shipping cost will be confirmed with
+                      you through WhatsApp.
+                    </p>
+                  </div>
+                </label>
+              </div>
+            </section>
+
+            {/* =================================================
               ORDER SUMMARY
           ================================================= */}
 
-          <aside className="checkout-summary">
+            <aside className="checkout-summary">
+              <div className="checkout-summary__header">
+                <h2>ORDER SUMMARY</h2>
 
-            <div className="checkout-summary__header">
-              <h2>ORDER SUMMARY</h2>
+                <span>
+                  {cartItems.length} {cartItems.length === 1 ? "Item" : "Items"}
+                </span>
+              </div>
 
-              <span>
-                {cartItems.length}{" "}
-                {cartItems.length === 1
-                  ? "Item"
-                  : "Items"}
-              </span>
-            </div>
+              <div className="checkout-summary__items">
+                {cartItems.map((item) => (
+                  <div className="checkout-summary__item" key={item.id}>
+                    <div className="checkout-summary__image">
+                      <img src={item.image_url || item.image} alt={item.name} />
+                    </div>
 
-            <div className="checkout-summary__items">
+                    <div className="checkout-summary__info">
+                      <h3>{item.name}</h3>
 
-              {cartItems.map((item) => (
-                <div
-                  className="checkout-summary__item"
-                  key={item.id}
-                >
+                      {item.flavor && (
+                        <p>
+                          Flavor: <span>{item.flavor}</span>
+                        </p>
+                      )}
 
-                  <div className="checkout-summary__image">
-                    <img
-                      src={item.image_url || item.image}
-                      alt={item.name}
-                    />
+                      <p>Qty: {item.quantity}</p>
+                    </div>
+
+                    <strong>
+                      {Number(item.price) * Number(item.quantity)} LE
+                    </strong>
                   </div>
+                ))}
+              </div>
 
-                  <div className="checkout-summary__info">
+              <div className="checkout-summary__totals">
+                <div>
+                  <span>Subtotal</span>
 
-                    <h3>{item.name}</h3>
+                  <strong>{numericSubtotal} LE</strong>
+                </div>
 
-                    {item.flavor && (
-                      <p>
-                        Flavor:{" "}
-                        <span>{item.flavor}</span>
-                      </p>
-                    )}
-
-                    <p>
-                      Qty: {item.quantity}
-                    </p>
-
-                  </div>
+                <div>
+                  <span>Shipping</span>
 
                   <strong>
-                    {Number(item.price) *
-                      Number(item.quantity)}{" "}
+                    {deliveryMethod === "standard"
+                      ? isFreeStandardShipping
+                        ? "FREE"
+                        : `${STANDARD_SHIPPING_COST} LE`
+                      : "By Agreement"}
+                  </strong>
+                </div>
+
+                <div className="checkout-summary__total">
+                  <span>Total</span>
+
+                  <strong>
+                    {deliveryMethod === "standard"
+                      ? currentTotal
+                      : numericSubtotal}{" "}
                     LE
                   </strong>
-
                 </div>
-              ))}
-
-            </div>
-
-            <div className="checkout-summary__totals">
-
-              <div>
-                <span>Subtotal</span>
-
-                <strong>
-                  {numericSubtotal} LE
-                </strong>
               </div>
 
-              <div>
-                <span>Shipping</span>
+              <button
+                type="submit"
+                className="place-order-button"
+                disabled={isSendingOrder}
+              >
+                {isSendingOrder ? "PLACING ORDER..." : "PLACE ORDER"}
+              </button>
 
-                <strong>
-                  {deliveryMethod === "standard"
-                    ? isFreeStandardShipping
-                      ? "FREE"
-                      : `${STANDARD_SHIPPING_COST} LE`
-                    : "By Agreement"}
-                </strong>
-              </div>
-
-              <div className="checkout-summary__total">
-
-                <span>Total</span>
-
-                <strong>
-                  {deliveryMethod === "standard"
-                    ? currentTotal
-                    : numericSubtotal}{" "}
-                  LE
-                </strong>
-
-              </div>
-
-            </div>
-
-            <button
-              type="submit"
-              className="place-order-button"
-              disabled={isSendingOrder}
-            >
-              {isSendingOrder
-                ? "PLACING ORDER..."
-                : "PLACE ORDER"}
-            </button>
-
-            <p className="checkout-summary__note">
-              By placing your order, you agree to our
-              delivery terms.
-            </p>
-
-          </aside>
-
-        </form>
-      </div>
-    </main>
+              <p className="checkout-summary__note">
+                By placing your order, you agree to our delivery terms.
+              </p>
+            </aside>
+          </form>
+        </div>
+      </main>
+    </>
   );
 };
 

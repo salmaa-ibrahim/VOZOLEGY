@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
+import SEO from "../../seo/SEO";
 
 import "./LoginPage.css";
 
@@ -470,189 +471,198 @@ const RegisterPage = () => {
   ===================================== */
 
   return (
-    <main className="auth-page">
-      <section className="auth-card">
-        <div className="auth-card-header">
-          <span>VOZOL EGY</span>
+    <>
+      <SEO
+        title="Create Account | VOZOL EGY"
+        description="Create your VOZOL EGY account."
+        url="https://vozolegy.com/register"
+        noIndex
+      />
 
-          <h1>Create Account</h1>
+      <main className="auth-page">
+        <section className="auth-card">
+          <div className="auth-card-header">
+            <span>VOZOL EGY</span>
 
-          <p>Create your customer account.</p>
-        </div>
+            <h1>Create Account</h1>
 
-        {error && <div className="auth-error">{error}</div>}
+            <p>Create your customer account.</p>
+          </div>
 
-        {success && <div className="auth-success">{success}</div>}
+          {error && <div className="auth-error">{error}</div>}
 
-        <form className="auth-form" onSubmit={handleSubmit}>
-          {/* FULL NAME */}
+          {success && <div className="auth-success">{success}</div>}
 
-          <label>
-            Full Name
-            <input
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleChange}
-              placeholder="Your full name"
-              required
-            />
-          </label>
+          <form className="auth-form" onSubmit={handleSubmit}>
+            {/* FULL NAME */}
 
-          {/* EMAIL */}
+            <label>
+              Full Name
+              <input
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                placeholder="Your full name"
+                required
+              />
+            </label>
 
-          <label>
-            Email
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-              required
-            />
-          </label>
+            {/* EMAIL */}
 
-          {/* PHONE */}
+            <label>
+              Email
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                required
+              />
+            </label>
 
-          <label>
-            Phone Number
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="01XXXXXXXXX"
-              required
-            />
-          </label>
+            {/* PHONE */}
 
-          {/* WHATSAPP */}
+            <label>
+              Phone Number
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="01XXXXXXXXX"
+                required
+              />
+            </label>
 
-          <label>
-            WhatsApp Number
-            <input
-              type="tel"
-              name="whatsapp"
-              value={formData.whatsapp}
-              onChange={handleChange}
-              placeholder="01XXXXXXXXX"
-              required
-            />
-          </label>
+            {/* WHATSAPP */}
 
-          {/* GOVERNORATE */}
+            <label>
+              WhatsApp Number
+              <input
+                type="tel"
+                name="whatsapp"
+                value={formData.whatsapp}
+                onChange={handleChange}
+                placeholder="01XXXXXXXXX"
+                required
+              />
+            </label>
 
-          <label>
-            Governorate
-            <select
-              className="auth-select"
-              name="governorate"
-              value={formData.governorate}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Governorate</option>
+            {/* GOVERNORATE */}
 
-              {Object.keys(egyptGovernorates).map((governorate) => (
-                <option key={governorate} value={governorate}>
-                  {governorate}
+            <label>
+              Governorate
+              <select
+                className="auth-select"
+                name="governorate"
+                value={formData.governorate}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Governorate</option>
+
+                {Object.keys(egyptGovernorates).map((governorate) => (
+                  <option key={governorate} value={governorate}>
+                    {governorate}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            {/* CITY */}
+
+            <label>
+              City
+              <select
+                className="auth-select"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                disabled={!formData.governorate}
+                required
+              >
+                <option value="">
+                  {formData.governorate
+                    ? "Select City"
+                    : "Select Governorate First"}
                 </option>
-              ))}
-            </select>
-          </label>
 
-          {/* CITY */}
+                {selectedCities.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-          <label>
-            City
-            <select
-              className="auth-select"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              disabled={!formData.governorate}
-              required
-            >
-              <option value="">
-                {formData.governorate
-                  ? "Select City"
-                  : "Select Governorate First"}
-              </option>
+            {/* FULL ADDRESS */}
 
-              {selectedCities.map((city) => (
-                <option key={city} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
-          </label>
+            <label>
+              Full Address
+              <textarea
+                className="auth-select"
+                name="fullAddress"
+                value={formData.fullAddress}
+                onChange={handleChange}
+                placeholder="Full address, building, apartment, street..."
+                rows="4"
+              />
+            </label>
 
-          {/* FULL ADDRESS */}
+            {/* PASSWORD */}
 
-          <label>
-            Full Address
-            <textarea
-              className="auth-select"
-              name="fullAddress"
-              value={formData.fullAddress}
-              onChange={handleChange}
-              placeholder="Full address, building, apartment, street..."
-              rows="4"
-            />
-          </label>
+            <label>
+              Password
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="At least 6 characters"
+                autoComplete="new-password"
+                required
+              />
+            </label>
 
-          {/* PASSWORD */}
+            {/* CONFIRM PASSWORD */}
 
-          <label>
-            Password
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="At least 6 characters"
-              autoComplete="new-password"
-              required
-            />
-          </label>
+            <label>
+              Confirm Password
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Repeat your password"
+                autoComplete="new-password"
+                required
+              />
+            </label>
 
-          {/* CONFIRM PASSWORD */}
+            {/* SUBMIT */}
 
-          <label>
-            Confirm Password
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Repeat your password"
-              autoComplete="new-password"
-              required
-            />
-          </label>
+            <button className="auth-submit" type="submit" disabled={loading}>
+              {loading ? "Creating Account..." : "Create Account"}
+            </button>
+          </form>
 
-          {/* SUBMIT */}
+          {/* FOOTER */}
 
-          <button className="auth-submit" type="submit" disabled={loading}>
-            {loading ? "Creating Account..." : "Create Account"}
-          </button>
-        </form>
+          <div className="auth-footer">
+            <p>Already have an account?</p>
 
-        {/* FOOTER */}
+            <Link to="/login" className="auth-link">
+              Sign In
+            </Link>
 
-        <div className="auth-footer">
-          <p>Already have an account?</p>
-
-          <Link to="/login" className="auth-link">
-            Sign In
-          </Link>
-
-          <Link to="/" className="auth-home-link">
-            ← Back to Home
-          </Link>
-        </div>
-      </section>
-    </main>
+            <Link to="/" className="auth-home-link">
+              ← Back to Home
+            </Link>
+          </div>
+        </section>
+      </main>
+    </>
   );
 };
 

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabase";
 import "./AccountPage.css";
+import SEO from "../../seo/SEO";
 
 const money = (value, currency = "EGP") =>
   new Intl.NumberFormat("en-EG", {
@@ -323,489 +324,502 @@ const AccountPage = () => {
    */
 
   return (
-    <main className="account-page">
-      <div className="account-container">
-        {/* =====================================
+    <>
+      <SEO
+        title="My Account | VOZOL EGY"
+        description="Manage your VOZOL EGY account and orders."
+        url="https://vozolegy.com/account"
+        noIndex
+      />
+      <main className="account-page">
+        <div className="account-container">
+          {/* =====================================
             HEADER
         ===================================== */}
 
-        <div className="account-top">
-          <div>
-            <span className="account-eyebrow">VOZOL EGY</span>
+          <div className="account-top">
+            <div>
+              <span className="account-eyebrow">VOZOL EGY</span>
 
-            <h1>My Account</h1>
+              <h1>My Account</h1>
 
-            <p>
-              Welcome back, {profile?.full_name || user?.email || "Customer"}.
-            </p>
+              <p>
+                Welcome back, {profile?.full_name || user?.email || "Customer"}.
+              </p>
+            </div>
+
+            <button type="button" className="account-signout" onClick={signOut}>
+              Sign Out
+            </button>
           </div>
 
-          <button type="button" className="account-signout" onClick={signOut}>
-            Sign Out
-          </button>
-        </div>
-
-        {/* =====================================
+          {/* =====================================
             MESSAGES
         ===================================== */}
 
-        {error && (
-          <div className="account-message account-message-error">{error}</div>
-        )}
+          {error && (
+            <div className="account-message account-message-error">{error}</div>
+          )}
 
-        {success && (
-          <div className="account-message account-message-success">
-            {success}
-          </div>
-        )}
+          {success && (
+            <div className="account-message account-message-success">
+              {success}
+            </div>
+          )}
 
-        {/* =====================================
+          {/* =====================================
             SUMMARY
         ===================================== */}
 
-        <section className="account-stats">
-          <div className="account-stat">
-            <span>ORDERS</span>
+          <section className="account-stats">
+            <div className="account-stat">
+              <span>ORDERS</span>
 
-            <strong>{totalOrders}</strong>
-          </div>
+              <strong>{totalOrders}</strong>
+            </div>
 
-          <div className="account-stat">
-            <span>COMPLETED</span>
+            <div className="account-stat">
+              <span>COMPLETED</span>
 
-            <strong>{completedOrders.length}</strong>
-          </div>
+              <strong>{completedOrders.length}</strong>
+            </div>
 
-          {/* <div className="account-stat">
+            {/* <div className="account-stat">
             <span>TOTAL SPENT</span>
 
             <strong>{money(totalSpent)}</strong>
           </div> */}
-        </section>
+          </section>
 
-        {/* =====================================
+          {/* =====================================
             PROFILE
         ===================================== */}
 
-        <section className="account-card">
-          <div className="account-card-header">
-            <div>
-              <span>PERSONAL INFORMATION</span>
-
-              <h2>My Details</h2>
-            </div>
-          </div>
-
-          <form className="account-form" onSubmit={handleSaveProfile}>
-            <label>
-              Full Name
-              <input
-                type="text"
-                name="full_name"
-                value={formData.full_name}
-                onChange={handleChange}
-                required
-              />
-            </label>
-
-            <label>
-              Email
-              <input type="email" value={user?.email || ""} disabled />
-            </label>
-
-            <label>
-              Phone
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-              />
-            </label>
-
-            <label>
-              WhatsApp
-              <input
-                type="tel"
-                name="whatsapp"
-                value={formData.whatsapp}
-                onChange={handleChange}
-                required
-              />
-            </label>
-
-            <label>
-              Governorate
-              <input
-                type="text"
-                name="governorate"
-                value={formData.governorate}
-                onChange={handleChange}
-                required
-              />
-            </label>
-
-            <label>
-              City
-              <input
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-                required
-              />
-            </label>
-
-            <label className="account-field-full">
-              Full Address
-              <textarea
-                name="full_address"
-                value={formData.full_address}
-                onChange={handleChange}
-                rows="4"
-                required
-              />
-            </label>
-
-            <button
-              type="submit"
-              className="account-primary-button"
-              disabled={saving}
-            >
-              {saving ? "Saving..." : "Save Changes"}
-            </button>
-          </form>
-        </section>
-
-        {/* =====================================
-            ORDERS
-        ===================================== */}
-
-        <section className="account-card">
-          <div className="account-card-header">
-            <div>
-              <span>ORDER HISTORY</span>
-
-              <h2>My Orders</h2>
-            </div>
-
-            {!loading && orders.length > 0 && (
-              <span className="account-order-count">
-                {orders.length} {orders.length === 1 ? "Order" : "Orders"}
-              </span>
-            )}
-          </div>
-
-          {loading ? (
-            <div className="account-empty">Loading orders...</div>
-          ) : orders.length === 0 ? (
-            <div className="account-empty">
-              <p>You don't have any orders yet.</p>
-
-              <Link
-                to="/"
-                className="account-primary-button account-shop-button"
-              >
-                Start Shopping
-              </Link>
-            </div>
-          ) : (
-            <div className="account-orders">
-              {orders.map((order) => (
-                <button
-                  type="button"
-                  key={order.id}
-                  className="account-order"
-                  onClick={() => setSelectedOrder(order)}
-                >
-                  <div>
-                    <strong>
-                      #{order.order_number || String(order.id).slice(0, 8)}
-                    </strong>
-
-                    <span>{formatDate(order.created_at)}</span>
-                  </div>
-
-                  <span
-                    className={`account-status account-status-${statusClass(
-                      order.order_status,
-                    )}`}
-                  >
-                    {statusLabel(order.order_status)}
-                  </span>
-
-                  <strong>{money(order.total_amount, order.currency)}</strong>
-                </button>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* =====================================
-            ORDER DETAILS
-        ===================================== */}
-
-        {selectedOrder && (
           <section className="account-card">
             <div className="account-card-header">
               <div>
-                <span>ORDER DETAILS</span>
+                <span>PERSONAL INFORMATION</span>
 
-                <h2>
-                  #
-                  {selectedOrder.order_number ||
-                    String(selectedOrder.id).slice(0, 8)}
-                </h2>
+                <h2>My Details</h2>
               </div>
-
-              <button
-                type="button"
-                className="account-close-button"
-                onClick={() => setSelectedOrder(null)}
-              >
-                Close
-              </button>
             </div>
 
-            <div className="account-order-details">
-              {/* =====================================
+            <form className="account-form" onSubmit={handleSaveProfile}>
+              <label>
+                Full Name
+                <input
+                  type="text"
+                  name="full_name"
+                  value={formData.full_name}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label>
+                Email
+                <input type="email" value={user?.email || ""} disabled />
+              </label>
+
+              <label>
+                Phone
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label>
+                WhatsApp
+                <input
+                  type="tel"
+                  name="whatsapp"
+                  value={formData.whatsapp}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label>
+                Governorate
+                <input
+                  type="text"
+                  name="governorate"
+                  value={formData.governorate}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label>
+                City
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+
+              <label className="account-field-full">
+                Full Address
+                <textarea
+                  name="full_address"
+                  value={formData.full_address}
+                  onChange={handleChange}
+                  rows="4"
+                  required
+                />
+              </label>
+
+              <button
+                type="submit"
+                className="account-primary-button"
+                disabled={saving}
+              >
+                {saving ? "Saving..." : "Save Changes"}
+              </button>
+            </form>
+          </section>
+
+          {/* =====================================
+            ORDERS
+        ===================================== */}
+
+          <section className="account-card">
+            <div className="account-card-header">
+              <div>
+                <span>ORDER HISTORY</span>
+
+                <h2>My Orders</h2>
+              </div>
+
+              {!loading && orders.length > 0 && (
+                <span className="account-order-count">
+                  {orders.length} {orders.length === 1 ? "Order" : "Orders"}
+                </span>
+              )}
+            </div>
+
+            {loading ? (
+              <div className="account-empty">Loading orders...</div>
+            ) : orders.length === 0 ? (
+              <div className="account-empty">
+                <p>You don't have any orders yet.</p>
+
+                <Link
+                  to="/"
+                  className="account-primary-button account-shop-button"
+                >
+                  Start Shopping
+                </Link>
+              </div>
+            ) : (
+              <div className="account-orders">
+                {orders.map((order) => (
+                  <button
+                    type="button"
+                    key={order.id}
+                    className="account-order"
+                    onClick={() => setSelectedOrder(order)}
+                  >
+                    <div>
+                      <strong>
+                        #{order.order_number || String(order.id).slice(0, 8)}
+                      </strong>
+
+                      <span>{formatDate(order.created_at)}</span>
+                    </div>
+
+                    <span
+                      className={`account-status account-status-${statusClass(
+                        order.order_status,
+                      )}`}
+                    >
+                      {statusLabel(order.order_status)}
+                    </span>
+
+                    <strong>{money(order.total_amount, order.currency)}</strong>
+                  </button>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* =====================================
+            ORDER DETAILS
+        ===================================== */}
+
+          {selectedOrder && (
+            <section className="account-card">
+              <div className="account-card-header">
+                <div>
+                  <span>ORDER DETAILS</span>
+
+                  <h2>
+                    #
+                    {selectedOrder.order_number ||
+                      String(selectedOrder.id).slice(0, 8)}
+                  </h2>
+                </div>
+
+                <button
+                  type="button"
+                  className="account-close-button"
+                  onClick={() => setSelectedOrder(null)}
+                >
+                  Close
+                </button>
+              </div>
+
+              <div className="account-order-details">
+                {/* =====================================
                   ORDER META
               ===================================== */}
 
-              <div className="account-order-meta">
-                <div>
-                  <span>Status</span>
+                <div className="account-order-meta">
+                  <div>
+                    <span>Status</span>
 
-                  <strong
-                    className={`account-status account-status-${statusClass(
-                      selectedOrder.order_status,
-                    )}`}
-                  >
-                    {statusLabel(selectedOrder.order_status)}
-                  </strong>
+                    <strong
+                      className={`account-status account-status-${statusClass(
+                        selectedOrder.order_status,
+                      )}`}
+                    >
+                      {statusLabel(selectedOrder.order_status)}
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>Date</span>
+
+                    <strong>{formatDate(selectedOrder.created_at)}</strong>
+                  </div>
+
+                  <div>
+                    <span>Items</span>
+
+                    <strong>{getOrderItemCount(selectedOrder)}</strong>
+                  </div>
+
+                  <div>
+                    <span>Subtotal</span>
+
+                    <strong>
+                      {money(selectedOrder.subtotal, selectedOrder.currency)}
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>Shipping</span>
+
+                    <strong>
+                      {Number(selectedOrder.shipping_cost || 0) > 0
+                        ? money(
+                            selectedOrder.shipping_cost,
+                            selectedOrder.currency,
+                          )
+                        : "Free"}
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>Total</span>
+
+                    <strong>
+                      {money(
+                        selectedOrder.total_amount,
+                        selectedOrder.currency,
+                      )}
+                    </strong>
+                  </div>
                 </div>
 
-                <div>
-                  <span>Date</span>
-
-                  <strong>{formatDate(selectedOrder.created_at)}</strong>
-                </div>
-
-                <div>
-                  <span>Items</span>
-
-                  <strong>{getOrderItemCount(selectedOrder)}</strong>
-                </div>
-
-                <div>
-                  <span>Subtotal</span>
-
-                  <strong>
-                    {money(selectedOrder.subtotal, selectedOrder.currency)}
-                  </strong>
-                </div>
-
-                <div>
-                  <span>Shipping</span>
-
-                  <strong>
-                    {Number(selectedOrder.shipping_cost || 0) > 0
-                      ? money(
-                          selectedOrder.shipping_cost,
-                          selectedOrder.currency,
-                        )
-                      : "Free"}
-                  </strong>
-                </div>
-
-                <div>
-                  <span>Total</span>
-
-                  <strong>
-                    {money(selectedOrder.total_amount, selectedOrder.currency)}
-                  </strong>
-                </div>
-              </div>
-
-              {/* =====================================
+                {/* =====================================
                   PRODUCTS
               ===================================== */}
 
-              <h3>Products</h3>
+                <h3>Products</h3>
 
-              {selectedOrder.order_items?.length > 0 ? (
-                <div className="account-order-items">
-                  {selectedOrder.order_items.map((item) => (
-                    <div key={item.id} className="account-order-item">
-                      <div>
-                        <strong>{item.product_name || "Product"}</strong>
+                {selectedOrder.order_items?.length > 0 ? (
+                  <div className="account-order-items">
+                    {selectedOrder.order_items.map((item) => (
+                      <div key={item.id} className="account-order-item">
+                        <div>
+                          <strong>{item.product_name || "Product"}</strong>
 
-                        {item.flavor && <span>{item.flavor}</span>}
+                          {item.flavor && <span>{item.flavor}</span>}
+                        </div>
+
+                        <span>× {Number(item.quantity || 0)}</span>
+
+                        <strong>
+                          {money(
+                            Number(item.unit_price || 0) *
+                              Number(item.quantity || 0),
+                            selectedOrder.currency,
+                          )}
+                        </strong>
                       </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="account-empty">
+                    No product details available for this order.
+                  </div>
+                )}
 
-                      <span>× {Number(item.quantity || 0)}</span>
-
-                      <strong>
-                        {money(
-                          Number(item.unit_price || 0) *
-                            Number(item.quantity || 0),
-                          selectedOrder.currency,
-                        )}
-                      </strong>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="account-empty">
-                  No product details available for this order.
-                </div>
-              )}
-
-              {/* =====================================
+                {/* =====================================
                   CUSTOMER / DELIVERY INFORMATION
               ===================================== */}
 
-              <div className="account-shipping">
-                <h3>Delivery Information</h3>
+                <div className="account-shipping">
+                  <h3>Delivery Information</h3>
 
-                <p>
-                  <strong>Name:</strong> {selectedOrder.customer_name || "—"}
-                </p>
+                  <p>
+                    <strong>Name:</strong> {selectedOrder.customer_name || "—"}
+                  </p>
 
-                <p>
-                  <strong>Email:</strong> {selectedOrder.customer_email || "—"}
-                </p>
+                  <p>
+                    <strong>Email:</strong>{" "}
+                    {selectedOrder.customer_email || "—"}
+                  </p>
 
-                <p>
-                  <strong>Phone:</strong> {selectedOrder.customer_phone || "—"}
-                </p>
+                  <p>
+                    <strong>Phone:</strong>{" "}
+                    {selectedOrder.customer_phone || "—"}
+                  </p>
 
-                <p>
-                  <strong>WhatsApp:</strong>{" "}
-                  {selectedOrder.customer_whatsapp || "—"}
-                </p>
+                  <p>
+                    <strong>WhatsApp:</strong>{" "}
+                    {selectedOrder.customer_whatsapp || "—"}
+                  </p>
 
-                <p>
-                  <strong>Governorate:</strong>{" "}
-                  {selectedOrder.governorate || "—"}
-                </p>
+                  <p>
+                    <strong>Governorate:</strong>{" "}
+                    {selectedOrder.governorate || "—"}
+                  </p>
 
-                <p>
-                  <strong>City:</strong> {selectedOrder.city || "—"}
-                </p>
+                  <p>
+                    <strong>City:</strong> {selectedOrder.city || "—"}
+                  </p>
 
-                <p>
-                  <strong>Street:</strong> {selectedOrder.street || "—"}
-                </p>
+                  <p>
+                    <strong>Street:</strong> {selectedOrder.street || "—"}
+                  </p>
 
-                <p>
-                  <strong>Building:</strong>{" "}
-                  {selectedOrder.building_number || "—"}
-                </p>
+                  <p>
+                    <strong>Building:</strong>{" "}
+                    {selectedOrder.building_number || "—"}
+                  </p>
 
-                <p>
-                  <strong>Apartment:</strong>{" "}
-                  {selectedOrder.apartment_number || "—"}
-                </p>
+                  <p>
+                    <strong>Apartment:</strong>{" "}
+                    {selectedOrder.apartment_number || "—"}
+                  </p>
 
-                <p>
-                  <strong>Address Details:</strong>{" "}
-                  {selectedOrder.address_details || "—"}
-                </p>
+                  <p>
+                    <strong>Address Details:</strong>{" "}
+                    {selectedOrder.address_details || "—"}
+                  </p>
 
-                <p>
-                  <strong>Full Address:</strong>{" "}
-                  {getFullAddress(selectedOrder) || "—"}
-                </p>
-              </div>
+                  <p>
+                    <strong>Full Address:</strong>{" "}
+                    {getFullAddress(selectedOrder) || "—"}
+                  </p>
+                </div>
 
-              {/* =====================================
+                {/* =====================================
                   PAYMENT INFORMATION
               ===================================== */}
 
-              <div className="account-shipping">
-                <h3>Payment Information</h3>
+                <div className="account-shipping">
+                  <h3>Payment Information</h3>
 
-                <p>
-                  <strong>Payment Method:</strong>{" "}
-                  {selectedOrder.payment_method
-                    ? statusLabel(selectedOrder.payment_method)
-                    : "—"}
-                </p>
+                  <p>
+                    <strong>Payment Method:</strong>{" "}
+                    {selectedOrder.payment_method
+                      ? statusLabel(selectedOrder.payment_method)
+                      : "—"}
+                  </p>
 
-                <p>
-                  <strong>Payment Status:</strong>{" "}
-                  {selectedOrder.payment_status
-                    ? statusLabel(selectedOrder.payment_status)
-                    : "—"}
-                </p>
+                  <p>
+                    <strong>Payment Status:</strong>{" "}
+                    {selectedOrder.payment_status
+                      ? statusLabel(selectedOrder.payment_status)
+                      : "—"}
+                  </p>
 
-                <p>
-                  <strong>Delivery Method:</strong>{" "}
-                  {selectedOrder.delivery_method
-                    ? statusLabel(selectedOrder.delivery_method)
-                    : "—"}
-                </p>
-              </div>
+                  <p>
+                    <strong>Delivery Method:</strong>{" "}
+                    {selectedOrder.delivery_method
+                      ? statusLabel(selectedOrder.delivery_method)
+                      : "—"}
+                  </p>
+                </div>
 
-              {/* =====================================
+                {/* =====================================
                   CUSTOMER NOTES
               ===================================== */}
 
-              {selectedOrder.customer_notes && (
-                <div className="account-shipping">
-                  <h3>Order Notes</h3>
+                {selectedOrder.customer_notes && (
+                  <div className="account-shipping">
+                    <h3>Order Notes</h3>
 
-                  <p>{selectedOrder.customer_notes}</p>
-                </div>
-              )}
+                    <p>{selectedOrder.customer_notes}</p>
+                  </div>
+                )}
 
-              {/* =====================================
+                {/* =====================================
                   ORDER TIMELINE
               ===================================== */}
 
-              <div className="account-shipping">
-                <h3>Order Timeline</h3>
+                <div className="account-shipping">
+                  <h3>Order Timeline</h3>
 
-                <p>
-                  <strong>Created:</strong>{" "}
-                  {formatDate(selectedOrder.created_at)}
-                </p>
-
-                {selectedOrder.confirmed_at && (
                   <p>
-                    <strong>Confirmed:</strong>{" "}
-                    {formatDate(selectedOrder.confirmed_at)}
+                    <strong>Created:</strong>{" "}
+                    {formatDate(selectedOrder.created_at)}
                   </p>
-                )}
 
-                {selectedOrder.shipped_at && (
-                  <p>
-                    <strong>Shipped:</strong>{" "}
-                    {formatDate(selectedOrder.shipped_at)}
-                  </p>
-                )}
+                  {selectedOrder.confirmed_at && (
+                    <p>
+                      <strong>Confirmed:</strong>{" "}
+                      {formatDate(selectedOrder.confirmed_at)}
+                    </p>
+                  )}
 
-                {selectedOrder.delivered_at && (
-                  <p>
-                    <strong>Delivered:</strong>{" "}
-                    {formatDate(selectedOrder.delivered_at)}
-                  </p>
-                )}
+                  {selectedOrder.shipped_at && (
+                    <p>
+                      <strong>Shipped:</strong>{" "}
+                      {formatDate(selectedOrder.shipped_at)}
+                    </p>
+                  )}
 
-                {selectedOrder.cancelled_at && (
-                  <p>
-                    <strong>Cancelled:</strong>{" "}
-                    {formatDate(selectedOrder.cancelled_at)}
-                  </p>
-                )}
+                  {selectedOrder.delivered_at && (
+                    <p>
+                      <strong>Delivered:</strong>{" "}
+                      {formatDate(selectedOrder.delivered_at)}
+                    </p>
+                  )}
+
+                  {selectedOrder.cancelled_at && (
+                    <p>
+                      <strong>Cancelled:</strong>{" "}
+                      {formatDate(selectedOrder.cancelled_at)}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          </section>
-        )}
-      </div>
-    </main>
+            </section>
+          )}
+        </div>
+      </main>
+    </>
   );
 };
 
