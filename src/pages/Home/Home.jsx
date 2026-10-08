@@ -83,6 +83,7 @@ const Home = () => {
       <SEO
         title="VOZOL EGY | VOZOL Vape in Egypt | افضل متجر فيب في مصر"
         description="Shop VOZOL vape products in Egypt from VOZOL EGY. Explore VOZOL flavors, disposable vapes and the latest VOZOL categories with fast delivery across Egypt."
+        content="أكبر ستور للفيب في مصر فوزول ايچي - Vozol egy نوفر لك جميع منتجات الفيب الأصلية التي تساعدك علي الإقلاع عن التدخين وبأفضل الأٍسعار في السوق ..."
         url="https://vozolegy.com/"
         keywords={[
           "VAPE Egypt",
