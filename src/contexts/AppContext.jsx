@@ -1,6 +1,6 @@
 //Age Gate & Cookie Consent
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AppContext = createContext();
 
@@ -11,26 +11,34 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     // Check localStorage on mount
-    const ageVerified = localStorage.getItem('vozol_age_verified');
-    const cookieAccepted = localStorage.getItem('vozol_cookie_accepted');
-    
-    if (ageVerified === 'true') setIsAgeVerified(true);
-    if (cookieAccepted === 'true') setIsCookieAccepted(true);
+    const ageVerified = localStorage.getItem("vozol_age_verified");
+    const cookieAccepted = localStorage.getItem("vozol_cookie_accepted");
+
+    if (ageVerified === "true") setIsAgeVerified(true);
+    if (cookieAccepted === "true") setIsCookieAccepted(true);
     setIsLoading(false);
   }, []);
 
   const verifyAge = () => {
-    localStorage.setItem('vozol_age_verified', 'true');
+    localStorage.setItem("vozol_age_verified", "true");
     setIsAgeVerified(true);
   };
 
   const acceptCookies = () => {
-    localStorage.setItem('vozol_cookie_accepted', 'true');
+    localStorage.setItem("vozol_cookie_accepted", "true");
     setIsCookieAccepted(true);
   };
 
   return (
-    <AppContext.Provider value={{ isAgeVerified, isCookieAccepted, isLoading, verifyAge, acceptCookies }}>
+    <AppContext.Provider
+      value={{
+        isAgeVerified,
+        isCookieAccepted,
+        isLoading,
+        verifyAge,
+        acceptCookies,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

@@ -84,9 +84,9 @@
   font-weight: 700;
   margin-top: 16px;
 }
-.empty{
-    display: flex;
-    flex-direction: column;
+.empty {
+  display: flex;
+  flex-direction: column;
 }
 .btn-primary {
   background-color: #f3f1f1;

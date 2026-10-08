@@ -10,14 +10,14 @@ const ContactSection = () => {
   return (
     <section className="contact-section">
       <motion.h2
-                className="all-products-title"
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.6 }}
-              >
-                GET IN TOUCH
-              </motion.h2>
+        className="all-products-title"
+        initial={{ opacity: 0, y: 25 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+      >
+        GET IN TOUCH
+      </motion.h2>
       <p className="section-subtitle">
         Have a question? Need help? We're here for you ツ
       </p>

@@ -211,17 +211,10 @@ const AccountPage = () => {
 
   const totalOrders = orders.length;
 
-  const completedStatuses = [
-    "confirmed",
-    "shipped",
-    "delivered",
-    "completed",
-  ];
+  const completedStatuses = ["confirmed", "shipped", "delivered", "completed"];
 
   const completedOrders = orders.filter((order) =>
-    completedStatuses.includes(
-      String(order.order_status || "").toLowerCase(),
-    ),
+    completedStatuses.includes(String(order.order_status || "").toLowerCase()),
   );
 
   const totalSpent = useMemo(() => {
@@ -347,11 +340,7 @@ const AccountPage = () => {
             </p>
           </div>
 
-          <button
-            type="button"
-            className="account-signout"
-            onClick={signOut}
-          >
+          <button type="button" className="account-signout" onClick={signOut}>
             Sign Out
           </button>
         </div>
@@ -361,9 +350,7 @@ const AccountPage = () => {
         ===================================== */}
 
         {error && (
-          <div className="account-message account-message-error">
-            {error}
-          </div>
+          <div className="account-message account-message-error">{error}</div>
         )}
 
         {success && (
@@ -412,7 +399,6 @@ const AccountPage = () => {
           <form className="account-form" onSubmit={handleSaveProfile}>
             <label>
               Full Name
-
               <input
                 type="text"
                 name="full_name"
@@ -424,17 +410,11 @@ const AccountPage = () => {
 
             <label>
               Email
-
-              <input
-                type="email"
-                value={user?.email || ""}
-                disabled
-              />
+              <input type="email" value={user?.email || ""} disabled />
             </label>
 
             <label>
               Phone
-
               <input
                 type="tel"
                 name="phone"
@@ -446,7 +426,6 @@ const AccountPage = () => {
 
             <label>
               WhatsApp
-
               <input
                 type="tel"
                 name="whatsapp"
@@ -458,7 +437,6 @@ const AccountPage = () => {
 
             <label>
               Governorate
-
               <input
                 type="text"
                 name="governorate"
@@ -470,7 +448,6 @@ const AccountPage = () => {
 
             <label>
               City
-
               <input
                 type="text"
                 name="city"
@@ -482,7 +459,6 @@ const AccountPage = () => {
 
             <label className="account-field-full">
               Full Address
-
               <textarea
                 name="full_address"
                 value={formData.full_address}
@@ -522,9 +498,7 @@ const AccountPage = () => {
           </div>
 
           {loading ? (
-            <div className="account-empty">
-              Loading orders...
-            </div>
+            <div className="account-empty">Loading orders...</div>
           ) : orders.length === 0 ? (
             <div className="account-empty">
               <p>You don't have any orders yet.</p>
@@ -547,14 +521,10 @@ const AccountPage = () => {
                 >
                   <div>
                     <strong>
-                      #
-                      {order.order_number ||
-                        String(order.id).slice(0, 8)}
+                      #{order.order_number || String(order.id).slice(0, 8)}
                     </strong>
 
-                    <span>
-                      {formatDate(order.created_at)}
-                    </span>
+                    <span>{formatDate(order.created_at)}</span>
                   </div>
 
                   <span
@@ -565,9 +535,7 @@ const AccountPage = () => {
                     {statusLabel(order.order_status)}
                   </span>
 
-                  <strong>
-                    {money(order.total_amount, order.currency)}
-                  </strong>
+                  <strong>{money(order.total_amount, order.currency)}</strong>
                 </button>
               ))}
             </div>
@@ -621,27 +589,20 @@ const AccountPage = () => {
                 <div>
                   <span>Date</span>
 
-                  <strong>
-                    {formatDate(selectedOrder.created_at)}
-                  </strong>
+                  <strong>{formatDate(selectedOrder.created_at)}</strong>
                 </div>
 
                 <div>
                   <span>Items</span>
 
-                  <strong>
-                    {getOrderItemCount(selectedOrder)}
-                  </strong>
+                  <strong>{getOrderItemCount(selectedOrder)}</strong>
                 </div>
 
                 <div>
                   <span>Subtotal</span>
 
                   <strong>
-                    {money(
-                      selectedOrder.subtotal,
-                      selectedOrder.currency,
-                    )}
+                    {money(selectedOrder.subtotal, selectedOrder.currency)}
                   </strong>
                 </div>
 
@@ -662,10 +623,7 @@ const AccountPage = () => {
                   <span>Total</span>
 
                   <strong>
-                    {money(
-                      selectedOrder.total_amount,
-                      selectedOrder.currency,
-                    )}
+                    {money(selectedOrder.total_amount, selectedOrder.currency)}
                   </strong>
                 </div>
               </div>
@@ -679,23 +637,14 @@ const AccountPage = () => {
               {selectedOrder.order_items?.length > 0 ? (
                 <div className="account-order-items">
                   {selectedOrder.order_items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="account-order-item"
-                    >
+                    <div key={item.id} className="account-order-item">
                       <div>
-                        <strong>
-                          {item.product_name || "Product"}
-                        </strong>
+                        <strong>{item.product_name || "Product"}</strong>
 
-                        {item.flavor && (
-                          <span>{item.flavor}</span>
-                        )}
+                        {item.flavor && <span>{item.flavor}</span>}
                       </div>
 
-                      <span>
-                        × {Number(item.quantity || 0)}
-                      </span>
+                      <span>× {Number(item.quantity || 0)}</span>
 
                       <strong>
                         {money(
@@ -721,18 +670,15 @@ const AccountPage = () => {
                 <h3>Delivery Information</h3>
 
                 <p>
-                  <strong>Name:</strong>{" "}
-                  {selectedOrder.customer_name || "—"}
+                  <strong>Name:</strong> {selectedOrder.customer_name || "—"}
                 </p>
 
                 <p>
-                  <strong>Email:</strong>{" "}
-                  {selectedOrder.customer_email || "—"}
+                  <strong>Email:</strong> {selectedOrder.customer_email || "—"}
                 </p>
 
                 <p>
-                  <strong>Phone:</strong>{" "}
-                  {selectedOrder.customer_phone || "—"}
+                  <strong>Phone:</strong> {selectedOrder.customer_phone || "—"}
                 </p>
 
                 <p>
@@ -746,13 +692,11 @@ const AccountPage = () => {
                 </p>
 
                 <p>
-                  <strong>City:</strong>{" "}
-                  {selectedOrder.city || "—"}
+                  <strong>City:</strong> {selectedOrder.city || "—"}
                 </p>
 
                 <p>
-                  <strong>Street:</strong>{" "}
-                  {selectedOrder.street || "—"}
+                  <strong>Street:</strong> {selectedOrder.street || "—"}
                 </p>
 
                 <p>

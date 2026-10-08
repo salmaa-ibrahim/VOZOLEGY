@@ -43,14 +43,16 @@ export const getProductsByCategory = async (categoryId) => {
 export const getProductById = async (productId) => {
   const { data, error } = await supabase
     .from("products")
-    .select(`
+    .select(
+      `
       *,
       categories (
         id,
         name,
         slug
       )
-    `)
+    `,
+    )
     .eq("id", productId)
     .single();
 

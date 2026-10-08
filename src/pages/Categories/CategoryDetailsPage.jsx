@@ -280,6 +280,24 @@ const CategoryDetailsPage = () => {
         }
         url={`https://vozolegy.com/categories/${category.slug}`}
         image={category.image_url || category.banner_image}
+        keywords={[
+          category.name,
+          `${category.name} Egypt`,
+          `${category.name} price`,
+          `${category.name} flavors`,
+          `${category.name} سعر`,
+          `${category.name} مصر`,
+          "VOZOL Egypt",
+          "VOZOL EGY",
+          "VOZOL vape Egypt",
+          "VOZOL في مصر",
+          "VOZOL vape في مصر",
+          "disposable vape Egypt",
+          "disposable vape online Egypt",
+          "disposable vape flavors",
+          "disposable vape price",
+          "فوزول مصر",
+        ]}
       />
       <main className="category-page">
         {/* ======================================================

@@ -1,6 +1,6 @@
 import React from "react";
 import "./PromotionalBanner.css";
-import PromotionalBannerimg from "../../../public/images/banners/PromotionalBanner.png"
+import PromotionalBannerimg from "../../../public/images/banners/PromotionalBanner.png";
 
 const PromotionalBanner = () => {
   return (

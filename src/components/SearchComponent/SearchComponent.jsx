@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -68,10 +67,7 @@ const SearchComponent = ({
   };
 
   return (
-    <div
-      ref={searchRef}
-      className={`search-component ${className}`}
-    >
+    <div ref={searchRef} className={`search-component ${className}`}>
       <div className="search-component__input-wrapper">
         <svg
           className="search-component__icon"
@@ -119,9 +115,7 @@ const SearchComponent = ({
       {searchQuery.trim() && (
         <div className="search-component__results">
           {isSearching && (
-            <div className="search-component__status">
-              Searching...
-            </div>
+            <div className="search-component__status">Searching...</div>
           )}
 
           {!isSearching && !searchError && searchResults.length > 0 && (
@@ -152,26 +146,20 @@ const SearchComponent = ({
                       </span>
                     )}
 
-                    {product.price !== undefined &&
-                      product.price !== null && (
-                        <span className="search-component__result-price">
-                          {product.price}{" "}
-                          {siteConfig.store.currencySymbol}
-                        </span>
-                      )}
+                    {product.price !== undefined && product.price !== null && (
+                      <span className="search-component__result-price">
+                        {product.price} {siteConfig.store.currencySymbol}
+                      </span>
+                    )}
                   </div>
                 </Link>
               ))}
             </div>
           )}
 
-          {!isSearching &&
-            !searchError &&
-            searchResults.length === 0 && (
-              <div className="search-component__status">
-                No products found
-              </div>
-            )}
+          {!isSearching && !searchError && searchResults.length === 0 && (
+            <div className="search-component__status">No products found</div>
+          )}
 
           {searchError && (
             <div className="search-component__status search-component__status--error">

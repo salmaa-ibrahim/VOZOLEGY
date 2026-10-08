@@ -9,7 +9,8 @@ export const searchProducts = async (query) => {
 
   const { data, error } = await supabase
     .from("products")
-    .select(`
+    .select(
+      `
       id,
       name,
       price,
@@ -21,7 +22,8 @@ export const searchProducts = async (query) => {
         slug,
         name
       )
-    `)
+    `,
+    )
     .or(`name.ilike.%${search}%,flavor.ilike.%${search}%`)
     .eq("available", true)
     .order("name", { ascending: true })

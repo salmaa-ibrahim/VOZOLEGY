@@ -81,10 +81,63 @@ const Home = () => {
   return (
     <>
       <SEO
-        title="VOZOL EGY | VOZOL Vape in Egypt"
-        description="Explore VOZOL vape products, flavors and categories at VOZOL EGY. Discover available VOZOL products in Egypt."
+        title="VOZOL EGY | VOZOL Vape in Egypt | Buy VOZOL Online"
+        description="Shop VOZOL vape products in Egypt from VOZOL EGY. Explore VOZOL flavors, disposable vapes and the latest VOZOL categories with fast delivery across Egypt."
         url="https://vozolegy.com/"
+        keywords={[
+          "VAPE Egypt",
+          "VAPE online Egypt",
+          "VAPE shop Egypt",
+          "VAPE store Egypt",
+          "VAPE delivery Egypt",
+          "VAPE products Egypt",
+          "VAPE flavors Egypt",
+          "VAPE",
+          "vape",
+          "VOZOL",
+          "vozol",
+          "disposable vape",
+          "disposable vape Egypt",
+          "disposable vape online Egypt",
+          "fast delivery disposable vape Egypt",
+          "VOZOL vape",
+          "VOZOL Egypt",
+          "VOZOL EGY",
+          "VOZOL vape Egypt",
+          "buy VOZOL Egypt",
+          "buy VOZOL online Egypt",
+          "VOZOL online Egypt",
+          "VOZOL vape price Egypt",
+          "VOZOL disposable vape Egypt",
+          "fast delivery VOZOL Egypt",
+          "fast delivery VOZOL online Egypt",
+          "fast delivery VOZOL vape Egypt",
+          "fast delivery VOZOL disposable vape Egypt",
+          "فوزول",
+          "فيب",
+          "فوزول فيب",
+          "فوزول مصر",
+          "فوزول في مصر",
+          "شراء فوزول",
+          "سعر فوزول",
+          "اسعار فوزول",
+          "فيب فوزول",
+          "شراء فيب اونلاين مصر",
+          "زيرو نيكوتين",
+          "فيب بدون نيكوتين",
+          "فيب بدون نيكوتين مصر",
+          "فيب بدون نيكوتين اونلاين مصر",
+          "فيب بدون نيكوتين اونلاين",
+          "فيب بدون نيكوتين اونلاين",
+          "شحن سريع فيب مصر",
+          "شحن سريع فيب اونلاين مصر",
+          "شحن سريع فيب اونلاين",
+          "شحن سريع فيب",
+          "ديسبوسيبل فيب",
+          " دسيبوسيبل فوزول",
+        ]}
       />
+
       <div className="home-page">
         {/* ======================================================
           HERO

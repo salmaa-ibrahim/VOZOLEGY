@@ -1,11 +1,6 @@
-import React, {
-  useState,
-} from "react";
+import React, { useState } from "react";
 
-import {
-  Link,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -197,14 +192,7 @@ const egyptGovernorates = {
     "El Zohour",
   ],
 
-  Suez: [
-    "Suez",
-    "Ain Sokhna",
-    "Ataka",
-    "Arbaeen",
-    "Faisal",
-    "Ganayen",
-  ],
+  Suez: ["Suez", "Ain Sokhna", "Ataka", "Arbaeen", "Faisal", "Ganayen"],
 
   Damietta: [
     "Damietta",
@@ -287,15 +275,7 @@ const egyptGovernorates = {
     "Abu Tesht",
   ],
 
-  Luxor: [
-    "Luxor",
-    "New Luxor",
-    "Esna",
-    "Armant",
-    "Qurna",
-    "Tod",
-    "Bayadeya",
-  ],
+  Luxor: ["Luxor", "New Luxor", "Esna", "Armant", "Qurna", "Tod", "Bayadeya"],
 
   Aswan: [
     "Aswan",
@@ -321,14 +301,7 @@ const egyptGovernorates = {
     "Shalateen",
   ],
 
-  "New Valley": [
-    "Kharga",
-    "New Valley",
-    "Dakhla",
-    "Farafra",
-    "Baris",
-    "Mut",
-  ],
+  "New Valley": ["Kharga", "New Valley", "Dakhla", "Farafra", "Baris", "Mut"],
 
   Matrouh: [
     "Marsa Matrouh",
@@ -371,41 +344,32 @@ const egyptGovernorates = {
 const RegisterPage = () => {
   const navigate = useNavigate();
 
-  const {
-    signUp,
-  } = useAuth();
+  const { signUp } = useAuth();
 
-  const [formData, setFormData] =
-    useState({
-      fullName: "",
-      email: "",
-      phone: "",
-      whatsapp: "",
-      governorate: "",
-      city: "",
-      fullAddress: "",
-      password: "",
-      confirmPassword: "",
-    });
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    whatsapp: "",
+    governorate: "",
+    city: "",
+    fullAddress: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const [error, setError] =
-    useState("");
+  const [error, setError] = useState("");
 
-  const [success, setSuccess] =
-    useState("");
+  const [success, setSuccess] = useState("");
 
-  const [loading, setLoading] =
-    useState(false);
+  const [loading, setLoading] = useState(false);
 
   /* =====================================
      HANDLE INPUT CHANGE
   ===================================== */
 
   const handleChange = (event) => {
-    const {
-      name,
-      value,
-    } = event.target;
+    const { name, value } = event.target;
 
     if (name === "governorate") {
       setFormData((previous) => ({
@@ -433,39 +397,26 @@ const RegisterPage = () => {
     setError("");
     setSuccess("");
 
-    if (
-      formData.password !==
-      formData.confirmPassword
-    ) {
-      setError(
-        "Passwords do not match.",
-      );
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match.");
 
       return;
     }
 
-    if (
-      formData.password.length < 6
-    ) {
-      setError(
-        "Password must be at least 6 characters.",
-      );
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters.");
 
       return;
     }
 
     if (!formData.governorate) {
-      setError(
-        "Please select your governorate.",
-      );
+      setError("Please select your governorate.");
 
       return;
     }
 
     if (!formData.city) {
-      setError(
-        "Please select your city.",
-      );
+      setError("Please select your city.");
 
       return;
     }
@@ -473,24 +424,16 @@ const RegisterPage = () => {
     setLoading(true);
 
     try {
-      const result =
-        await signUp({
-          email: formData.email,
-          password:
-            formData.password,
-          fullName:
-            formData.fullName,
-          phone:
-            formData.phone,
-          whatsapp:
-            formData.whatsapp,
-          governorate:
-            formData.governorate,
-          city:
-            formData.city,
-          fullAddress:
-            formData.fullAddress,
-        });
+      const result = await signUp({
+        email: formData.email,
+        password: formData.password,
+        fullName: formData.fullName,
+        phone: formData.phone,
+        whatsapp: formData.whatsapp,
+        governorate: formData.governorate,
+        city: formData.city,
+        fullAddress: formData.fullAddress,
+      });
 
       if (result?.session) {
         navigate("/account", {
@@ -508,10 +451,7 @@ const RegisterPage = () => {
         navigate("/login");
       }, 1800);
     } catch (error) {
-      setError(
-        error.message ||
-          "Unable to create your account.",
-      );
+      setError(error.message || "Unable to create your account.");
     } finally {
       setLoading(false);
     }
@@ -521,12 +461,9 @@ const RegisterPage = () => {
      GET CITIES FOR SELECTED GOVERNORATE
   ===================================== */
 
-  const selectedCities =
-    formData.governorate
-      ? egyptGovernorates[
-          formData.governorate
-        ] || []
-      : [];
+  const selectedCities = formData.governorate
+    ? egyptGovernorates[formData.governorate] || []
+    : [];
 
   /* =====================================
      RENDER
@@ -535,53 +472,27 @@ const RegisterPage = () => {
   return (
     <main className="auth-page">
       <section className="auth-card">
-
         <div className="auth-card-header">
+          <span>VOZOL EGY</span>
 
-          <span>
-            VOZOL EGY
-          </span>
+          <h1>Create Account</h1>
 
-          <h1>
-            Create Account
-          </h1>
-
-          <p>
-            Create your customer account.
-          </p>
-
+          <p>Create your customer account.</p>
         </div>
 
-        {error && (
-          <div className="auth-error">
-            {error}
-          </div>
-        )}
+        {error && <div className="auth-error">{error}</div>}
 
-        {success && (
-          <div className="auth-success">
-            {success}
-          </div>
-        )}
+        {success && <div className="auth-success">{success}</div>}
 
-        <form
-          className="auth-form"
-          onSubmit={handleSubmit}
-        >
-
+        <form className="auth-form" onSubmit={handleSubmit}>
           {/* FULL NAME */}
 
           <label>
             Full Name
-
             <input
               name="fullName"
-              value={
-                formData.fullName
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.fullName}
+              onChange={handleChange}
               placeholder="Your full name"
               required
             />
@@ -591,16 +502,11 @@ const RegisterPage = () => {
 
           <label>
             Email
-
             <input
               type="email"
               name="email"
-              value={
-                formData.email
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.email}
+              onChange={handleChange}
               placeholder="you@example.com"
               required
             />
@@ -610,16 +516,11 @@ const RegisterPage = () => {
 
           <label>
             Phone Number
-
             <input
               type="tel"
               name="phone"
-              value={
-                formData.phone
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.phone}
+              onChange={handleChange}
               placeholder="01XXXXXXXXX"
               required
             />
@@ -629,16 +530,11 @@ const RegisterPage = () => {
 
           <label>
             WhatsApp Number
-
             <input
               type="tel"
               name="whatsapp"
-              value={
-                formData.whatsapp
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.whatsapp}
+              onChange={handleChange}
               placeholder="01XXXXXXXXX"
               required
             />
@@ -648,38 +544,20 @@ const RegisterPage = () => {
 
           <label>
             Governorate
-
             <select
-            className="auth-select"
+              className="auth-select"
               name="governorate"
-              value={
-                formData.governorate
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.governorate}
+              onChange={handleChange}
               required
             >
-              <option value="">
-                Select Governorate
-              </option>
+              <option value="">Select Governorate</option>
 
-              {Object.keys(
-                egyptGovernorates,
-              ).map(
-                (governorate) => (
-                  <option
-                    key={
-                      governorate
-                    }
-                    value={
-                      governorate
-                    }
-                  >
-                    {governorate}
-                  </option>
-                ),
-              )}
+              {Object.keys(egyptGovernorates).map((governorate) => (
+                <option key={governorate} value={governorate}>
+                  {governorate}
+                </option>
+              ))}
             </select>
           </label>
 
@@ -687,19 +565,12 @@ const RegisterPage = () => {
 
           <label>
             City
-
             <select
-                className="auth-select"
+              className="auth-select"
               name="city"
-              value={
-                formData.city
-              }
-              onChange={
-                handleChange
-              }
-              disabled={
-                !formData.governorate
-              }
+              value={formData.city}
+              onChange={handleChange}
+              disabled={!formData.governorate}
               required
             >
               <option value="">
@@ -708,16 +579,11 @@ const RegisterPage = () => {
                   : "Select Governorate First"}
               </option>
 
-              {selectedCities.map(
-                (city) => (
-                  <option
-                    key={city}
-                    value={city}
-                  >
-                    {city}
-                  </option>
-                ),
-              )}
+              {selectedCities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
             </select>
           </label>
 
@@ -725,19 +591,13 @@ const RegisterPage = () => {
 
           <label>
             Full Address
-
             <textarea
-            className="auth-select"
+              className="auth-select"
               name="fullAddress"
-              value={
-                formData.fullAddress
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.fullAddress}
+              onChange={handleChange}
               placeholder="Full address, building, apartment, street..."
               rows="4"
-              required
             />
           </label>
 
@@ -745,16 +605,11 @@ const RegisterPage = () => {
 
           <label>
             Password
-
             <input
               type="password"
               name="password"
-              value={
-                formData.password
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.password}
+              onChange={handleChange}
               placeholder="At least 6 characters"
               autoComplete="new-password"
               required
@@ -765,16 +620,11 @@ const RegisterPage = () => {
 
           <label>
             Confirm Password
-
             <input
               type="password"
               name="confirmPassword"
-              value={
-                formData.confirmPassword
-              }
-              onChange={
-                handleChange
-              }
+              value={formData.confirmPassword}
+              onChange={handleChange}
               placeholder="Repeat your password"
               autoComplete="new-password"
               required
@@ -783,42 +633,24 @@ const RegisterPage = () => {
 
           {/* SUBMIT */}
 
-          <button
-            className="auth-submit"
-            type="submit"
-            disabled={loading}
-          >
-            {loading
-              ? "Creating Account..."
-              : "Create Account"}
+          <button className="auth-submit" type="submit" disabled={loading}>
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
-
         </form>
 
         {/* FOOTER */}
 
         <div className="auth-footer">
+          <p>Already have an account?</p>
 
-          <p>
-            Already have an account?
-          </p>
-
-          <Link
-            to="/login"
-            className="auth-link"
-          >
+          <Link to="/login" className="auth-link">
             Sign In
           </Link>
 
-          <Link
-            to="/"
-            className="auth-home-link"
-          >
+          <Link to="/" className="auth-home-link">
             ← Back to Home
           </Link>
-
         </div>
-
       </section>
     </main>
   );

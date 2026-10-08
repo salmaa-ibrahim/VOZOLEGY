@@ -62,7 +62,6 @@ const CategoryShowcase = () => {
         >
           Discover Our Category
         </motion.h2>
-        
 
         <p className="loading">No categories available.</p>
       </section>
@@ -79,12 +78,8 @@ const CategoryShowcase = () => {
         transition={{ duration: 0.6 }}
       >
         Discover Our Category <br />
-        <span className="section-subtitle">
-        Disposable Vape
-      </span>
-        
+        <span className="section-subtitle">Disposable Vape</span>
       </motion.h2>
-      
 
       <div className="category-grid">
         {categories.map((cat) => (
@@ -104,14 +99,10 @@ const CategoryShowcase = () => {
 
             <div className="category-card__info">
               {cat.promo_label && (
-                <p className="category-card__type">
-                  {cat.promo_label}
-                </p>
+                <p className="category-card__type">{cat.promo_label}</p>
               )}
 
-              <h3 className="category-card__title">
-                {cat.name}
-              </h3>
+              <h3 className="category-card__title">{cat.name}</h3>
 
               {/* <span className="category-card__link">
                 <span>›</span>

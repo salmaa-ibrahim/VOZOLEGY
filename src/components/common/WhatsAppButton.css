@@ -1,4 +1,3 @@
-
 /* =========================================================
    WHATSAPP FLOATING BUTTON
 ========================================================= */
@@ -29,7 +28,6 @@
   transform: none;
 }
 
-
 /* =========================================================
    WHATSAPP ICON
 ========================================================= */
@@ -49,7 +47,6 @@
   /* Small continuous movement */
   animation: whatsappGentleMove 3s ease-in-out infinite;
 }
-
 
 /* =========================================================
    CHAT WITH US
@@ -83,10 +80,8 @@
 
   white-space: nowrap;
 
-  box-shadow:
-    0 6px 18px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
 }
-
 
 /* =========================================================
    ARROW
@@ -112,7 +107,6 @@
   border-left: 14px solid #202020;
 }
 
-
 /* =========================================================
    NO HOVER CHANGES
 ========================================================= */
@@ -123,18 +117,15 @@
   background: transparent;
 }
 
-.whatsapp-floating-button:hover
-.whatsapp-floating-button__tooltip {
+.whatsapp-floating-button:hover .whatsapp-floating-button__tooltip {
   background: #202020;
 
   color: #ffffff;
 }
 
-.whatsapp-floating-button:hover
-.whatsapp-floating-button__icon {
+.whatsapp-floating-button:hover .whatsapp-floating-button__icon {
   transform: none;
 }
-
 
 /* =========================================================
    GENTLE ICON ANIMATION
@@ -150,7 +141,6 @@
     transform: translateY(-3px);
   }
 }
-
 
 /* =========================================================
    TABLET
@@ -191,7 +181,6 @@
   }
 }
 
-
 /* =========================================================
    MOBILE
 ========================================================= */
@@ -212,7 +201,7 @@
   .whatsapp-floating-button__tooltip {
     height: 36px;
 
-    padding:8px;
+    padding: 8px;
 
     margin-right: 8px;
 
@@ -230,7 +219,6 @@
     border-left-width: 10px;
   }
 }
-
 
 /* =========================================================
    SMALL MOBILE
@@ -270,7 +258,6 @@
     border-left-width: 9px;
   }
 }
-
 
 /* =========================================================
    REDUCED MOTION

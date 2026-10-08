@@ -1,82 +1,158 @@
-import React, {
-  useState,
-} from "react";
-
-import {
-  Link,
-} from "react-router-dom";
-
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
-
 import "./LoginPage.css";
 
-const ForgotPasswordPage = () => {
-  const [email, setEmail] =
-    useState("");
+const ResetPasswordPage = () => {
+  const navigate = useNavigate();
 
-  const [error, setError] =
-    useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [success, setSuccess] =
-    useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const [loading, setLoading] =
-    useState(false);
+  const [loading, setLoading] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
+  const [validSession, setValidSession] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const checkRecoverySession = async () => {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+
+        if (!mounted) return;
+
+        if (error) {
+          setError(error.message);
+          setValidSession(false);
+          setCheckingSession(false);
+          return;
+        }
+
+        if (data?.session) {
+          setValidSession(true);
+        } else {
+          setError(
+            "This password reset link is invalid or has expired. Please request a new password reset link."
+          );
+          setValidSession(false);
+        }
+      } catch (error) {
+        if (!mounted) return;
+
+        setError(
+          error.message ||
+            "Unable to verify the password reset link."
+        );
+
+        setValidSession(false);
+      } finally {
+        if (mounted) {
+          setCheckingSession(false);
+        }
+      }
+    };
+
+    checkRecoverySession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (!mounted) return;
+
+        if (
+          event === "PASSWORD_RECOVERY" ||
+          session
+        ) {
+          setValidSession(true);
+          setError("");
+        }
+      }
+    );
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     setError("");
     setSuccess("");
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const redirectUrl =
-        `${window.location.origin}/reset-password`;
-
-      const {
-        error,
-      } =
-        await supabase.auth.resetPasswordForEmail(
-          email.trim(),
-          {
-            redirectTo:
-              redirectUrl,
-          }
-        );
+      const { error } = await supabase.auth.updateUser({
+        password,
+      });
 
       if (error) {
-        throw new Error(
-          error.message
-        );
+        throw new Error(error.message);
       }
 
       setSuccess(
-        "Password reset instructions have been sent to your email."
+        "Your password has been updated successfully."
       );
+
+      setPassword("");
+      setConfirmPassword("");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (error) {
       setError(
         error.message ||
-          "Unable to send reset instructions."
+          "Unable to update your password."
       );
     } finally {
       setLoading(false);
     }
   };
 
+  if (checkingSession) {
+    return (
+      <main className="auth-page">
+        <section className="auth-card">
+          <div className="auth-card-header">
+            <span>VOZOL EGY</span>
+
+            <h1>Reset Password</h1>
+
+            <p>Verifying your password reset link...</p>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main className="auth-page">
       <section className="auth-card">
-
         <div className="auth-card-header">
           <span>VOZOL EGY</span>
 
-          <h1>
-            Forgot Password?
-          </h1>
+          <h1>Reset Password</h1>
 
           <p>
-            Enter your email and we'll send you a reset link.
+            Enter your new password below.
           </p>
         </div>
 
@@ -92,41 +168,54 @@ const ForgotPasswordPage = () => {
           </div>
         )}
 
-        <form
-          className="auth-form"
-          onSubmit={handleSubmit}
-        >
-
-          <label>
-            Email
-
-            <input
-              type="email"
-              value={email}
-              onChange={(event) =>
-                setEmail(
-                  event.target.value
-                )
-              }
-              placeholder="Enter your email"
-              required
-            />
-          </label>
-
-          <button
-            className="auth-submit"
-            type="submit"
-            disabled={loading}
+        {validSession && !success && (
+          <form
+            className="auth-form"
+            onSubmit={handleSubmit}
           >
-            {loading
-              ? "Sending..."
-              : "Send Reset Link"}
-          </button>
+            <label>
+              New Password
 
-        </form>
+              <input
+                type="password"
+                value={password}
+                onChange={(event) =>
+                  setPassword(event.target.value)
+                }
+                placeholder="Enter your new password"
+                minLength={6}
+                required
+              />
+            </label>
+
+            <label>
+              Confirm Password
+
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(event) =>
+                  setConfirmPassword(event.target.value)
+                }
+                placeholder="Confirm your new password"
+                minLength={6}
+                required
+              />
+            </label>
+
+            <button
+              className="auth-submit"
+              type="submit"
+              disabled={loading}
+            >
+              {loading
+                ? "Updating..."
+                : "Update Password"}
+            </button>
+          </form>
+        )}
 
         <div className="auth-footer">
-
           <Link
             to="/login"
             className="auth-link"
@@ -140,12 +229,10 @@ const ForgotPasswordPage = () => {
           >
             Back to Home
           </Link>
-
         </div>
-
       </section>
     </main>
   );
 };
 
-export default ForgotPasswordPage;
+export default ResetPasswordPage;

@@ -215,7 +215,7 @@
   width: 100%;
   min-width: 80px;
   min-height: 42px;
-  padding: 0 4px ;
+  padding: 0 4px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background: #fff;
@@ -363,7 +363,6 @@
   }
 }
 
-
 .admin-image-preview {
   margin-top: 12px;
   width: 180px;
@@ -380,8 +379,6 @@
   object-fit: cover;
   display: block;
 }
-
-
 
 /* Description inside Categories table */
 .admin-description-box {
@@ -422,7 +419,6 @@
   background: #888;
 }
 
-
 .admin-order-address {
   width: 240px;
   max-width: 240px;
@@ -452,7 +448,6 @@
   border-radius: 10px;
 }
 
-
 /* =====================================
    ORDER CUSTOMER
 ===================================== */
@@ -471,7 +466,6 @@
   font-size: 11px;
   color: #777;
 }
-
 
 /* =====================================
    ORDER ADDRESS
@@ -520,7 +514,6 @@
   background: #888;
 }
 
-
 /* =====================================
    ORDER PRODUCTS
 ===================================== */
@@ -562,7 +555,6 @@
 .admin-order-products::-webkit-scrollbar-thumb:hover {
   background: #888;
 }
-
 
 /* =====================================
    SINGLE ORDER PRODUCT
@@ -615,7 +607,6 @@
   color: #222;
 }
 
-
 /* =====================================
    PRODUCT TABLE IMAGE
 ===================================== */
@@ -628,7 +619,6 @@
 
   border-radius: 10px;
 }
-
 
 /* =====================================
    CATEGORY TABLE IMAGE

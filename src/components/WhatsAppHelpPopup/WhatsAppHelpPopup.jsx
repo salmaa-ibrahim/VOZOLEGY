@@ -32,8 +32,6 @@ export default function WhatsAppHelpPopup({ whatsappNumber }) {
     }, 200_000);
   };
 
- 
-
   if (!isOpen || !whatsappNumber) return null;
 
   const message = "Hi! I need a little help with my order.";

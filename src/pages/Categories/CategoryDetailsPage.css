@@ -51,9 +51,7 @@
 .category-hero-inner {
   /* min-height: 430px; */
   height: 100%;
-  
 }
-
 
 .category-hero-image img {
   width: 100%;
@@ -185,7 +183,6 @@
   line-height: 1.15;
   font-weight: 600;
   text-transform: uppercase;
-
 }
 
 .category-page .all-product-price {
@@ -197,7 +194,7 @@
 }
 
 /* ADD TO CART */
- .add-to-cart-button {
+.add-to-cart-button {
   width: 100%;
   height: 52px;
   /* margin-top: 24px; */
@@ -391,7 +388,9 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transition: transform 0.45s ease, opacity 0.3s ease;
+  transition:
+    transform 0.45s ease,
+    opacity 0.3s ease;
 }
 
 .category-recommended-card:hover .category-recommended-image img {
@@ -452,14 +451,11 @@
 }
 
 @media (max-width: 900px) {
-  
-  
-
   .category-page .all-product-image-wrapper {
     border-radius: 18px;
   }
 
-   .add-to-cart-button {
+  .add-to-cart-button {
     height: 45px;
     /* margin-top: 18px; */
   }
@@ -519,7 +515,6 @@
     border-width: 1px;
   }
 
-
   .category-container {
     width: 100%;
   }
@@ -537,8 +532,6 @@
     text-overflow: ellipsis;
   }
 
-  
-
   .category-hero-content {
     width: 100%;
     padding: 38px 0 15px;
@@ -550,8 +543,6 @@
     font-size: 20px;
     letter-spacing: 0.5px;
   }
-
-  
 
   .category-section {
     padding: 50px 0 0;
@@ -676,7 +667,6 @@
   margin-top: 15px;
 }
 
-
 .whatsapp-button {
   width: 52px;
   height: 52px;
@@ -724,4 +714,3 @@
     height: 27px;
   }
 }
-
