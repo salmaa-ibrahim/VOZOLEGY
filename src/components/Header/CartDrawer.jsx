@@ -1,8 +1,254 @@
+// import React from "react";
+// import { motion, AnimatePresence } from "framer-motion";
+// import { useNavigate } from "react-router-dom";
+// import { useCart } from "../../contexts/CartContext";
+// import "./CartDrawer.css";
+
+// const CartDrawer = ({ isOpen, onClose }) => {
+//   const navigate = useNavigate();
+
+//   const {
+//     cartItems,
+//     updateQuantity,
+//     removeFromCart,
+//     clearCart,
+//     subtotal,
+//     shipping,
+//     grandTotal,
+//   } = useCart();
+
+//   const handleCheckout = () => {
+//     /*
+//      * Don't allow checkout with an empty cart.
+//      */
+//     if (!cartItems || cartItems.length === 0) {
+//       return;
+//     }
+
+//     /*
+//      * Close the drawer first.
+//      */
+//     onClose();
+
+//     /*
+//      * Navigate using React Router.
+//      *
+//      * IMPORTANT:
+//      * Do NOT use:
+//      * window.location.href = "/checkout"
+//      *
+//      * because that reloads the whole application.
+//      */
+//     navigate("/checkout");
+//   };
+
+//   return (
+//     <AnimatePresence>
+//       {isOpen && (
+//         <>
+//           {/* =========================================
+//               OVERLAY
+//           ========================================== */}
+
+//           <motion.div
+//             className="drawer-overlay"
+//             initial={{
+//               opacity: 0,
+//             }}
+//             animate={{
+//               opacity: 1,
+//             }}
+//             exit={{
+//               opacity: 0,
+//             }}
+//             onClick={onClose}
+//           />
+
+//           {/* =========================================
+//               DRAWER
+//           ========================================== */}
+
+//           <motion.div
+//             className="drawer drawer--right"
+//             initial={{
+//               x: "100%",
+//             }}
+//             animate={{
+//               x: 0,
+//             }}
+//             exit={{
+//               x: "100%",
+//             }}
+//             transition={{
+//               type: "spring",
+//               damping: 25,
+//               stiffness: 200,
+//             }}
+//           >
+//             {/* =======================================
+//                 HEADER
+//             ======================================== */}
+
+//             <div className="drawer__header">
+//               <h2>Your Cart</h2>
+
+//               <button
+//                 type="button"
+//                 onClick={onClose}
+//                 className="drawer__close"
+//                 aria-label="Close cart"
+//               >
+//                 ✕
+//               </button>
+//             </div>
+
+//             {/* =======================================
+//                 BODY
+//             ======================================== */}
+
+//             <div className="drawer__body">
+//               {cartItems.length === 0 ? (
+//                 <div className="cart-empty">
+//                   <p>Your cart is empty.</p>
+//                 </div>
+//               ) : (
+//                 cartItems.map((item) => {
+//                   const quantity = Number(item.quantity || 1);
+
+//                   const price = Number(item.price || 0);
+
+//                   return (
+//                     <div key={item.id} className="cart-item">
+//                       {/* PRODUCT IMAGE */}
+
+//                       <img
+//                         src={
+//                           item.image_url ||
+//                           item.image ||
+//                           "/images/products/placeholder.png"
+//                         }
+//                         alt={item.name || "Product"}
+//                         className="cart-item__img"
+//                       />
+
+//                       {/* PRODUCT INFO */}
+
+//                       <div className="cart-item__info">
+//                         <h4>{item.name}</h4>
+
+//                         <p>Price: {price} LE</p>
+
+//                         {item.flavor && <p>Flavor: {item.flavor}</p>}
+
+//                         {/* QUANTITY */}
+
+//                         <div className="cart-item__controls">
+//                           <button
+//                             type="button"
+//                             onClick={() => updateQuantity(item.id, -1)}
+//                             aria-label="Decrease quantity"
+//                           >
+//                             -
+//                           </button>
+
+//                           <span>{quantity}</span>
+
+//                           <button
+//                             type="button"
+//                             onClick={() => updateQuantity(item.id, 1)}
+//                             aria-label="Increase quantity"
+//                           >
+//                             +
+//                           </button>
+//                         </div>
+//                       </div>
+
+//                       {/* DELETE */}
+
+//                       <button
+//                         type="button"
+//                         className="cart-item__delete"
+//                         onClick={() => removeFromCart(item.id)}
+//                       >
+//                         Delete
+//                       </button>
+//                     </div>
+//                   );
+//                 })
+//               )}
+//             </div>
+
+//             {/* =======================================
+//                 FOOTER
+//             ======================================== */}
+
+//             {cartItems.length > 0 && (
+//               <div className="drawer__footer">
+//                 {/* CART SUMMARY */}
+
+//                 <div className="cart-summary">
+//                   <div>
+//                     <span>Total</span>
+
+//                     <span>{subtotal} LE</span>
+//                   </div>
+
+//                   <div>
+//                     <span>Shipping</span>
+
+//                     <span>{shipping} LE</span>
+//                   </div>
+
+//                   <div className="cart-summary__grand">
+//                     <span>Grand Total</span>
+
+//                     <span>{grandTotal} LE</span>
+//                   </div>
+//                 </div>
+
+//                 {/* ACTIONS */}
+
+//                 <div className="drawer__actions">
+//                   <button
+//                     type="button"
+//                     className="btn-clear"
+//                     onClick={clearCart}
+//                   >
+//                     Clear
+//                   </button>
+
+//                   <button
+//                     type="button"
+//                     className="btn-checkout"
+//                     onClick={handleCheckout}
+//                   >
+//                     Checkout
+//                   </button>
+//                 </div>
+//               </div>
+//             )}
+//           </motion.div>
+//         </>
+//       )}
+//     </AnimatePresence>
+//   );
+// };
+
+// export default CartDrawer;
+
+
+
+
+
+
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../contexts/CartContext";
 import "./CartDrawer.css";
+
+const FREE_SHIPPING_THRESHOLD = 2500;
+const STANDARD_SHIPPING_COST = 100;
 
 const CartDrawer = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -16,6 +262,23 @@ const CartDrawer = ({ isOpen, onClose }) => {
     shipping,
     grandTotal,
   } = useCart();
+
+  const numericSubtotal = Number(subtotal || 0);
+
+  const isFreeShipping =
+    numericSubtotal >= FREE_SHIPPING_THRESHOLD;
+
+  const displayedShipping = isFreeShipping
+    ? 0
+    : Number(shipping || STANDARD_SHIPPING_COST);
+
+  const displayedGrandTotal =
+    numericSubtotal + displayedShipping;
+
+  const amountUntilFreeShipping = Math.max(
+    FREE_SHIPPING_THRESHOLD - numericSubtotal,
+    0,
+  );
 
   const handleCheckout = () => {
     /*
@@ -32,12 +295,6 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
     /*
      * Navigate using React Router.
-     *
-     * IMPORTANT:
-     * Do NOT use:
-     * window.location.href = "/checkout"
-     *
-     * because that reloads the whole application.
      */
     navigate("/checkout");
   };
@@ -113,12 +370,19 @@ const CartDrawer = ({ isOpen, onClose }) => {
                 </div>
               ) : (
                 cartItems.map((item) => {
-                  const quantity = Number(item.quantity || 1);
+                  const quantity = Number(
+                    item.quantity || 1,
+                  );
 
-                  const price = Number(item.price || 0);
+                  const price = Number(
+                    item.price || 0,
+                  );
 
                   return (
-                    <div key={item.id} className="cart-item">
+                    <div
+                      key={item.id}
+                      className="cart-item"
+                    >
                       {/* PRODUCT IMAGE */}
 
                       <img
@@ -136,16 +400,27 @@ const CartDrawer = ({ isOpen, onClose }) => {
                       <div className="cart-item__info">
                         <h4>{item.name}</h4>
 
-                        <p>Price: {price} LE</p>
+                        <p>
+                          Price: {price} LE
+                        </p>
 
-                        {item.flavor && <p>Flavor: {item.flavor}</p>}
+                        {item.flavor && (
+                          <p>
+                            Flavor: {item.flavor}
+                          </p>
+                        )}
 
                         {/* QUANTITY */}
 
                         <div className="cart-item__controls">
                           <button
                             type="button"
-                            onClick={() => updateQuantity(item.id, -1)}
+                            onClick={() =>
+                              updateQuantity(
+                                item.id,
+                                -1,
+                              )
+                            }
                             aria-label="Decrease quantity"
                           >
                             -
@@ -155,7 +430,12 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
                           <button
                             type="button"
-                            onClick={() => updateQuantity(item.id, 1)}
+                            onClick={() =>
+                              updateQuantity(
+                                item.id,
+                                1,
+                              )
+                            }
                             aria-label="Increase quantity"
                           >
                             +
@@ -168,7 +448,9 @@ const CartDrawer = ({ isOpen, onClose }) => {
                       <button
                         type="button"
                         className="cart-item__delete"
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() =>
+                          removeFromCart(item.id)
+                        }
                       >
                         Delete
                       </button>
@@ -184,25 +466,47 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
             {cartItems.length > 0 && (
               <div className="drawer__footer">
+
+                {/* FREE SHIPPING MESSAGE */}
+
+                {isFreeShipping ? (
+                  <div className="cart-free-shipping">
+                    🎉 You got FREE shipping!
+                  </div>
+                ) : (
+                  <div className="cart-free-shipping">
+                    Add {amountUntilFreeShipping} LE more
+                    to get FREE shipping.
+                  </div>
+                )}
+
                 {/* CART SUMMARY */}
 
                 <div className="cart-summary">
                   <div>
                     <span>Total</span>
 
-                    <span>{subtotal} LE</span>
+                    <span>
+                      {numericSubtotal} LE
+                    </span>
                   </div>
 
                   <div>
                     <span>Shipping</span>
 
-                    <span>{shipping} LE</span>
+                    <span>
+                      {isFreeShipping
+                        ? "FREE"
+                        : `${displayedShipping} LE`}
+                    </span>
                   </div>
 
                   <div className="cart-summary__grand">
                     <span>Grand Total</span>
 
-                    <span>{grandTotal} LE</span>
+                    <span>
+                      {displayedGrandTotal} LE
+                    </span>
                   </div>
                 </div>
 
