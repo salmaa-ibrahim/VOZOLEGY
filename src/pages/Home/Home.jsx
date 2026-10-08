@@ -136,7 +136,32 @@ const Home = () => {
           "شحن سريع فيب",
           "ديسبوسيبل فيب",
           " دسيبوسيبل فوزول",
+          "ديسبوسيبل فيب مصر",
+          "ديسبوسيبل فيب اونلاين مصر",
+          "ديسبوسيبل فيب اونلاين",
+          "vozzel",
+          "vozell",
+          "vosil",
+          "vozol egypt",
+          "vozol egy",
+          "vozol vape egypt",
+          "vozol vape egy",
+          "vozol vct",
+          "سعر vozol",
+          "اسعار vozol",
+          "شراء vozol",
+          "شراء vozol vape",
+          "سعر vozol في مصر",
+          "اسعار vozol في مصر",
+          "شراء vozol في مصر",
+          "شراء vozol vape في مصر",
+          "vozol liqued",
+          "vozol flavors",
+          "نكهات vozol",
+          "نكهات vozol vape",
+          
         ]}
+
       />
 
       <div className="home-page">
