@@ -208,17 +208,26 @@ const AllProductsSection = () => {
   // PRODUCT CARD CLICK
   // ============================================================
 
-  const handleProductClick = (product) => {
-    const categorySlug = product.categories?.slug;
+  const createProductSlug = (product) => {
+  return [product.name, product.flavor]
+    .filter(Boolean)
+    .join(" ")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
 
-    if (!categorySlug) {
-      console.error("CATEGORY SLUG NOT FOUND FOR PRODUCT:", product);
+const handleProductClick = (product) => {
+  const productSlug = createProductSlug(product);
 
-      return;
-    }
+  if (!productSlug) {
+    console.error("PRODUCT SLUG COULD NOT BE CREATED:", product);
+    return;
+  }
 
-    navigate(`/categories/${categorySlug}`);
-  };
+  navigate(`/products/${productSlug}`);
+};
 
   // ============================================================
   // KEYBOARD ACCESS FOR CARD

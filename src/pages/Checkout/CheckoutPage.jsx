@@ -964,7 +964,7 @@ Thank you ❤️
 
           <h1>Order Completed!</h1>
 
-          <p className="order-success__message">Thank you for your order 💜</p>
+          <p className="order-success__message">Thank you for your order ❤️</p>
 
           {deliveryMethod === "standard" ? (
             <p className="order-success__details">

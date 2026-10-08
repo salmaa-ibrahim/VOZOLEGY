@@ -81,7 +81,7 @@ const Home = () => {
   return (
     <>
       <SEO
-        title="VOZOL EGY | VOZOL Vape in Egypt | Buy VOZOL Online"
+        title="VOZOL EGY | VOZOL Vape in Egypt | افضل متجر فيب في مصر"
         description="Shop VOZOL vape products in Egypt from VOZOL EGY. Explore VOZOL flavors, disposable vapes and the latest VOZOL categories with fast delivery across Egypt."
         url="https://vozolegy.com/"
         keywords={[

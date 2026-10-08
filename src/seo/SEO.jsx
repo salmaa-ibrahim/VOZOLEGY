@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 
 const SITE_URL = "https://vozolegy.com";
 
-const DEFAULT_TITLE = "VOZOL EGY | VOZOL Vape in Egypt";
+const DEFAULT_TITLE = "VOZOL EGY | VOZOL Vape in Egypt | افضل متجر فيب في مصر ";
 
 const DEFAULT_DESCRIPTION =
   "VOZOL EGY - Explore VOZOL vape products, flavors and categories in Egypt.";
