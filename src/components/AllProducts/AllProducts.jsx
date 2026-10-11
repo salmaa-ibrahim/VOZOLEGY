@@ -1,3 +1,561 @@
+// import React, { useEffect, useMemo, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { motion } from "framer-motion";
+
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import { Autoplay, Navigation } from "swiper/modules";
+
+// import "swiper/css";
+// import "swiper/css/navigation";
+
+// import { useCart } from "../../contexts/CartContext";
+// import { supabase } from "../../lib/supabase";
+
+// import "./AllProduct.css";
+
+// const MODE_OPTIONS = ["MTL", "DL"];
+
+// const normalizeValue = (value) => {
+//   return String(value || "")
+//     .trim()
+//     .toLowerCase();
+// };
+
+// const AllProductsSection = () => {
+//   const navigate = useNavigate();
+//   const { addToCart } = useCart();
+
+//   // ============================================================
+//   // STATE
+//   // ============================================================
+
+//   const [products, setProducts] = useState([]);
+//   const [categories, setCategories] = useState([]);
+
+//   const [activeMode, setActiveMode] = useState("MTL");
+//   const [activeCategory, setActiveCategory] = useState("all");
+
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+
+//   const [addedProducts, setAddedProducts] = useState({});
+
+//   // ============================================================
+//   // FETCH PRODUCTS + CATEGORIES FROM SUPABASE
+//   // ============================================================
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         setLoading(true);
+//         setError(null);
+
+//         // ======================================================
+//         // GET PRODUCTS
+//         // ======================================================
+
+//         const { data: productsData, error: productsError } =
+//           await supabase.from("products").select(`
+//             *,
+//             categories (
+//               id,
+//               name,
+//               slug,
+//       display_order  
+//             )
+//           `);
+
+//         if (productsError) {
+//           console.error("PRODUCTS ERROR:", productsError);
+//           throw productsError;
+//         }
+
+//         // ======================================================
+//         // GET ACTIVE CATEGORIES
+//         // ======================================================
+
+//         const { data: categoriesData, error: categoriesError } = await supabase
+//           .from("categories")
+//           .select("*")
+//           .eq("active", true)
+//           .order("display_order", {
+//             ascending: true,
+//           });
+
+//         if (categoriesError) {
+//           console.error("CATEGORIES ERROR:", categoriesError);
+
+//           throw categoriesError;
+//         }
+
+//         setProducts(productsData || []);
+//         const sortedProducts = (productsData || []).sort((a, b) => {
+//           const orderA = Number(a.categories?.display_order ?? 9999);
+//           const orderB = Number(b.categories?.display_order ?? 9999);
+
+//           return orderA - orderB;
+//         });
+
+//         setProducts(sortedProducts);
+//         setCategories(categoriesData || []);
+//       } catch (err) {
+//         console.error("FAILED TO LOAD DATA:", err);
+
+//         setProducts([]);
+//         setCategories([]);
+//         setError(err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   // ============================================================
+//   // RESET CATEGORY WHEN MODE CHANGES
+//   // ============================================================
+
+//   useEffect(() => {
+//     setActiveCategory("all");
+//   }, [activeMode]);
+
+//   // ============================================================
+//   // PRODUCTS FOR CURRENT MODE
+//   // ============================================================
+
+//   const modeProducts = useMemo(() => {
+//     return products.filter((product) => {
+//       return normalizeValue(product.mode) === normalizeValue(activeMode);
+//     });
+//   }, [products, activeMode]);
+
+//   // ============================================================
+//   // AVAILABLE CATEGORIES FOR CURRENT MODE
+//   // ============================================================
+
+//   const availableCategories = useMemo(() => {
+//     const categoryIds = new Set(
+//       modeProducts
+//         .map((product) => {
+//           if (product.category_id) {
+//             return String(product.category_id);
+//           }
+
+//           if (product.categories?.id) {
+//             return String(product.categories.id);
+//           }
+
+//           return null;
+//         })
+//         .filter(Boolean),
+//     );
+
+//     return categories.filter((category) =>
+//       categoryIds.has(String(category.id)),
+//     );
+//   }, [categories, modeProducts]);
+
+//   // ============================================================
+//   // FILTER PRODUCTS
+//   // ============================================================
+
+//   const filteredProducts = useMemo(() => {
+//     return modeProducts.filter((product) => {
+//       if (activeCategory === "all") {
+//         return true;
+//       }
+
+//       const productCategoryId = product.category_id || product.categories?.id;
+
+//       return String(productCategoryId) === String(activeCategory);
+//     });
+//   }, [modeProducts, activeCategory]);
+
+//   // ============================================================
+//   // ADD TO CART
+//   // ============================================================
+
+//   const handleAddToCart = (event, product) => {
+//     event.preventDefault();
+//     event.stopPropagation();
+
+//     if (!product.available) {
+//       return;
+//     }
+
+//     addToCart(product);
+
+//     setAddedProducts((previous) => ({
+//       ...previous,
+//       [product.id]: true,
+//     }));
+
+//     setTimeout(() => {
+//       setAddedProducts((previous) => {
+//         const updated = {
+//           ...previous,
+//         };
+
+//         delete updated[product.id];
+
+//         return updated;
+//       });
+//     }, 2000);
+//   };
+
+//   // ============================================================
+//   // PRODUCT CARD CLICK
+//   // ============================================================
+
+//  const handleProductClick = (product) => {
+//   const categorySlug = product.categories?.slug;
+
+//   if (!categorySlug) {
+//     console.error("CATEGORY SLUG NOT FOUND FOR PRODUCT:", product);
+//     return;
+//   }
+
+//   navigate(`/categories/${categorySlug}`);
+// };
+
+// // const handleProductClick = (product) => {
+// //   const productSlug = createProductSlug(product);
+
+// //   if (!productSlug) {
+// //     console.error("PRODUCT SLUG COULD NOT BE CREATED:", product);
+// //     return;
+// //   }
+
+// //   navigate(`/products/${productSlug}`);
+// // };
+
+//   // ============================================================
+//   // KEYBOARD ACCESS FOR CARD
+//   // ============================================================
+
+//   const handleProductKeyDown = (event, product) => {
+//     if (event.key === "Enter" || event.key === " ") {
+//       event.preventDefault();
+
+//       handleProductClick(product);
+//     }
+//   };
+
+//   // ============================================================
+//   // LOADING
+//   // ============================================================
+
+//   if (loading) {
+//     return (
+//       <section className="all-products-section">
+//         <div className="all-products-container">
+//           <div className="all-products-loading">Loading products...</div>
+//         </div>
+//       </section>
+//     );
+//   }
+
+//   // ============================================================
+//   // ERROR
+//   // ============================================================
+
+//   if (error) {
+//     return (
+//       <section className="all-products-section">
+//         <div className="all-products-container">
+//           <div className="all-products-error">Failed to load products.</div>
+//         </div>
+//       </section>
+//     );
+//   }
+
+//   // ============================================================
+//   // RENDER
+//   // ============================================================
+
+//   return (
+//     <section className="all-products-section">
+//       <div className="all-products-container">
+//         {/* =====================================================
+//             TITLE
+//         ====================================================== */}
+
+//         <motion.h2
+//           className="all-products-title"
+//           initial={{
+//             opacity: 0,
+//             y: 25,
+//           }}
+//           whileInView={{
+//             opacity: 1,
+//             y: 0,
+//           }}
+//           viewport={{
+//             once: true,
+//             amount: 0.2,
+//           }}
+//           transition={{
+//             duration: 0.6,
+//           }}
+//         >
+//           All products
+//         </motion.h2>
+
+//         {/* =====================================================
+//             MTL / DL SWITCH
+//         ====================================================== */}
+
+//         <div className="mode-switch-wrapper">
+//           <div className="mode-switch" role="tablist" aria-label="Product mode">
+//             {MODE_OPTIONS.map((mode) => {
+//               const isActive = activeMode === mode;
+
+//               return (
+//                 <button
+//                   key={mode}
+//                   type="button"
+//                   className={`mode-button ${isActive ? "active" : ""}`}
+//                   onClick={() => setActiveMode(mode)}
+//                   role="tab"
+//                   aria-selected={isActive}
+//                 >
+//                   {mode}
+//                 </button>
+//               );
+//             })}
+//           </div>
+//         </div>
+
+//         {/* =====================================================
+//             CATEGORY FILTER
+//         ====================================================== */}
+
+//         <div className="category-filter-wrapper">
+//           <div
+//             className="category-filter"
+//             role="tablist"
+//             aria-label={`${activeMode} categories`}
+//           >
+//             <button
+//               type="button"
+//               className={`category-button ${
+//                 activeCategory === "all" ? "active" : ""
+//               }`}
+//               onClick={() => setActiveCategory("all")}
+//               role="tab"
+//               aria-selected={activeCategory === "all"}
+//             >
+//               ALL
+//             </button>
+
+//             {availableCategories.map((category) => {
+//               const isActive = String(activeCategory) === String(category.id);
+
+//               return (
+//                 <button
+//                   key={category.id}
+//                   type="button"
+//                   className={`category-button ${isActive ? "active" : ""}`}
+//                   onClick={() => setActiveCategory(category.id)}
+//                   role="tab"
+//                   aria-selected={isActive}
+//                 >
+//                   {category.name}
+//                 </button>
+//               );
+//             })}
+//           </div>
+//         </div>
+
+//         {/* =====================================================
+//             PRODUCTS SLIDER
+//         ====================================================== */}
+
+//         {filteredProducts.length > 0 && (
+//           <div className="products-slider-wrapper">
+//             {/* SWIPER */}
+
+//             <Swiper
+//               modules={[Autoplay, Navigation]}
+//               className="all-products-swiper"
+//               slidesPerView={1.35}
+//               spaceBetween={12}
+//               loop={filteredProducts.length > 1}
+//               speed={800}
+//               grabCursor={true}
+//               allowTouchMove={true}
+//               watchOverflow={false}
+//               navigation={{
+//                 prevEl: ".products-slider-arrow--left",
+//                 nextEl: ".products-slider-arrow--right",
+//               }}
+//               autoplay={{
+//                 delay: 2600,
+//                 disableOnInteraction: false,
+//                 pauseOnMouseEnter: true,
+//               }}
+//               breakpoints={{
+//                 381: {
+//                   slidesPerView: 2,
+//                   spaceBetween: 12,
+//                 },
+
+//                 601: {
+//                   slidesPerView: 3,
+//                   spaceBetween: 15,
+//                 },
+
+//                 901: {
+//                   slidesPerView: 4,
+//                   spaceBetween: 18,
+//                 },
+
+//                 1201: {
+//                   slidesPerView: 5,
+//                   spaceBetween: 20,
+//                 },
+//               }}
+//             >
+//               {filteredProducts.map((product) => {
+//                 const isAdded = Boolean(addedProducts[product.id]);
+
+//                 return (
+//                   <SwiperSlide key={product.id} className="all-product-slide">
+//                     <motion.article
+//                       className="all-product-card"
+//                       initial={{
+//                         opacity: 0,
+//                         y: 25,
+//                       }}
+//                       animate={{
+//                         opacity: 1,
+//                         y: 0,
+//                       }}
+//                       transition={{
+//                         duration: 0.35,
+//                       }}
+//                       onClick={() => handleProductClick(product)}
+//                       role="button"
+//                       tabIndex={0}
+//                       onKeyDown={(event) =>
+//                         handleProductKeyDown(event, product)
+//                       }
+//                     >
+//                       {/* =====================================
+//                             PRODUCT IMAGE
+//                         ====================================== */}
+
+//                       <div className="all-product-image-wrapper">
+//                         <img
+//                           src={product.image_url || product.image}
+//                           alt={`${product.name}${
+//                             product.flavor ? ` - ${product.flavor}` : ""
+//                           }`}
+//                           className="all-product-image"
+//                           loading="lazy"
+//                           draggable="false"
+//                         />
+
+//                         {!product.available && (
+//                           <div className="product-unavailable-overlay">
+//                             <span>OUT OF STOCK</span>
+//                           </div>
+//                         )}
+//                       </div>
+
+//                       {/* =====================================
+//                             PRODUCT INFO
+//                         ====================================== */}
+
+//                       <div className="all-product-info">
+//                         <h3 className="all-product-name">{product.name}</h3>
+
+//                         {product.flavor && (
+//                           <p className="all-product-flavor">{product.flavor}</p>
+//                         )}
+
+//                         <p className="all-product-price">
+//                           LE {Number(product.price || 0).toFixed(2)}
+//                         </p>
+
+//                         {/* ===================================
+//                               ADD TO CART
+//                           ==================================== */}
+
+//                         <button
+//                           type="button"
+//                           className={`add-to-cart-button ${
+//                             isAdded ? "added" : ""
+//                           } ${!product.available ? "disabled" : ""}`}
+//                           disabled={!product.available || isAdded}
+//                           onClick={(event) => handleAddToCart(event, product)}
+//                         >
+//                           {isAdded
+//                             ? "Added !"
+//                             : product.available
+//                               ? "Add to cart"
+//                               : "Out of stock"}
+//                         </button>
+//                       </div>
+//                     </motion.article>
+//                   </SwiperSlide>
+//                 );
+//               })}
+//             </Swiper>
+
+//             {/* LEFT ARROW */}
+
+//             <div className="arrow-btns">
+//               <button
+//                 type="button"
+//                 className="products-slider-arrow products-slider-arrow--left"
+//                 aria-label="Previous products"
+//               >
+//                 <span aria-hidden="true">&#10094;</span>
+//               </button>
+
+//               {/* RIGHT ARROW */}
+
+//               <button
+//                 type="button"
+//                 className="products-slider-arrow products-slider-arrow--right"
+//                 aria-label="Next products"
+//               >
+//                 <span aria-hidden="true">&#10095;</span>
+//               </button>
+//             </div>
+//           </div>
+//         )}
+
+//         {/* =====================================================
+//             NO PRODUCTS
+//         ====================================================== */}
+
+//         {filteredProducts.length === 0 && (
+//           <motion.div
+//             className="no-products"
+//             initial={{
+//               opacity: 0,
+//             }}
+//             animate={{
+//               opacity: 1,
+//             }}
+//           >
+//             <p>No products available in this category.</p>
+//           </motion.div>
+//         )}
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default AllProductsSection;
+
+
+
+
+
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -15,19 +573,23 @@ import "./AllProduct.css";
 
 const MODE_OPTIONS = ["MTL", "DL"];
 
-const normalizeValue = (value) => {
-  return String(value || "")
+const normalizeValue = (value) =>
+  String(value || "").trim().toLowerCase();
+
+// Must match the slug-generation function in ProductDetailsPage.jsx
+const createProductSlug = (product) => {
+  return [product.name, product.flavor]
+    .filter(Boolean)
+    .join(" ")
     .trim()
-    .toLowerCase();
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 };
 
 const AllProductsSection = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-
-  // ============================================================
-  // STATE
-  // ============================================================
 
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -41,40 +603,38 @@ const AllProductsSection = () => {
   const [addedProducts, setAddedProducts] = useState({});
 
   // ============================================================
-  // FETCH PRODUCTS + CATEGORIES FROM SUPABASE
+  // FETCH PRODUCTS + CATEGORIES
   // ============================================================
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchData = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // ======================================================
-        // GET PRODUCTS
-        // ======================================================
-
-        const { data: productsData, error: productsError } =
-          await supabase.from("products").select(`
-            *,
-            categories (
-              id,
-              name,
-              slug,
-      display_order  
-            )
-          `);
+        const {
+          data: productsData,
+          error: productsError,
+        } = await supabase.from("products").select(`
+          *,
+          categories (
+            id,
+            name,
+            slug,
+            display_order
+          )
+        `);
 
         if (productsError) {
-          console.error("PRODUCTS ERROR:", productsError);
           throw productsError;
         }
 
-        // ======================================================
-        // GET ACTIVE CATEGORIES
-        // ======================================================
-
-        const { data: categoriesData, error: categoriesError } = await supabase
+        const {
+          data: categoriesData,
+          error: categoriesError,
+        } = await supabase
           .from("categories")
           .select("*")
           .eq("active", true)
@@ -83,33 +643,47 @@ const AllProductsSection = () => {
           });
 
         if (categoriesError) {
-          console.error("CATEGORIES ERROR:", categoriesError);
-
           throw categoriesError;
         }
 
-        setProducts(productsData || []);
-        const sortedProducts = (productsData || []).sort((a, b) => {
-          const orderA = Number(a.categories?.display_order ?? 9999);
-          const orderB = Number(b.categories?.display_order ?? 9999);
+        const sortedProducts = [...(productsData || [])].sort(
+          (a, b) => {
+            const orderA = Number(
+              a.categories?.display_order ?? 9999
+            );
 
-          return orderA - orderB;
-        });
+            const orderB = Number(
+              b.categories?.display_order ?? 9999
+            );
 
-        setProducts(sortedProducts);
-        setCategories(categoriesData || []);
+            return orderA - orderB;
+          }
+        );
+
+        if (isMounted) {
+          setProducts(sortedProducts);
+          setCategories(categoriesData || []);
+        }
       } catch (err) {
-        console.error("FAILED TO LOAD DATA:", err);
+        console.error("FAILED TO LOAD PRODUCTS:", err);
 
-        setProducts([]);
-        setCategories([]);
-        setError(err);
+        if (isMounted) {
+          setProducts([]);
+          setCategories([]);
+          setError(err);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // ============================================================
@@ -125,34 +699,31 @@ const AllProductsSection = () => {
   // ============================================================
 
   const modeProducts = useMemo(() => {
-    return products.filter((product) => {
-      return normalizeValue(product.mode) === normalizeValue(activeMode);
-    });
+    return products.filter(
+      (product) =>
+        normalizeValue(product.mode) ===
+        normalizeValue(activeMode)
+    );
   }, [products, activeMode]);
 
   // ============================================================
-  // AVAILABLE CATEGORIES FOR CURRENT MODE
+  // AVAILABLE CATEGORIES
   // ============================================================
 
   const availableCategories = useMemo(() => {
     const categoryIds = new Set(
       modeProducts
         .map((product) => {
-          if (product.category_id) {
-            return String(product.category_id);
-          }
+          const id =
+            product.category_id || product.categories?.id;
 
-          if (product.categories?.id) {
-            return String(product.categories.id);
-          }
-
-          return null;
+          return id ? String(id) : null;
         })
-        .filter(Boolean),
+        .filter(Boolean)
     );
 
     return categories.filter((category) =>
-      categoryIds.has(String(category.id)),
+      categoryIds.has(String(category.id))
     );
   }, [categories, modeProducts]);
 
@@ -166,9 +737,10 @@ const AllProductsSection = () => {
         return true;
       }
 
-      const productCategoryId = product.category_id || product.categories?.id;
+      const categoryId =
+        product.category_id || product.categories?.id;
 
-      return String(productCategoryId) === String(activeCategory);
+      return String(categoryId) === String(activeCategory);
     });
   }, [modeProducts, activeCategory]);
 
@@ -193,51 +765,43 @@ const AllProductsSection = () => {
 
     setTimeout(() => {
       setAddedProducts((previous) => {
-        const updated = {
-          ...previous,
-        };
-
+        const updated = { ...previous };
         delete updated[product.id];
-
         return updated;
       });
     }, 2000);
   };
 
   // ============================================================
-  // PRODUCT CARD CLICK
+  // OPEN THE SPECIFIC PRODUCT DETAILS PAGE
   // ============================================================
 
- const handleProductClick = (product) => {
-  const categorySlug = product.categories?.slug;
+  const handleProductClick = (product) => {
+    const productSlug = createProductSlug(product);
 
-  if (!categorySlug) {
-    console.error("CATEGORY SLUG NOT FOUND FOR PRODUCT:", product);
-    return;
-  }
+    if (!productSlug) {
+      console.error(
+        "PRODUCT SLUG COULD NOT BE CREATED:",
+        product
+      );
+      return;
+    }
 
-  navigate(`/categories/${categorySlug}`);
-};
-
-// const handleProductClick = (product) => {
-//   const productSlug = createProductSlug(product);
-
-//   if (!productSlug) {
-//     console.error("PRODUCT SLUG COULD NOT BE CREATED:", product);
-//     return;
-//   }
-
-//   navigate(`/products/${productSlug}`);
-// };
+    navigate(`/products/${productSlug}`);
+  };
 
   // ============================================================
-  // KEYBOARD ACCESS FOR CARD
+  // KEYBOARD ACCESS
   // ============================================================
 
   const handleProductKeyDown = (event, product) => {
+    // Let buttons inside the card handle their own keyboard events.
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-
       handleProductClick(product);
     }
   };
@@ -250,7 +814,9 @@ const AllProductsSection = () => {
     return (
       <section className="all-products-section">
         <div className="all-products-container">
-          <div className="all-products-loading">Loading products...</div>
+          <div className="all-products-loading">
+            Loading products...
+          </div>
         </div>
       </section>
     );
@@ -264,7 +830,9 @@ const AllProductsSection = () => {
     return (
       <section className="all-products-section">
         <div className="all-products-container">
-          <div className="all-products-error">Failed to load products.</div>
+          <div className="all-products-error">
+            Failed to load products.
+          </div>
         </div>
       </section>
     );
@@ -277,37 +845,24 @@ const AllProductsSection = () => {
   return (
     <section className="all-products-section">
       <div className="all-products-container">
-        {/* =====================================================
-            TITLE
-        ====================================================== */}
-
         <motion.h2
           className="all-products-title"
-          initial={{
-            opacity: 0,
-            y: 25,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.2,
-          }}
-          transition={{
-            duration: 0.6,
-          }}
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
         >
           All products
         </motion.h2>
 
-        {/* =====================================================
-            MTL / DL SWITCH
-        ====================================================== */}
+        {/* MTL / DL SWITCH */}
 
         <div className="mode-switch-wrapper">
-          <div className="mode-switch" role="tablist" aria-label="Product mode">
+          <div
+            className="mode-switch"
+            role="tablist"
+            aria-label="Product mode"
+          >
             {MODE_OPTIONS.map((mode) => {
               const isActive = activeMode === mode;
 
@@ -315,7 +870,9 @@ const AllProductsSection = () => {
                 <button
                   key={mode}
                   type="button"
-                  className={`mode-button ${isActive ? "active" : ""}`}
+                  className={`mode-button ${
+                    isActive ? "active" : ""
+                  }`}
                   onClick={() => setActiveMode(mode)}
                   role="tab"
                   aria-selected={isActive}
@@ -327,9 +884,7 @@ const AllProductsSection = () => {
           </div>
         </div>
 
-        {/* =====================================================
-            CATEGORY FILTER
-        ====================================================== */}
+        {/* CATEGORY FILTER */}
 
         <div className="category-filter-wrapper">
           <div
@@ -350,13 +905,16 @@ const AllProductsSection = () => {
             </button>
 
             {availableCategories.map((category) => {
-              const isActive = String(activeCategory) === String(category.id);
+              const isActive =
+                String(activeCategory) === String(category.id);
 
               return (
                 <button
                   key={category.id}
                   type="button"
-                  className={`category-button ${isActive ? "active" : ""}`}
+                  className={`category-button ${
+                    isActive ? "active" : ""
+                  }`}
                   onClick={() => setActiveCategory(category.id)}
                   role="tab"
                   aria-selected={isActive}
@@ -368,14 +926,10 @@ const AllProductsSection = () => {
           </div>
         </div>
 
-        {/* =====================================================
-            PRODUCTS SLIDER
-        ====================================================== */}
+        {/* PRODUCTS SLIDER */}
 
         {filteredProducts.length > 0 && (
           <div className="products-slider-wrapper">
-            {/* SWIPER */}
-
             <Swiper
               modules={[Autoplay, Navigation]}
               className="all-products-swiper"
@@ -400,17 +954,14 @@ const AllProductsSection = () => {
                   slidesPerView: 2,
                   spaceBetween: 12,
                 },
-
                 601: {
                   slidesPerView: 3,
                   spaceBetween: 15,
                 },
-
                 901: {
                   slidesPerView: 4,
                   spaceBetween: 18,
                 },
-
                 1201: {
                   slidesPerView: 5,
                   spaceBetween: 20,
@@ -418,39 +969,45 @@ const AllProductsSection = () => {
               }}
             >
               {filteredProducts.map((product) => {
-                const isAdded = Boolean(addedProducts[product.id]);
+                const isAdded = Boolean(
+                  addedProducts[product.id]
+                );
 
                 return (
-                  <SwiperSlide key={product.id} className="all-product-slide">
+                  <SwiperSlide
+                    key={product.id}
+                    className="all-product-slide"
+                  >
                     <motion.article
                       className="all-product-card"
-                      initial={{
-                        opacity: 0,
-                        y: 25,
-                      }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                      }}
-                      transition={{
-                        duration: 0.35,
-                      }}
-                      onClick={() => handleProductClick(product)}
-                      role="button"
+                      initial={{ opacity: 0, y: 25 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35 }}
+                      onClick={() =>
+                        handleProductClick(product)
+                      }
+                      role="link"
                       tabIndex={0}
+                      aria-label={`View ${product.name}${
+                        product.flavor
+                          ? ` - ${product.flavor}`
+                          : ""
+                      } details`}
                       onKeyDown={(event) =>
                         handleProductKeyDown(event, product)
                       }
                     >
-                      {/* =====================================
-                            PRODUCT IMAGE
-                        ====================================== */}
+                      {/* PRODUCT IMAGE */}
 
                       <div className="all-product-image-wrapper">
                         <img
-                          src={product.image_url || product.image}
+                          src={
+                            product.image_url || product.image
+                          }
                           alt={`${product.name}${
-                            product.flavor ? ` - ${product.flavor}` : ""
+                            product.flavor
+                              ? ` - ${product.flavor}`
+                              : ""
                           }`}
                           className="all-product-image"
                           loading="lazy"
@@ -464,32 +1021,37 @@ const AllProductsSection = () => {
                         )}
                       </div>
 
-                      {/* =====================================
-                            PRODUCT INFO
-                        ====================================== */}
+                      {/* PRODUCT INFO */}
 
                       <div className="all-product-info">
-                        <h3 className="all-product-name">{product.name}</h3>
+                        <h3 className="all-product-name">
+                          {product.name}
+                        </h3>
 
                         {product.flavor && (
-                          <p className="all-product-flavor">{product.flavor}</p>
+                          <p className="all-product-flavor">
+                            {product.flavor}
+                          </p>
                         )}
 
                         <p className="all-product-price">
-                          LE {Number(product.price || 0).toFixed(2)}
+                          LE{" "}
+                          {Number(product.price || 0).toFixed(2)}
                         </p>
-
-                        {/* ===================================
-                              ADD TO CART
-                          ==================================== */}
 
                         <button
                           type="button"
                           className={`add-to-cart-button ${
                             isAdded ? "added" : ""
-                          } ${!product.available ? "disabled" : ""}`}
-                          disabled={!product.available || isAdded}
-                          onClick={(event) => handleAddToCart(event, product)}
+                          } ${
+                            !product.available ? "disabled" : ""
+                          }`}
+                          disabled={
+                            !product.available || isAdded
+                          }
+                          onClick={(event) =>
+                            handleAddToCart(event, product)
+                          }
                         >
                           {isAdded
                             ? "Added !"
@@ -504,7 +1066,7 @@ const AllProductsSection = () => {
               })}
             </Swiper>
 
-            {/* LEFT ARROW */}
+            {/* SLIDER ARROWS */}
 
             <div className="arrow-btns">
               <button
@@ -514,8 +1076,6 @@ const AllProductsSection = () => {
               >
                 <span aria-hidden="true">&#10094;</span>
               </button>
-
-              {/* RIGHT ARROW */}
 
               <button
                 type="button"
@@ -528,19 +1088,13 @@ const AllProductsSection = () => {
           </div>
         )}
 
-        {/* =====================================================
-            NO PRODUCTS
-        ====================================================== */}
+        {/* NO PRODUCTS */}
 
         {filteredProducts.length === 0 && (
           <motion.div
             className="no-products"
-            initial={{
-              opacity: 0,
-            }}
-            animate={{
-              opacity: 1,
-            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
           >
             <p>No products available in this category.</p>
           </motion.div>
