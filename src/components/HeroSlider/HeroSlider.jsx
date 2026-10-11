@@ -9,8 +9,8 @@ const HeroSlider = () => {
   const slides = [
    
     { id: 2, image: '/images/banners/HeroSlider/6.png', title: 'Limited Edition' },
-    { id: 3, image: '/images/banners/HeroSlider/7.jpeg', title: 'New Arrival' },
     { id: 8, image: '/images/banners/HeroSlider/8', title: 'Limited Edition' },
+    { id: 3, image: '/images/banners/HeroSlider/7.jpeg', title: 'New Arrival' },
     { id: 1, image: '/images/banners/HeroSlider/1.png', title: 'New Arrival' },
     { id: 7, image: '/images/banners/HeroSlider/2.png', title: 'Best Seller' },
     { id: 4, image: '/images/banners/HeroSlider/3.png', title: 'Limited Edition' },
