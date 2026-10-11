@@ -10,6 +10,7 @@ import AllProducts from "../../components/AllProducts/AllProducts";
 import MakeJoyBanner from "../../components/makeJoyBanner/makJoyBanner";
 import VozolVideo from "../../components/VozolVideo/VozolVideo";
 import SearchComponent from "../../components/SearchComponent/SearchComponent";
+import HealthMessage from "../../components/HealthMessage/HealthMessage";
 import { supabase } from "../../lib/supabase";
 import SEO from "../../seo/SEO";
 // import './Home.css';
@@ -177,6 +178,7 @@ const Home = () => {
         <SearchComponent />
 
         <ContactSection />
+        <HealthMessage />
 
         {/* ======================================================
           CATEGORIES
