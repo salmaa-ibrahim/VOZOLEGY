@@ -14,7 +14,7 @@ const SocialFollowBanner = () => {
         <h2>Don't Forget to</h2>
         <h3>Follow Us</h3>
         <a
-          href="https://instagram.com/vozolegy"
+          href="https://instagram.com/vozol_egy"
           target="_blank"
           rel="noreferrer"
           className="social-banner__btn"

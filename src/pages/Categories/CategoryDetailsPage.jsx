@@ -688,9 +688,8 @@ const CategoryDetailsPage = () => {
                             </button>
 
                             <a
-                              href={`https://wa.me/${siteConfig.social.whatsapp}?text=${encodeURIComponent(
+                              href={`https://wa.me/${siteConfig.contact.whatsapp.number}?text=${encodeURIComponent(
                                 `Hello, I’m interested in this product:
-
 
 
 Product: ${product.name}

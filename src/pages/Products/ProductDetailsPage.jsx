@@ -10,7 +10,7 @@ import { supabase } from "../../lib/supabase";
 import SEO from "../../seo/SEO";
 import "./ProductDetailsPage.css";
 
-const WHATSAPP_NUMBER = "201234567890";
+const WHATSAPP_NUMBER = "201556220922"; // VOZOL EGY WhatsApp number
 const WHATSAPP_ICON = "/icons/whatsapp.jpg";
 
 const createProductSlug = (product) => {
