@@ -13,13 +13,13 @@ export const siteConfig = {
   // CONTACT
   contact: {
     phone: {
-      number: "+201234567890",
+      number: "+201505337422",
       display: "+20 123 456 7890",
       icon: "/icons/call.jpg",
     },
 
     whatsapp: {
-      number: "201234567890",
+      number: "201556220922",
       display: "+20 123 456 7890",
       icon: "/icons/whatsapp.jpg",
     },
@@ -41,7 +41,7 @@ export const siteConfig = {
   // SOCIAL MEDIA
   social: {
     instagram: {
-      url: "https://instagram.com/vozolegy",
+      url: "https://instagram.com/vozol_egy",
       icon: "/icons/instagram.jpg",
     },
 
