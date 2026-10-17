@@ -1,11 +1,19 @@
+
 import React from "react";
-import { siteConfig } from "../../config/siteConfig";
 import { AnimatePresence, motion } from "framer-motion";
 import "./ContactSection.css";
 
 const ContactSection = () => {
-  // جلب قائمة وسائل الاتصال من الملف المركزي
-  const contacts = siteConfig.getSocialLinks();
+  const contacts = [
+    {
+      id: "whatsapp",
+      title: "WhatsApp",
+      description: "Contact us directly on WhatsApp",
+      icon: "/images/icons/whatsapp_icon.png",
+      url: "https://wa.me/201505337422",
+      action: "Chat with us",
+    },
+  ];
 
   return (
     <section className="contact-section">
@@ -18,9 +26,11 @@ const ContactSection = () => {
       >
         GET IN TOUCH
       </motion.h2>
+
       <p className="section-subtitle">
         Have a question? Need help? We're here for you ツ
       </p>
+
       <div className="contact-grid">
         {contacts.map((c) => (
           <div key={c.id} className="contact-card">
@@ -30,7 +40,7 @@ const ContactSection = () => {
             <a
               href={c.url}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="contact-link"
             >
               {c.action} →
