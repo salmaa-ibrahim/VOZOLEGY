@@ -19,7 +19,7 @@ export const siteConfig = {
     },
 
     whatsapp: {
-      number: "+201505337422",
+      number: "+201556220922",
       display: "+20 123 456 7890",
       icon: "/icons/whatsapp.jpg",
     },
