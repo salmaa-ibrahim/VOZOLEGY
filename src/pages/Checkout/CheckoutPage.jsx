@@ -966,7 +966,7 @@ Thank you ❤️
             VOZOL EGY WhatsApp number.
           */
 
-        const whatsappNumber = "201000000000";
+        const whatsappNumber = "201556220922";
 
         const whatsappURL =
           `https://wa.me/${whatsappNumber}` +
